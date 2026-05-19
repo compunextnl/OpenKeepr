@@ -23,8 +23,25 @@ from app.services.audit import audit
 @bp.get("/")
 @admin_required
 def dashboard():
+    from pathlib import Path
+
     now = datetime.now(timezone.utc)
     last_24h = now - timedelta(hours=24)
+
+    # On-disk usage: SQLite file + attachment blob directory
+    instance = Path(current_app.instance_path)
+    db_bytes = 0
+    db_file = instance / "openkeepr.db"
+    if db_file.exists():
+        db_bytes = db_file.stat().st_size
+    attach_root = instance / "attachments"
+    attach_bytes = 0
+    attach_files = 0
+    if attach_root.exists():
+        for f in attach_root.rglob("*"):
+            if f.is_file():
+                attach_bytes += f.stat().st_size
+                attach_files += 1
 
     stats = {
         "users": db.session.scalar(select(func.count(User.id))),
@@ -38,6 +55,10 @@ def dashboard():
         "feedback_new": db.session.scalar(
             select(func.count(Feedback.id)).where(Feedback.status == "new")
         ),
+        "db_bytes": db_bytes,
+        "attach_bytes": attach_bytes,
+        "attach_files": attach_files,
+        "total_bytes": db_bytes + attach_bytes,
     }
     recent_events = db.session.scalars(
         select(AuditLog).order_by(desc(AuditLog.at)).limit(20)
@@ -162,6 +183,18 @@ def toggle_user_active(user_id: int):
 def api_keys():
     items = db.session.scalars(select(ApiKey).order_by(desc(ApiKey.created_at))).all()
     return render_template("admin/api_keys.html", items=items)
+
+
+@bp.post("/cleanup/run")
+@admin_required
+def run_cleanup_now():
+    """Trigger the scheduled cleanup synchronously, then return to the dashboard."""
+    from app.services.cleanup import purge_expired_messages, purge_old_verification_codes
+
+    msgs = purge_expired_messages(max_retention_days=current_app.config["MAX_RETENTION_DAYS"])
+    codes = purge_old_verification_codes()
+    flash(_("Cleanup finished — purged %(m)d message(s) and %(c)d expired code(s).", m=msgs, c=codes), "success")
+    return redirect(url_for("admin.dashboard"))
 
 
 # ---------------------------------------------------------------------------

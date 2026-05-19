@@ -50,8 +50,8 @@
           <div class="col-sm-6 col-lg-4">
             <label for="max-opens" class="form-label">{{ _('Max opens') }}</label>
             <select id="max-opens" class="form-select">
-              <option value="1" selected>1 {{ _('view (burn after reading)') }}</option>
-              <option value="3">3 {{ _('views') }}</option>
+              <option value="1">1 {{ _('view (burn after reading)') }}</option>
+              <option value="3" selected>3 {{ _('views') }}</option>
               <option value="10">10 {{ _('views') }}</option>
               <option value="0">{{ _('Unlimited (until expiry)') }}</option>
             </select>
@@ -60,13 +60,63 @@
             <label for="recipients" class="form-label">{{ _('Allowed recipients (e-mail, optional)') }}</label>
             <input id="recipients" class="form-control" type="text"
                    placeholder="alice@example.com, bob@example.com"
-                   autocomplete="off" inputmode="email">
+                   autocomplete="off" inputmode="email" spellcheck="false">
+            <div id="recipients-error" class="invalid-feedback d-none"></div>
             <div class="form-text">{{ _('Leave empty to generate a 6-digit verification code instead. Otherwise a code will be sent to the recipient(s) (more secure!)') }}</div>
           </div>
         </div>
+
+        {% if config.ATTACHMENTS_ENABLED %}
+        <hr>
+        <div>
+          <button class="btn btn-link p-0 text-decoration-none d-inline-flex align-items-center gap-2"
+                  type="button" data-bs-toggle="collapse" data-bs-target="#attach-panel"
+                  aria-expanded="false" aria-controls="attach-panel">
+            <i class="bi bi-paperclip"></i>
+            <span class="fw-semibold">{{ _('Attachments (optional)') }}</span>
+            <span id="attach-count" class="badge text-bg-secondary d-none">0</span>
+            <i class="bi bi-chevron-down small ms-1"></i>
+          </button>
+
+          <div id="attach-panel" class="collapse mt-3">
+            <div class="small text-body-secondary mb-2">
+              {{ _('Up to %(n)d files · max %(s)s MB each · %(t)s MB total',
+                    n=config.ATTACHMENTS_MAX_PER_MESSAGE,
+                    s=config.ATTACHMENTS_MAX_FILE_SIZE_MB,
+                    t=config.ATTACHMENTS_MAX_TOTAL_MB) }}
+            </div>
+
+            <label id="attach-drop" for="attach-input" class="d-block border border-2 border-dashed rounded p-4 text-center text-body-secondary" style="cursor: pointer;">
+              <i class="bi bi-cloud-arrow-up display-6"></i>
+              <div>{{ _('Drop files here or click to choose') }}</div>
+              <input id="attach-input" type="file" multiple class="d-none"
+                     accept="{{ config.ATTACHMENTS_ALLOWED_TYPES|join(',') }}">
+            </label>
+
+            <ul id="attach-list" class="list-group list-group-flush mt-2 small"></ul>
+
+            {% if config.ATTACHMENTS_ALLOWED_TYPES %}
+            <div class="form-text">
+              <strong>{{ _('Allowed file types:') }}</strong>
+              <span class="font-monospace">{{ config.ATTACHMENTS_ALLOWED_TYPES|join(', ') }}</span>
+            </div>
+            {% else %}
+            <div class="form-text text-warning"><i class="bi bi-exclamation-triangle"></i>
+              {{ _('Any file type is allowed by this instance.') }}
+            </div>
+            {% endif %}
+
+            <div class="form-text text-warning">
+              <i class="bi bi-exclamation-triangle"></i>
+              {{ _('We cannot scan attachments for malware — only share files from senders you trust.') }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
       </div>
       <div class="card-footer d-flex justify-content-between align-items-center">
-        <small class="text-body-secondary"><i class="bi bi-shield-check"></i> {{ _('Encrypted in your browser before sending.') }}</small>
+        <small class="text-body-secondary"><i class="bi bi-shield-check"></i> {{ _('Message and any attachments are encrypted in your browser before sending.') }}</small>
         <button id="create-btn" type="submit" class="btn btn-primary"><i class="bi bi-send"></i> {{ _('Create secure message') }}</button>
       </div>
     </form>
@@ -122,6 +172,13 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+window.__OKP_CFG = {
+  maxFileBytes:  {{ config.ATTACHMENTS_MAX_FILE_SIZE_MB * 1024 * 1024 }},
+  maxCount:      {{ config.ATTACHMENTS_MAX_PER_MESSAGE }},
+  maxTotalBytes: {{ config.ATTACHMENTS_MAX_TOTAL_MB * 1024 * 1024 }}
+};
+</script>
 <script src="{{ url_for('static', filename='vendor/marked/marked.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/dompurify/purify.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/crypto.js') }}"></script>

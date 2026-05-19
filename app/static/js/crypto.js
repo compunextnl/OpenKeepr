@@ -78,10 +78,76 @@
     return { key: raw.slice(0, idx), code: raw.slice(idx + 1) };
   }
 
+  /* -------------------------------------------------------------------------
+   * Attachments — same key as the message body, fresh IV per file.
+   *
+   * Wrapper format (binary, big-endian):
+   *
+   *   [magic "OKPA"][2B nameLen][name UTF-8][2B typeLen][type UTF-8][bytes …]
+   *
+   * Compact (no base64 inflation), self-describing, and forward-compatible
+   * via the magic marker.
+   * --------------------------------------------------------------------------- */
+
+  var MAGIC = new Uint8Array([0x4f, 0x4b, 0x50, 0x41]); // "OKPA"
+
+  function concatU8(parts) {
+    var total = 0;
+    parts.forEach(function (p) { total += p.length; });
+    var out = new Uint8Array(total);
+    var off = 0;
+    parts.forEach(function (p) { out.set(p, off); off += p.length; });
+    return out;
+  }
+
+  function buildAttachmentWrapper(file, bodyBytes) {
+    var nameBytes = enc.encode(file.name || 'file');
+    var typeBytes = enc.encode(file.type || 'application/octet-stream');
+    if (nameBytes.length > 0xffff || typeBytes.length > 0xffff) {
+      throw new Error('File name or MIME type is too long.');
+    }
+    var nameLen = new Uint8Array([(nameBytes.length >> 8) & 0xff, nameBytes.length & 0xff]);
+    var typeLen = new Uint8Array([(typeBytes.length >> 8) & 0xff, typeBytes.length & 0xff]);
+    return concatU8([MAGIC, nameLen, nameBytes, typeLen, typeBytes, bodyBytes]);
+  }
+
+  function parseAttachmentWrapper(buf) {
+    var u = new Uint8Array(buf);
+    if (u.length < 4 || u[0] !== 0x4f || u[1] !== 0x4b || u[2] !== 0x50 || u[3] !== 0x41) {
+      throw new Error('Unrecognised attachment format.');
+    }
+    var off = 4;
+    var nameLen = (u[off] << 8) | u[off + 1]; off += 2;
+    var name = dec.decode(u.subarray(off, off + nameLen)); off += nameLen;
+    var typeLen = (u[off] << 8) | u[off + 1]; off += 2;
+    var type = dec.decode(u.subarray(off, off + typeLen)); off += typeLen;
+    var body = u.subarray(off);
+    return { name: name, type: type, bytes: body };
+  }
+
+  async function encryptAttachment(key_b64, file) {
+    var key = await importRawKey(b64urlDecode(key_b64));
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var fileBuf = new Uint8Array(await file.arrayBuffer());
+    var wrapped = buildAttachmentWrapper(file, fileBuf);
+    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, wrapped);
+    return { iv: iv, ciphertext: new Uint8Array(ct) };
+  }
+
+  async function decryptAttachment(key_b64, iv_bytes, ciphertext_bytes) {
+    var key = await importRawKey(b64urlDecode(key_b64));
+    var iv = iv_bytes instanceof Uint8Array ? iv_bytes : new Uint8Array(iv_bytes);
+    var ct = ciphertext_bytes instanceof Uint8Array ? ciphertext_bytes : new Uint8Array(ciphertext_bytes);
+    var plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ct);
+    return parseAttachmentWrapper(plain);
+  }
+
   global.OpenKeepr = global.OpenKeepr || {};
   global.OpenKeepr.crypto = {
     encryptString,
     decryptString,
+    encryptAttachment,
+    decryptAttachment,
     parseFragment,
     b64urlEncode,
     b64urlDecode,

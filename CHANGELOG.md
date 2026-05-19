@@ -5,6 +5,58 @@ All notable changes to OpenKeepr are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-05-19
+
+### Added
+
+- **Encrypted attachments** — attach one or more files to a secure message.
+  Each file is encrypted in the browser with the same AES-256-GCM key as the
+  message body, using a fresh nonce per file. The server stores only opaque
+  ciphertext blobs and never sees the original filename, MIME-type or
+  contents.
+- Drag-and-drop file picker in the composer, with per-file progress, size
+  display and inline validation.
+- Operator-configurable limits via `.env`: max file size, max number of
+  files per message, max total size, and an allowed-types list (extensions
+  and / or MIME globs). The allowed types are shown to the sender in the UI.
+- Per-file decrypt-and-download in the viewer, plus a one-click
+  "Download all (zip)" button (zip is assembled in the browser; the server
+  is not involved).
+- Inline previews in the viewer for images and PDFs (other types are
+  download-only, by design).
+- E-mail validation on the recipient field — invalid addresses are rejected
+  client-side and server-side instead of being silently dropped.
+
+### Changed
+
+- Bumped admin UX: a prominent warning banner appears on the dashboard
+  while the administrator has not yet enabled 2FA, and a direct
+  "Two-factor authentication" entry was added to the user dropdown.
+- The language switcher now uses inline SVG flags instead of regional
+  emoji, so the country flags render the same way on every operating
+  system (Windows included).
+- Date / time columns in the admin pages respect the new `TIMEZONE`
+  setting (database timestamps remain stored in UTC).
+
+### Fixed
+
+- Server-side defensive parsing of `.env` strings so an inline `# comment`
+  after an empty value can never become a literal filename on disk.
+- "Buy Me a Coffee" is shown verbatim in every language (matches the
+  official product spelling).
+
+### Security
+
+- Attachment downloads require the same gate as the message body
+  (recipient e-mail allow-list + verification code, or anonymous security
+  code). After the gate is passed, a session flag avoids re-prompting the
+  recipient for every file they want to download.
+- Once a recipient first opens a message, no further attachments can be
+  added to it (anti-tampering for anyone who happens to know the public
+  ID).
+- Attachment cleanup is wired into the existing 30-day retention purge —
+  expired or burned messages also remove their on-disk attachment blobs.
+
 ## [1.1.0] — 2026-05-19
 
 ### Added
@@ -25,7 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   outbound mail configuration end-to-end before enabling delivery for
   recipients.
 - **Customisable branding** — the application name, the GitHub link, and an
-  optional "Buy me a coffee" support link in the footer are now all
+  optional "Buy Me a Coffee" support link in the footer are now all
   configurable.
 
 ### Changed

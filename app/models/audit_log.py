@@ -47,6 +47,9 @@ EVENT_TYPES = {
     "admin.maintenance.disabled",
     "admin.email.test.sent",
     "admin.email.test.failed",
+    "attachment.uploaded",
+    "attachment.downloaded",
+    "attachment.purged",
     "feedback.submitted",
 }
 

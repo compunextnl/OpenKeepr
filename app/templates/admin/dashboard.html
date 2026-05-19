@@ -1,6 +1,20 @@
 {% extends "admin/_layout.html" %}
 {% block title %}{{ app_name }} — {{ _('Admin') }}{% endblock %}
 {% block admin_content %}
+
+{% if current_user.is_authenticated and not current_user.totp_enabled %}
+<div class="alert alert-warning d-flex flex-wrap align-items-center gap-3" role="alert">
+  <i class="bi bi-shield-exclamation fs-3"></i>
+  <div class="flex-grow-1">
+    <strong>{{ _('Two-factor authentication is not enabled on your admin account.') }}</strong>
+    <div class="small">{{ _('Anyone who knows or guesses your password can take over the instance. Enable 2FA now — it takes 30 seconds.') }}</div>
+  </div>
+  <a href="{{ url_for('auth.setup_2fa') }}" class="btn btn-warning">
+    <i class="bi bi-shield-lock"></i> {{ _('Enable two-factor authentication') }}
+  </a>
+</div>
+{% endif %}
+
 <h1 class="h4 mb-3">{{ _('Overview') }}</h1>
 <div class="row g-3">
   {% for label, value in [
@@ -19,6 +33,38 @@
   {% endfor %}
 </div>
 
+<div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+  <h2 class="h5 mb-0">{{ _('Storage') }}</h2>
+  <form action="{{ url_for('admin.run_cleanup_now') }}" method="post" class="m-0">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn btn-sm btn-outline-secondary" title="{{ _('Run cleanup now') }}">
+      <i class="bi bi-arrow-repeat"></i> {{ _('Run cleanup now') }}
+    </button>
+  </form>
+</div>
+<p class="small text-body-secondary mb-2">{{ _('Stats reflect what is currently on disk. Burned or expired messages are purged automatically every 2 minutes.') }}</p>
+<div class="row g-3">
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card h-100"><div class="card-body">
+      <div class="text-body-secondary small text-uppercase">{{ _('Database') }}</div>
+      <div class="h4 mb-0">{{ stats.db_bytes|filesizeformat }}</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card h-100"><div class="card-body">
+      <div class="text-body-secondary small text-uppercase">{{ _('Attachments') }}</div>
+      <div class="h4 mb-0">{{ stats.attach_bytes|filesizeformat }}</div>
+      <div class="text-body-secondary small">{{ stats.attach_files }} {{ _('files') }}</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card h-100 border-primary"><div class="card-body">
+      <div class="text-body-secondary small text-uppercase">{{ _('Total on disk') }}</div>
+      <div class="h4 mb-0">{{ stats.total_bytes|filesizeformat }}</div>
+    </div></div>
+  </div>
+</div>
+
 <h2 class="h5 mt-4 mb-2">{{ _('Recent events') }}</h2>
 <div class="table-responsive">
   <table class="table table-sm align-middle">
@@ -26,7 +72,7 @@
     <tbody>
       {% for e in recent_events %}
       <tr>
-        <td class="text-body-secondary small">{{ e.at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td class="text-body-secondary small">{{ e.at|localtime('%Y-%m-%d %H:%M:%S') }}</td>
         <td><code>{{ e.event_type }}</code></td>
         <td class="text-truncate" style="max-width: 12rem;">{{ e.subject or '' }}</td>
         <td>{{ e.actor_user_id or '—' }}</td>

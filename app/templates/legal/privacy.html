@@ -8,7 +8,8 @@
 
     <h2 class="h5 mt-4">{{ _('What we collect') }}</h2>
     <ul>
-      <li>{{ _('Encrypted ciphertext you upload. We cannot decrypt it.') }}</li>
+      <li>{{ _('Encrypted ciphertext you upload (messages and attachments). We cannot decrypt either of them.') }}</li>
+      <li>{{ _('For attachments: only the opaque ciphertext blob, the AES-GCM nonce, and the byte count. The original filename, MIME-type and contents are inside the encrypted payload and never visible to us.') }}</li>
       <li>{{ _('Keyed HMAC hashes of recipient e-mail addresses, when provided. Original addresses are not stored.') }}</li>
       <li>{{ _('Pseudonymous audit entries (event type, hashed IP) for abuse mitigation.') }}</li>
       <li>{{ _('Account data (e-mail, hashed password, optional 2FA secret) — only if you create an account.') }}</li>

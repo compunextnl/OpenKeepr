@@ -23,6 +23,9 @@ def start_background_jobs(app: Flask) -> None:
     global _scheduler
     if _scheduler is not None:
         return
+    # Internal scheduler clocks always run on UTC for safety (no DST jumps);
+    # the configured TIMEZONE only affects how timestamps are *displayed* in
+    # the UI / e-mails.
     _scheduler = BackgroundScheduler(daemon=True, timezone="UTC")
 
     def _cleanup_tick() -> None:
@@ -33,8 +36,8 @@ def start_background_jobs(app: Flask) -> None:
             except Exception:  # noqa: BLE001
                 log.exception("Scheduled cleanup failed")
 
-    # Run every 10 minutes — cheap, and bounds latency on expiry
-    _scheduler.add_job(_cleanup_tick, "interval", minutes=10, id="cleanup", coalesce=True)
+    # Every 2 minutes — cheap and keeps storage stats reasonably fresh.
+    _scheduler.add_job(_cleanup_tick, "interval", minutes=2, id="cleanup", coalesce=True)
     _scheduler.start()
     atexit.register(lambda: _scheduler and _scheduler.shutdown(wait=False))
     log.info("Background scheduler started")

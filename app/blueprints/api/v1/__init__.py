@@ -23,6 +23,7 @@ def _gate_api():  # type: ignore[no-untyped-def]
 
 
 from app.blueprints.api.v1 import (  # noqa: E402, F401
+    attachments,
     auth,
     feedback,
     keys,

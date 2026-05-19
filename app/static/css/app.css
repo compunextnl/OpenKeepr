@@ -150,13 +150,14 @@ textarea.form-control {
   font-family: inherit;
 }
 
-/* --- Flag glyphs in the language switcher --- */
-.lang-flag {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
-               "Twemoji Mozilla", emoji, sans-serif;
-  font-size: 1.05em;
-  line-height: 1;
-  font-style: normal;
+/* --- Flag SVGs in the language switcher --- */
+img.lang-flag {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 2px;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,.15);   /* subtle outline so light flags stay visible */
+  object-fit: cover;
+  line-height: 0;
 }
 
 /* --- Subtle animation for status badges --- */
@@ -171,4 +172,27 @@ textarea.form-control {
 @media (max-width: 575.98px) {
   .card-body { padding: 1rem; }
   .display-6 { font-size: 1.5rem; }
+}
+
+/* --- Mobile navigation (collapsed navbar) ---
+   Bootstrap's default collapsed menu can look cramped when there are many
+   right-aligned items + dropdowns. These tweaks make every entry full-width,
+   easier to tap, and put a bit of breathing space between rows. */
+@media (max-width: 767.98px) {
+  .navbar-collapse { padding-top: .75rem; }
+  .navbar .nav-item { width: 100%; }
+  .navbar .nav-link,
+  .navbar .navbar-nav .btn { padding-block: .65rem; }
+  /* Dropdowns inside the collapsed menu render full-width with no shadow */
+  .navbar .dropdown-menu {
+    position: static;
+    float: none;
+    width: 100%;
+    margin-top: .25rem;
+    box-shadow: none;
+    border-color: var(--bs-border-color);
+  }
+  /* Theme / language buttons line up nicely instead of overlapping */
+  .navbar-nav .nav-item.d-md-inline { width: auto; }
+  .navbar-nav .btn-outline-secondary { width: 100%; text-align: left; }
 }

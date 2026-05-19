@@ -76,6 +76,12 @@ MANIFEST: list[Asset] = [
         url="https://cdn.jsdelivr.net/npm/dompurify@3.1.4/dist/purify.min.js",
         dest="dompurify/purify.min.js",
     ),
+    # --- Small ZIP-builder for the "Download all" attachment button ---
+    Asset(
+        name="fflate",
+        url="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js",
+        dest="fflate/fflate.min.js",
+    ),
 ]
 
 

@@ -190,6 +190,51 @@ Scope: `feedback:write`  ·  Rate limit: 20 / hour per IP.
 
 ---
 
+### `POST /messages/{id}/attachments` — upload an encrypted attachment
+
+Scope: `attachments:write`.
+
+The attachment must already be **encrypted client-side** with the same AES-256-GCM
+key that encrypted the message body, and a fresh 12-byte IV. The plaintext
+should follow the OpenKeepr binary wrapper format:
+
+```
+[ "OKPA" (4 bytes) ][ nameLen (2B BE) ][ name UTF-8 ][ typeLen (2B BE) ][ MIME UTF-8 ][ file bytes … ]
+```
+
+(see `app/static/js/crypto.js → buildAttachmentWrapper` for the reference
+implementation.)
+
+**Request body** (JSON):
+
+| Field            | Type         | Required | Notes                            |
+|------------------|--------------|----------|----------------------------------|
+| `iv_b64`         | string (b64) | yes      | 12 bytes                         |
+| `ciphertext_b64` | string (b64) | yes      | The wrapped, encrypted payload   |
+
+**Response** `201 Created`
+
+```json
+{"id": "Xy12oFqA…", "size_bytes": 184823}
+```
+
+**Errors**
+
+- `403 message_sealed` — the recipient has already opened the message, so
+  no more attachments can be added (anti-tampering).
+- `413 file_too_large` / `413 too_many_attachments` / `413 total_size_exceeded`
+- `404 not_found` — message not yours
+
+### `GET /messages/{id}/attachments` — list attachments
+
+Scope: `attachments:read`. Returns metadata only — never plaintext.
+
+```json
+{"attachments": [{"id": "Xy…", "size_bytes": 184823, "created_at": "..."}]}
+```
+
+---
+
 ### `GET /keys/scopes` — list available scopes
 
 Public endpoint. Useful for client tooling.

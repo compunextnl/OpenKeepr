@@ -158,7 +158,8 @@ def _register_security_headers(app: Flask) -> None:
     csp = (
         # Default deny + explicit allowances. We only serve our own static
         # assets — no CDNs. 'unsafe-inline' on style is needed for Bootstrap
-        # utilities; we keep script-src strict.
+        # utilities; we keep script-src strict. No inline previews of
+        # attachments, so frame-src / object-src inherit the strict default.
         "default-src 'self'; "
         "script-src 'self'; "
         "style-src 'self' 'unsafe-inline'; "
@@ -248,16 +249,16 @@ def _start_scheduler(app: Flask) -> None:
 
 
 # Map ISO-639-1 locale → display metadata. Used by the language switcher.
-# `flag` uses regional indicator emoji which render as proper flag glyphs on
-# macOS / iOS / Linux. Windows shows the letter-pair fallback (a known
-# OS-level limitation, not something we can fix from the app).
+# `flag` is the basename of an SVG file under app/static/img/flags/ —
+# rendered as an <img>, which works identically across Mac, Linux & Windows
+# browsers (unlike regional-indicator emoji which depend on system fonts).
 LANGUAGE_META: dict[str, dict[str, str]] = {
-    "en": {"flag": "🇬🇧", "name": "English"},
-    "nl": {"flag": "🇳🇱", "name": "Nederlands"},
-    "fr": {"flag": "🇫🇷", "name": "Français"},
-    "de": {"flag": "🇩🇪", "name": "Deutsch"},
-    "es": {"flag": "🇪🇸", "name": "Español"},
-    "it": {"flag": "🇮🇹", "name": "Italiano"},
+    "en": {"flag": "gb", "name": "English"},
+    "nl": {"flag": "nl", "name": "Nederlands"},
+    "fr": {"flag": "fr", "name": "Français"},
+    "de": {"flag": "de", "name": "Deutsch"},
+    "es": {"flag": "es", "name": "Español"},
+    "it": {"flag": "it", "name": "Italiano"},
 }
 
 
@@ -315,6 +316,7 @@ def create_app(*, config_overrides: dict | None = None) -> Flask:
     _register_blueprints(app)
     _register_error_handlers(app)
     _register_context_processors(app)
+    _register_jinja_filters(app)
     _register_security_headers(app)
     _maintenance_gate(app)
 
@@ -330,6 +332,38 @@ def create_app(*, config_overrides: dict | None = None) -> Flask:
     _start_scheduler(app)
 
     return app
+
+
+def _register_jinja_filters(app: Flask) -> None:
+    """Custom Jinja filters — chiefly `|localtime` for TZ-aware display."""
+    from datetime import datetime as _dt
+    from datetime import timezone as _tz
+
+    try:
+        from zoneinfo import ZoneInfo  # stdlib (Python 3.9+)
+    except ImportError:  # pragma: no cover
+        ZoneInfo = None  # type: ignore[assignment]
+
+    def localtime(value, fmt: str = "%Y-%m-%d %H:%M") -> str:
+        """Render a UTC datetime (naive or aware) in the configured TIMEZONE.
+
+        DB timestamps are stored UTC-naive; this filter is the canonical way
+        to show them to the user. Use everywhere `.strftime()` was used.
+        """
+        if value is None:
+            return ""
+        if isinstance(value, _dt):
+            if value.tzinfo is None:
+                value = value.replace(tzinfo=_tz.utc)
+            if ZoneInfo is not None:
+                try:
+                    value = value.astimezone(ZoneInfo(app.config.get("TIMEZONE", "UTC")))
+                except Exception:  # noqa: BLE001 — fall back to UTC on bad TZ
+                    pass
+            return value.strftime(fmt)
+        return str(value)
+
+    app.jinja_env.filters["localtime"] = localtime
 
 
 def _ensure_schema(app: Flask) -> None:
@@ -348,7 +382,16 @@ def _ensure_schema(app: Flask) -> None:
             if "users" not in tables:
                 app.logger.info("First-time setup: creating database schema…")
                 db.create_all()
-                tables = set(inspect(db.engine).get_table_names())
+            else:
+                # Existing install — create any tables that didn't exist in a
+                # previous version (e.g. `attachments` was added in v1.2.0).
+                # `create_all` is idempotent and only touches missing tables.
+                expected = set(db.metadata.tables.keys())
+                missing = expected - tables
+                if missing:
+                    app.logger.info("Schema upgrade: creating new table(s): %s", sorted(missing))
+                    db.create_all()
+            tables = set(inspect(db.engine).get_table_names())
 
             # Light-touch additive migration: for every mapped model, ADD COLUMN
             # for any field that isn't in the table yet. SQLite supports this

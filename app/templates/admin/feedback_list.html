@@ -14,7 +14,7 @@
     <tbody>
       {% for i in items %}
       <tr style="cursor:pointer" onclick="window.location='{{ url_for('admin.feedback_detail', item_id=i.id) }}'">
-        <td class="small text-body-secondary">{{ i.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td class="small text-body-secondary">{{ i.created_at|localtime('%Y-%m-%d %H:%M') }}</td>
         <td><span class="badge text-bg-secondary">{{ i.type }}</span></td>
         <td class="text-truncate" style="max-width: 30rem;">{{ i.message[:160] }}</td>
         <td><span class="badge text-bg-{{ 'warning' if i.status=='new' else ('info' if i.status=='in_progress' else ('success' if i.status=='resolved' else 'dark')) }}">{{ i.status }}</span></td>

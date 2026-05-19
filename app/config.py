@@ -181,6 +181,30 @@ class Config:
     MAX_OPENS_LIMIT: int = _int("MAX_OPENS_LIMIT", 100)
     VERIFICATION_CODE_TTL_MINUTES: int = _int("VERIFICATION_CODE_TTL_MINUTES", 10)
 
+    # Attachments — all enforced client-side AND server-side where possible.
+    # NOTE: the server cannot inspect the plaintext file, so ALLOWED_TYPES is a
+    # UI-side guard rail (advisory). The server only checks SIZE + COUNT.
+    ATTACHMENTS_ENABLED: bool = _bool("ATTACHMENTS_ENABLED", default=True)
+    ATTACHMENTS_MAX_FILE_SIZE_MB: int = _int("ATTACHMENTS_MAX_FILE_SIZE_MB", 25)
+    ATTACHMENTS_MAX_PER_MESSAGE: int = _int("ATTACHMENTS_MAX_PER_MESSAGE", 10)
+    ATTACHMENTS_MAX_TOTAL_MB: int = _int("ATTACHMENTS_MAX_TOTAL_MB", 100)
+    # Mix of file extensions (".pdf") and MIME globs ("image/*"). Comma-separated.
+    # Empty string == allow everything (NOT recommended).
+    ATTACHMENTS_ALLOWED_TYPES: list[str] = field(
+        default_factory=lambda: _list(
+            "ATTACHMENTS_ALLOWED_TYPES",
+            default=[
+                ".pdf", ".txt", ".md", ".csv", ".log",
+                ".doc", ".docx", ".odt",
+                ".xls", ".xlsx", ".ods",
+                ".ppt", ".pptx", ".odp",
+                ".zip", ".7z", ".tar", ".gz",
+                "image/*",
+                ".json", ".xml", ".yaml", ".yml",
+            ],
+        )
+    )
+
     # Mail
     MAIL_ENABLED: bool = _bool("MAIL_ENABLED", default=False)
     MAIL_BACKEND: str = _str("MAIL_BACKEND", "smtp")
@@ -220,6 +244,12 @@ class Config:
     BABEL_DEFAULT_LOCALE: str = _str("DEFAULT_LANGUAGE", "en")
     BABEL_TRANSLATION_DIRECTORIES: str = "translations"
     AUTO_COMPILE_TRANSLATIONS: bool = _bool("AUTO_COMPILE_TRANSLATIONS", default=True)
+
+    # Timezone — used by Flask-Babel (e.g. `{{ moment|format_datetime }}`),
+    # the background scheduler and any timezone-aware operations.
+    # All timestamps in the DB remain UTC; this only affects *display*.
+    TIMEZONE: str = _str("TIMEZONE", "UTC")
+    BABEL_DEFAULT_TIMEZONE: str = field(default_factory=lambda: _str("TIMEZONE", "UTC"))
 
     # Logging
     LOG_LEVEL: str = _str("LOG_LEVEL", "INFO")

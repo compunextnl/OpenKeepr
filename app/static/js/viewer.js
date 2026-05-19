@@ -48,15 +48,31 @@
     e.preventDefault();
     hideError();
     var email = document.getElementById('email-input').value.trim();
+    // Disable the submit button while in flight — protects against
+    // double-clicks (which would otherwise send two e-mails).
+    var submitBtn = stepEmail.querySelector('button[type="submit"]');
+    var origLabel = submitBtn ? submitBtn.innerHTML : null;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+    }
     try {
       await OpenKeepr.fetchJSON('/m/' + publicId + '/request-code', { method: 'POST', body: JSON.stringify({ email: email }) });
       stepEmail.classList.add('d-none');
       stepCode.classList.remove('d-none');
       document.getElementById('code-instructions').textContent = 'A 6-digit code has been sent if your e-mail is allowed.';
-      // Remember the e-mail for the next step
       stepCode.dataset.email = email;
-    } catch (err) { showError('Could not request a code.'); }
+    } catch (err) {
+      showError('Could not request a code.');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origLabel;
+      }
+    }
   });
+
+  // Cache the gate credentials so attachment downloads can re-use them.
+  var gateState = { email: null, code: null };
 
   async function reveal(email, code) {
     var body = {};
@@ -74,8 +90,128 @@
       contentEl.textContent = plain;
     }
 
+    gateState.email = email;
+    gateState.code = code;
+
     [stepEmail, stepCode, stepDirect].forEach(function (el) { el && el.classList.add('d-none'); });
     revealed.classList.remove('d-none');
+
+    // Show attachments (if any), now that the gate has passed.
+    if (data.attachments && data.attachments.length) {
+      setupAttachments(data.attachments);
+    }
+  }
+
+  // ----- Attachment helpers ---------------------------------------------------
+
+  var fmtBytes = function (n) {
+    if (n < 1024) return n + ' B';
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1024 / 1024).toFixed(1) + ' MB';
+  };
+
+  // In-memory cache of decrypted attachments, so "Download all" doesn't
+  // re-fetch + re-decrypt files the user already opened individually.
+  var decryptedCache = {};
+
+  async function fetchAndDecrypt(attId) {
+    if (decryptedCache[attId]) return decryptedCache[attId];
+    var body = { email: gateState.email, code: gateState.code };
+    var resp = await fetch('/m/' + publicId + '/a/' + attId, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': OpenKeepr.csrfToken() },
+      credentials: 'same-origin',
+      body: JSON.stringify(body)
+    });
+    if (!resp.ok) throw new Error('download_failed');
+    var ivB64 = resp.headers.get('X-OpenKeepr-IV');
+    var ct = new Uint8Array(await resp.arrayBuffer());
+    var iv = OpenKeepr.crypto.b64urlDecode(ivB64);
+    var plain = await OpenKeepr.crypto.decryptAttachment(parsed.key, iv, ct);
+    decryptedCache[attId] = plain;
+    return plain;
+  }
+
+  function triggerDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename || 'file';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { a.remove(); URL.revokeObjectURL(url); }, 500);
+  }
+
+  function setupAttachments(list) {
+    var section = document.getElementById('attachments-section');
+    var ul = document.getElementById('attachments-list');
+    var count = document.getElementById('att-count');
+    var dlAll = document.getElementById('download-all-btn');
+    if (!section || !ul) return;
+    section.classList.remove('d-none');
+    count.textContent = '(' + list.length + ')';
+    if (list.length > 1) dlAll.classList.remove('d-none');
+    ul.innerHTML = '';
+
+    list.forEach(function (att) {
+      var li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+      var meta = document.createElement('span');
+      meta.innerHTML = '<i class="bi bi-file-earmark-lock"></i> ' +
+        '<span class="text-body-secondary">' + fmtBytes(att.size) + '</span>';
+
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'btn btn-sm btn-outline-primary';
+      btn.innerHTML = '<i class="bi bi-download"></i> Decrypt &amp; download';
+
+      btn.addEventListener('click', async function () {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+        try {
+          var plain = await fetchAndDecrypt(att.id);
+          var blob = new Blob([plain.bytes], { type: plain.type || 'application/octet-stream' });
+          meta.innerHTML = '<i class="bi bi-file-earmark"></i> ' +
+            (plain.name.replace(/</g, '&lt;')) +
+            ' <span class="text-body-secondary">(' + fmtBytes(att.size) + ')</span>';
+          triggerDownload(blob, plain.name);
+          btn.innerHTML = '<i class="bi bi-check2"></i> Saved';
+          btn.classList.remove('btn-outline-primary'); btn.classList.add('btn-outline-success');
+        } catch (err) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-x"></i> Failed';
+          btn.classList.add('btn-outline-danger');
+        }
+      });
+
+      li.appendChild(meta);
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+
+    if (dlAll && list.length > 1) {
+      dlAll.addEventListener('click', async function () {
+        dlAll.disabled = true;
+        var prev = dlAll.innerHTML;
+        dlAll.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Preparing…';
+        try {
+          var files = {};
+          for (var i = 0; i < list.length; i++) {
+            var p = await fetchAndDecrypt(list[i].id);
+            // Avoid name collisions
+            var name = p.name, n = 1;
+            while (files[name]) { name = p.name.replace(/(\.[^.]+)?$/, ' (' + (++n) + ')$1'); }
+            files[name] = p.bytes;
+          }
+          var zipped = fflate.zipSync(files);
+          triggerDownload(new Blob([zipped], { type: 'application/zip' }), 'attachments.zip');
+          dlAll.innerHTML = prev;
+        } catch (err) {
+          dlAll.innerHTML = '<i class="bi bi-x"></i> Failed';
+        } finally {
+          dlAll.disabled = false;
+        }
+      });
+    }
   }
 
   if (stepCode) stepCode.addEventListener('submit', async function (e) {

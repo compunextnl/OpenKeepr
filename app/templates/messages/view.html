@@ -72,6 +72,21 @@
             </div>
           </div>
           <div id="content" class="p-3"></div>
+
+          <div id="attachments-section" class="mt-4 d-none">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong><i class="bi bi-paperclip"></i> {{ _('Attachments') }} <span id="att-count" class="text-body-secondary"></span></strong>
+              <button id="download-all-btn" class="btn btn-sm btn-outline-primary d-none">
+                <i class="bi bi-file-zip"></i> {{ _('Download all (zip)') }}
+              </button>
+            </div>
+            <ul id="attachments-list" class="list-group small"></ul>
+            <div class="form-text mt-2 text-warning">
+              <i class="bi bi-exclamation-triangle"></i>
+              {{ _('We cannot scan attachments for malware. Only download files from senders you trust.') }}
+            </div>
+          </div>
+
           <div class="form-check form-switch mt-3">
             <input class="form-check-input" type="checkbox" id="auto-burn" checked>
             <label class="form-check-label" for="auto-burn">{{ _('Destroy this message when I leave the page') }}</label>
@@ -89,6 +104,7 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='vendor/marked/marked.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/dompurify/purify.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/fflate/fflate.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/crypto.js') }}"></script>
 <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
 {% endblock %}

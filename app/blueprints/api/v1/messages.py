@@ -70,7 +70,21 @@ def create_message():
         except (TypeError, ValueError):
             return jsonify(error="invalid max_opens"), 400
 
-    recipients_raw = [r.strip().lower() for r in (data.get("recipients") or []) if "@" in r]
+    from email_validator import EmailNotValidError, validate_email
+
+    raw_input = [r for r in (data.get("recipients") or []) if r and r.strip()]
+    valid: list[str] = []
+    invalid: list[str] = []
+    for r in raw_input:
+        try:
+            info = validate_email(r.strip(), check_deliverability=False)
+            valid.append(info.normalized.lower())
+        except EmailNotValidError:
+            invalid.append(r.strip())
+    if invalid:
+        return jsonify(error="invalid_recipients", invalid=invalid), 400
+    _seen: set[str] = set()
+    recipients_raw = [r for r in valid if not (r in _seen or _seen.add(r))]
     use_code = bool(data.get("use_security_code")) or not recipients_raw
 
     security_code_plain = None

@@ -12,7 +12,7 @@
         <td>{% if u.is_admin %}<span class="badge text-bg-danger">admin</span>{% else %}user{% endif %}</td>
         <td>{% if u.totp_enabled %}<i class="bi bi-check-circle text-success"></i>{% else %}<i class="bi bi-x-circle text-warning"></i>{% endif %}</td>
         <td>{% if u.is_active_flag %}<i class="bi bi-check-circle text-success"></i>{% else %}<i class="bi bi-slash-circle text-danger"></i>{% endif %}</td>
-        <td class="small text-body-secondary">{{ u.last_login_at.strftime('%Y-%m-%d %H:%M') if u.last_login_at else '—' }}</td>
+        <td class="small text-body-secondary">{{ (u.last_login_at|localtime('%Y-%m-%d %H:%M')) or '—' }}</td>
         <td>
           {% if not u.is_admin %}
           <form method="post" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}" class="m-0">

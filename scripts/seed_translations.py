@@ -34,8 +34,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
     "Sign up": {"nl": "Registreren", "fr": "S'inscrire", "de": "Registrieren", "es": "Registrarse", "it": "Registrati"},
     "Sign out": {"nl": "Uitloggen", "fr": "Se déconnecter", "de": "Abmelden", "es": "Cerrar sesión", "it": "Esci"},
     "Send feedback": {"nl": "Feedback sturen", "fr": "Envoyer un retour", "de": "Feedback senden", "es": "Enviar comentarios", "it": "Invia feedback"},
-    "Support development": {"nl": "Ondersteun de ontwikkeling", "fr": "Soutenir le développement", "de": "Entwicklung unterstützen", "es": "Apoyar el desarrollo", "it": "Sostieni lo sviluppo"},
-    "Buy me a coffee": {"nl": "Trakteer me op een koffie", "fr": "Offrez-moi un café", "de": "Spendier mir einen Kaffee", "es": "Invítame a un café", "it": "Offrimi un caffè"},
+    # "Buy me a coffee" and "Support development" are intentionally NOT
+    # translated — "Buy me a coffee" is the registered product name and
+    # should appear verbatim across languages.
     "Privacy": {"nl": "Privacy", "fr": "Confidentialité", "de": "Datenschutz", "es": "Privacidad", "it": "Privacy"},
     "Cookies": {"nl": "Cookies", "fr": "Cookies", "de": "Cookies", "es": "Cookies", "it": "Cookie"},
     "Security": {"nl": "Beveiliging", "fr": "Sécurité", "de": "Sicherheit", "es": "Seguridad", "it": "Sicurezza"},
@@ -120,7 +121,66 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
     "Burn now": {"nl": "Direct verbranden", "fr": "Détruire maintenant", "de": "Jetzt löschen", "es": "Destruir ahora", "it": "Distruggi ora"},
     "Destroy this message when I leave the page": {"nl": "Verwijder dit bericht zodra ik de pagina verlaat", "fr": "Détruire ce message quand je quitte la page", "de": "Diese Nachricht beim Verlassen der Seite löschen", "es": "Destruir este mensaje al salir de la página", "it": "Distruggi questo messaggio quando lascio la pagina"},
     "This message is no longer available.": {"nl": "Dit bericht is niet meer beschikbaar.", "fr": "Ce message n'est plus disponible.", "de": "Diese Nachricht ist nicht mehr verfügbar.", "es": "Este mensaje ya no está disponible.", "it": "Questo messaggio non è più disponibile."},
+    "It may have expired, reached its open limit, or been burned by the recipient.": {
+        "nl": "Het kan zijn dat het bericht is verlopen, het maximum aantal keer geopend is, of door de ontvanger is verbrand.",
+        "fr": "Il peut avoir expiré, avoir atteint sa limite d'ouvertures ou avoir été détruit par le destinataire.",
+        "de": "Sie ist möglicherweise abgelaufen, hat ihre Öffnungs­grenze erreicht oder wurde vom Empfänger gelöscht.",
+        "es": "Puede haber caducado, haber alcanzado el límite de aperturas o haber sido destruido por el destinatario.",
+        "it": "Potrebbe essere scaduto, aver raggiunto il limite di aperture o essere stato distrutto dal destinatario.",
+    },
+    "Message not available": {"nl": "Bericht niet beschikbaar", "fr": "Message indisponible", "de": "Nachricht nicht verfügbar", "es": "Mensaje no disponible", "it": "Messaggio non disponibile"},
     "Create a new message": {"nl": "Maak een nieuw bericht", "fr": "Créer un nouveau message", "de": "Neue Nachricht erstellen", "es": "Crear un nuevo mensaje", "it": "Crea un nuovo messaggio"},
+
+    # --- Attachments (composer) ---
+    "Attachments (optional)": {"nl": "Bijlagen (optioneel)", "fr": "Pièces jointes (optionnel)", "de": "Anhänge (optional)", "es": "Archivos adjuntos (opcional)", "it": "Allegati (opzionale)"},
+    "Drop files here or click to choose": {"nl": "Sleep bestanden hierheen of klik om te kiezen", "fr": "Déposez des fichiers ici ou cliquez pour choisir", "de": "Dateien hierher ziehen oder klicken zum Auswählen", "es": "Suelta los archivos aquí o haz clic para elegir", "it": "Trascina i file qui o clicca per scegliere"},
+    "Allowed file types:": {"nl": "Toegestane bestandstypen:", "fr": "Types de fichiers autorisés :", "de": "Erlaubte Dateitypen:", "es": "Tipos de archivo permitidos:", "it": "Tipi di file consentiti:"},
+    "Any file type is allowed by this instance.": {"nl": "Op deze installatie zijn alle bestandstypen toegestaan.", "fr": "Cette instance autorise tous les types de fichiers.", "de": "Diese Instanz erlaubt jeden Dateityp.", "es": "Esta instancia permite cualquier tipo de archivo.", "it": "Questa istanza consente qualsiasi tipo di file."},
+    "We cannot scan attachments for malware — only share files from senders you trust.": {
+        "nl": "We kunnen bijlagen niet scannen op malware — deel alleen bestanden van afzenders die je vertrouwt.",
+        "fr": "Nous ne pouvons pas analyser les pièces jointes — ne partagez que des fichiers provenant d'expéditeurs de confiance.",
+        "de": "Wir können Anhänge nicht auf Schadsoftware scannen — teile nur Dateien von Absendern, denen du vertraust.",
+        "es": "No podemos analizar los archivos adjuntos — comparte únicamente archivos de remitentes en los que confíes.",
+        "it": "Non possiamo analizzare gli allegati per malware — condividi solo file di mittenti di cui ti fidi.",
+    },
+    "Message and any attachments are encrypted in your browser before sending.": {
+        "nl": "Bericht en eventuele bijlagen worden in je browser versleuteld voordat ze verzonden worden.",
+        "fr": "Le message et les pièces jointes sont chiffrés dans votre navigateur avant l'envoi.",
+        "de": "Nachricht und Anhänge werden vor dem Senden in deinem Browser verschlüsselt.",
+        "es": "El mensaje y los archivos adjuntos se cifran en tu navegador antes de enviarlos.",
+        "it": "Il messaggio e gli eventuali allegati vengono crittografati nel tuo browser prima dell'invio.",
+    },
+
+    # --- Attachments (viewer) ---
+    "Attachments": {"nl": "Bijlagen", "fr": "Pièces jointes", "de": "Anhänge", "es": "Archivos adjuntos", "it": "Allegati"},
+    "Download all (zip)": {"nl": "Alles downloaden (zip)", "fr": "Tout télécharger (zip)", "de": "Alle herunterladen (zip)", "es": "Descargar todo (zip)", "it": "Scarica tutto (zip)"},
+    "We cannot scan attachments for malware. Only download files from senders you trust.": {
+        "nl": "We kunnen bijlagen niet scannen op malware. Download alleen bestanden van afzenders die je vertrouwt.",
+        "fr": "Nous ne pouvons pas analyser les pièces jointes. Ne téléchargez que des fichiers d'expéditeurs de confiance.",
+        "de": "Wir können Anhänge nicht auf Schadsoftware scannen. Lade nur Dateien von Absendern herunter, denen du vertraust.",
+        "es": "No podemos analizar los archivos adjuntos. Descarga únicamente archivos de remitentes en los que confíes.",
+        "it": "Non possiamo analizzare gli allegati per malware. Scarica solo file di mittenti di cui ti fidi.",
+    },
+
+    # --- Admin storage panel ---
+    "Storage": {"nl": "Opslag", "fr": "Stockage", "de": "Speicher", "es": "Almacenamiento", "it": "Spazio"},
+    "Database": {"nl": "Database", "fr": "Base de données", "de": "Datenbank", "es": "Base de datos", "it": "Database"},
+    "Total on disk": {"nl": "Totaal op schijf", "fr": "Total sur disque", "de": "Gesamt auf Festplatte", "es": "Total en disco", "it": "Totale su disco"},
+    "files": {"nl": "bestanden", "fr": "fichiers", "de": "Dateien", "es": "archivos", "it": "file"},
+
+    # --- Audit log card view ---
+    "Detail": {"nl": "Details", "fr": "Détails", "de": "Details", "es": "Detalles", "it": "Dettagli"},
+    "No events match this filter.": {"nl": "Geen gebeurtenissen voor dit filter.", "fr": "Aucun événement ne correspond à ce filtre.", "de": "Keine Ereignisse für diesen Filter.", "es": "Ningún evento coincide con este filtro.", "it": "Nessun evento corrisponde a questo filtro."},
+
+    # --- Cleanup button + status hint ---
+    "Run cleanup now": {"nl": "Opruimen nu", "fr": "Nettoyer maintenant", "de": "Jetzt aufräumen", "es": "Limpiar ahora", "it": "Pulisci ora"},
+    "Stats reflect what is currently on disk. Burned or expired messages are purged automatically every 2 minutes.": {
+        "nl": "De statistieken tonen wat er nu op schijf staat. Verbrande of verlopen berichten worden elke 2 minuten automatisch opgeruimd.",
+        "fr": "Les statistiques reflètent ce qui est actuellement sur le disque. Les messages détruits ou expirés sont purgés automatiquement toutes les 2 minutes.",
+        "de": "Die Statistiken zeigen, was aktuell auf der Festplatte liegt. Gelöschte oder abgelaufene Nachrichten werden alle 2 Minuten automatisch entfernt.",
+        "es": "Las estadísticas reflejan lo que hay actualmente en disco. Los mensajes destruidos o caducados se eliminan automáticamente cada 2 minutos.",
+        "it": "Le statistiche riflettono ciò che è attualmente su disco. I messaggi distrutti o scaduti vengono rimossi automaticamente ogni 2 minuti.",
+    },
 }
 
 

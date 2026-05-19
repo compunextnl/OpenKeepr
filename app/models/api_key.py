@@ -28,6 +28,8 @@ def _utcnow() -> datetime:
 SCOPES = {
     "messages:write": "Create new messages",
     "messages:read": "Retrieve metadata for messages you created",
+    "attachments:write": "Upload encrypted attachments to your messages",
+    "attachments:read": "List attachment metadata for your messages",
     "feedback:write": "Submit feedback",
     "admin:read": "Read admin-only data (audit log, settings) — admin only",
     "admin:write": "Mutate admin-only data — admin only",

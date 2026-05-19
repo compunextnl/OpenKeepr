@@ -52,17 +52,17 @@
           <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1"
                   data-bs-toggle="dropdown" aria-expanded="false"
                   title="{{ _('Language') }}: {{ language_meta[_cur].name }}">
-            <span class="lang-flag" aria-hidden="true">{{ language_meta[_cur].flag }}</span>
+            <img class="lang-flag" src="{{ url_for('static', filename='img/flags/' ~ language_meta[_cur].flag ~ '.svg') }}" alt="" width="20" height="14">
             <span class="d-none d-md-inline">{{ language_meta[_cur].name }}</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             {% for lang in available_languages %}
-            {% set meta = language_meta.get(lang, {'flag': '🏳', 'name': lang.upper()}) %}
+            {% set meta = language_meta.get(lang, {'flag': 'gb', 'name': lang.upper()}) %}
             <li>
               <form action="{{ url_for('main.set_language', lang=lang) }}" method="post" class="m-0">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button class="dropdown-item d-flex align-items-center gap-2 {% if lang == _cur %}active{% endif %}" type="submit">
-                  <span class="lang-flag" aria-hidden="true">{{ meta.flag }}</span>
+                  <img class="lang-flag" src="{{ url_for('static', filename='img/flags/' ~ meta.flag ~ '.svg') }}" alt="" width="22" height="15">
                   <span>{{ meta.name }}</span>
                   {% if lang == _cur %}<i class="bi bi-check2 ms-auto"></i>{% endif %}
                 </button>
@@ -78,19 +78,35 @@
         </li>
         {% if current_user.is_authenticated %}
         <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle"></i> {{ current_user.email.split('@')[0] }}
+          <a href="#" class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+            <span>{{ current_user.email.split('@')[0] }}</span>
+            {% if not current_user.totp_enabled %}
+              <i class="bi bi-exclamation-triangle-fill text-warning" title="{{ _('Two-factor authentication is not enabled') }}"></i>
+            {% endif %}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{ url_for('auth.account') }}">{{ _('Account') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('auth.account') }}"><i class="bi bi-person"></i> {{ _('Account') }}</a></li>
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('auth.setup_2fa') }}">
+                <span><i class="bi bi-shield-lock"></i> {{ _('Two-factor authentication') }}</span>
+                {% if current_user.totp_enabled %}
+                  <span class="badge text-bg-success">{{ _('On') }}</span>
+                {% else %}
+                  <span class="badge text-bg-warning">{{ _('Off') }}</span>
+                {% endif %}
+              </a>
+            </li>
+            <li><a class="dropdown-item" href="{{ url_for('auth.change_password') }}"><i class="bi bi-key"></i> {{ _('Change password') }}</a></li>
             {% if current_user.is_admin %}
-            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-shield-lock"></i> {{ _('Admin') }}</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-speedometer2"></i> {{ _('Admin') }}</a></li>
             {% endif %}
             <li><hr class="dropdown-divider"></li>
             <li>
               <form action="{{ url_for('auth.logout') }}" method="post" class="m-0">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button class="dropdown-item" type="submit">{{ _('Sign out') }}</button>
+                <button class="dropdown-item" type="submit"><i class="bi bi-box-arrow-right"></i> {{ _('Sign out') }}</button>
               </form>
             </li>
           </ul>
@@ -140,8 +156,9 @@
       </a>
       {% endif %}
       {% if buymeacoffee_url %}
-      <a href="{{ buymeacoffee_url }}" class="text-decoration-none" rel="noopener" target="_blank" title="{{ _('Support development') }}">
-        <i class="bi bi-cup-hot-fill text-warning"></i> {{ _('Buy me a coffee') }}
+      {# "Buy Me a Coffee" is the registered product name — kept verbatim in every language. #}
+      <a href="{{ buymeacoffee_url }}" class="text-decoration-none" rel="noopener" target="_blank" title="Buy Me a Coffee">
+        <i class="bi bi-cup-hot-fill text-warning"></i> Buy Me a Coffee
       </a>
       {% endif %}
     </div>

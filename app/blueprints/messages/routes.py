@@ -25,6 +25,7 @@ from flask import (
     redirect,
     render_template,
     request,
+    session,
     url_for,
 )
 from flask_login import current_user
@@ -129,8 +130,29 @@ def create():
             return jsonify(error="invalid max_opens"), 400
 
     # --- Recipients / security code ---
-    recipients_raw: list[str] = data.get("recipients") or []
-    recipients_raw = [r.strip().lower() for r in recipients_raw if r and "@" in r]
+    from email_validator import EmailNotValidError, validate_email
+
+    raw_input: list[str] = [r for r in (data.get("recipients") or []) if r and r.strip()]
+    valid_recipients: list[str] = []
+    invalid_recipients: list[str] = []
+    for r in raw_input:
+        try:
+            info = validate_email(r.strip(), check_deliverability=False)
+            valid_recipients.append(info.normalized.lower())
+        except EmailNotValidError:
+            invalid_recipients.append(r.strip())
+    if invalid_recipients:
+        return (
+            jsonify(
+                error="invalid_recipients",
+                invalid=invalid_recipients,
+                message="One or more recipient e-mail addresses are not valid.",
+            ),
+            400,
+        )
+    # de-dup while preserving order
+    _seen: set[str] = set()
+    recipients_raw = [r for r in valid_recipients if not (r in _seen or _seen.add(r))]
     use_code = bool(data.get("use_security_code")) or not recipients_raw
 
     security_code_plain: str | None = None
@@ -203,6 +225,10 @@ def view(public_id: str):
     msg = db.session.scalar(select(Message).where(Message.public_id == public_id))
     if msg is None or msg.is_expired:
         return render_template("messages/not_found.html"), 404
+    attachments_meta = [
+        {"id": a.public_id, "size": a.size_bytes}
+        for a in msg.attachments
+    ]
     return render_template(
         "messages/view.html",
         public_id=msg.public_id,
@@ -212,6 +238,7 @@ def view(public_id: str):
         expires_at=msg.expires_at.replace(tzinfo=timezone.utc).isoformat(),
         max_opens=msg.max_opens,
         opens=msg.opens,
+        attachments=attachments_meta,
     )
 
 
@@ -238,6 +265,36 @@ def request_code(public_id: str):
     # Constant-response behaviour: we always say "code sent" to avoid leaking
     # which e-mails are on the allow-list.
     if allowed:
+        # Throttle: if we issued a code for this e-mail within the last 30
+        # seconds and it's still valid, do NOT create a new one and do NOT
+        # send another mail. Protects against double-clicks, browser
+        # prefetches and duplicate-tab requests.
+        throttle_window = timedelta(seconds=30)
+        recent = next(
+            (
+                v for v in sorted(
+                    msg.verification_codes,
+                    key=lambda v: v.created_at, reverse=True,
+                )
+                if v.email_hash == email_hash
+                and not v.consumed
+                and v.attempts < 5
+                and v.expires_at.replace(tzinfo=timezone.utc) > _utcnow()
+                and (_utcnow() - v.created_at.replace(tzinfo=timezone.utc)) < throttle_window
+            ),
+            None,
+        )
+        if recent is not None:
+            audit("verification.sent", subject=public_id, detail={"reused": True})
+            return jsonify(ok=True, message="If your e-mail is allowed, a code has been sent."), 200
+
+        # Invalidate any older, still-pending codes for this e-mail so that
+        # only the freshly-issued one can succeed. Stops the "first mail's
+        # code is wrong" surprise when a new mail is issued later.
+        for v in msg.verification_codes:
+            if v.email_hash == email_hash and not v.consumed:
+                v.consumed = True
+
         code = random_6digit_code()
         ttl = current_app.config["VERIFICATION_CODE_TTL_MINUTES"]
         vc = VerificationCode(
@@ -336,6 +393,13 @@ def reveal(public_id: str):
         msg.burned = True
     db.session.commit()
     audit("message.viewed", subject=public_id, detail={"opens": msg.opens, "burned": msg.burned})
+    # Mark this message as "unlocked" for the current browser session so
+    # subsequent attachment downloads don't have to re-verify the code.
+    # Note: we DO NOT purge attachment files here on auto-burn — the same
+    # session is allowed to download attachments it just unlocked. The
+    # background cleanup job will free the bytes within ~10 minutes, and the
+    # `/burn` endpoint (explicit user action) purges immediately.
+    session[f"unlocked:{public_id}"] = True
 
     return jsonify(
         ciphertext_b64=base64.b64encode(msg.ciphertext).decode("ascii"),
@@ -345,6 +409,10 @@ def reveal(public_id: str):
         opens=msg.opens,
         max_opens=msg.max_opens,
         burned=msg.burned,
+        attachments=[
+            {"id": a.public_id, "size": a.size_bytes}
+            for a in msg.attachments
+        ],
     ), 200
 
 
@@ -361,5 +429,147 @@ def burn(public_id: str):
         return jsonify(ok=True), 200  # idempotent
     msg.burned = True
     db.session.commit()
+    _purge_burned_now(msg)
     audit("message.burned", subject=public_id)
     return jsonify(ok=True), 200
+
+
+def _purge_burned_now(msg: "Message") -> None:
+    """Remove the on-disk attachment blobs immediately after a burn.
+
+    The DB row + verification codes stick around until the scheduled cleanup
+    job (within ~10 minutes), but admin storage stats should drop to the
+    expected value right away, and we don't want the bytes on disk longer
+    than strictly necessary.
+    """
+    try:
+        from app.services.attachments import delete_message_dir
+
+        delete_message_dir(msg.public_id)
+    except Exception:  # noqa: BLE001
+        current_app.logger.exception("Failed to purge attachment dir for %s", msg.public_id)
+
+
+# ---------------------------------------------------------------------------
+# Attachments
+# ---------------------------------------------------------------------------
+
+
+def _attachments_enabled() -> bool:
+    return bool(current_app.config.get("ATTACHMENTS_ENABLED", True))
+
+
+@bp.post("/m/<public_id>/attachments")
+@limiter.limit("60 per hour")
+def upload_attachment(public_id: str):
+    """Upload one encrypted attachment for an existing message.
+
+    The browser must POST multipart/form-data with:
+      - `iv`         (binary, 12 bytes)
+      - `ciphertext` (binary, the encrypted blob — filename+MIME+bytes inside)
+
+    The server NEVER sees the plaintext.
+    """
+    if not _attachments_enabled():
+        return jsonify(error="attachments_disabled"), 404
+
+    msg = db.session.scalar(select(Message).where(Message.public_id == public_id))
+    if msg is None or msg.is_expired:
+        return jsonify(error="message_not_found"), 404
+    # Attachments can only be added before the recipient first opens the
+    # message. After that, the message is sealed — protects the recipient
+    # from late tampering by anyone who knows the public ID.
+    if msg.opens > 0:
+        return jsonify(error="message_sealed"), 403
+
+    iv_file = request.files.get("iv")
+    ct_file = request.files.get("ciphertext")
+    if iv_file is None or ct_file is None:
+        return jsonify(error="missing iv or ciphertext"), 400
+
+    iv = iv_file.read()
+    ciphertext = ct_file.read()
+    if len(iv) != 12:
+        return jsonify(error="iv must be 12 bytes"), 400
+
+    max_file = current_app.config["ATTACHMENTS_MAX_FILE_SIZE_MB"] * 1024 * 1024
+    max_total = current_app.config["ATTACHMENTS_MAX_TOTAL_MB"] * 1024 * 1024
+    max_count = current_app.config["ATTACHMENTS_MAX_PER_MESSAGE"]
+
+    if len(ciphertext) > max_file:
+        return jsonify(error="file_too_large", limit_bytes=max_file), 413
+    if len(msg.attachments) >= max_count:
+        return jsonify(error="too_many_attachments", limit=max_count), 413
+    total_so_far = sum(a.size_bytes for a in msg.attachments)
+    if total_so_far + len(ciphertext) > max_total:
+        return jsonify(error="total_size_exceeded", limit_bytes=max_total), 413
+
+    from app.models.attachment import Attachment, generate_attachment_id
+    from app.services.attachments import save_blob
+
+    att_public_id = generate_attachment_id()
+    size = save_blob(msg.public_id, att_public_id, ciphertext)
+    att = Attachment(
+        public_id=att_public_id,
+        message_id=msg.id,
+        iv=iv,
+        size_bytes=size,
+    )
+    db.session.add(att)
+    db.session.commit()
+    audit("attachment.uploaded", subject=public_id, detail={"att_id": att_public_id, "size": size})
+    return jsonify(id=att.public_id, size_bytes=size), 201
+
+
+@bp.post("/m/<public_id>/a/<att_id>")
+@limiter.limit("60 per hour")
+def reveal_attachment(public_id: str, att_id: str):
+    """Stream an attachment ciphertext to the client, after gate verification.
+
+    Uses the same gate as `reveal`: the client must POST {email?, code?}.
+    The server returns the raw ciphertext bytes; decryption happens client-side.
+    """
+    if not _attachments_enabled():
+        return jsonify(error="attachments_disabled"), 404
+
+    from flask import Response
+
+    msg = db.session.scalar(select(Message).where(Message.public_id == public_id))
+    if msg is None:
+        return jsonify(error="message_not_found"), 404
+
+    # The attachment is only accessible to a browser session that has already
+    # passed the message reveal gate (see /reveal). No need to re-verify the
+    # code on every file download.
+    if not session.get(f"unlocked:{public_id}"):
+        return jsonify(error="message_not_unlocked"), 403
+
+    # Note: we deliberately do NOT bail out here when `msg.is_expired` is
+    # True. Revealing the message body via /reveal can flip the burned flag
+    # immediately (max_opens=1 + burn-after-reading), and the same browser
+    # session must still be able to download the attachments it just saw.
+    # The cleanup job will physically delete the blob soon enough.
+
+    att = next((a for a in msg.attachments if a.public_id == att_id), None)
+    if att is None:
+        return jsonify(error="attachment_not_found"), 404
+
+    from app.services.attachments import read_blob
+
+    try:
+        body = read_blob(public_id, att_id)
+    except FileNotFoundError:
+        return jsonify(error="blob_missing"), 410
+
+    audit("attachment.downloaded", subject=public_id, detail={"att_id": att_id})
+    # Use application/octet-stream so the browser doesn't try to interpret.
+    # Send the IV as a custom header for the client to grab without a second roundtrip.
+    return Response(
+        body,
+        mimetype="application/octet-stream",
+        headers={
+            "X-OpenKeepr-IV": base64.b64encode(att.iv).decode("ascii"),
+            "Cache-Control": "private, no-store",
+            "Content-Length": str(len(body)),
+        },
+    )

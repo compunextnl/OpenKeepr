@@ -5,6 +5,7 @@ can autogenerate migrations.
 """
 
 from app.models.api_key import ApiKey  # noqa: F401
+from app.models.attachment import Attachment  # noqa: F401
 from app.models.audit_log import AuditLog  # noqa: F401
 from app.models.feedback import Feedback  # noqa: F401
 from app.models.message import Message, RecipientHash, VerificationCode  # noqa: F401

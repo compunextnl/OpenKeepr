@@ -34,22 +34,33 @@ def purge_expired_messages(*, max_retention_days: int) -> int:
         )
     ).all()
 
+    from app.services.attachments import delete_message_dir
+
     count = 0
+    purged_ids: list[str] = []
     for m in candidates:
-        # also catch max_opens reached
+        purged_ids.append(m.public_id)
         db.session.delete(m)
         count += 1
 
-    # opens >= max_opens (separate pass — small list)
     extra = db.session.scalars(
         db.select(Message).where(Message.max_opens.isnot(None))
     ).all()
     for m in extra:
         if m.max_opens is not None and m.opens >= m.max_opens:
+            purged_ids.append(m.public_id)
             db.session.delete(m)
             count += 1
 
     db.session.commit()
+
+    # After DB rows are gone, remove the on-disk attachment blobs too.
+    for pid in purged_ids:
+        try:
+            delete_message_dir(pid)
+        except Exception:  # noqa: BLE001
+            log.exception("Failed to purge attachment directory for %s", pid)
+
     if count:
         log.info("Purged %d expired message(s)", count)
         audit("message.purged", detail={"count": count})
