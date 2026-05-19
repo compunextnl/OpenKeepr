@@ -4,7 +4,7 @@
 
 OpenKeepr lets you create a one-time, self-destructing message (a password, an API key, a recovery phrase) and share it via a single short link. The content is encrypted **in your browser** before it ever leaves your device; the server cannot read it, and neither can the operator.
 
-> **Status:** v1.1.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
+> **Status:** v1.2.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
 
 ## Features
 
