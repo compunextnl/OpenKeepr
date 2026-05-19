@@ -63,13 +63,7 @@ python -c "import secrets;print(secrets.token_urlsafe(64))"   # SERVER_ENCRYPTIO
 # Paste each into .env
 ```
 
-### 4. Initialise the database
-
-```bash
-flask --app run.py db upgrade
-```
-
-### 5. Fetch offline vendored assets (Bootstrap, marked.js, DOMPurify, …)
+### 4. Fetch offline vendored assets (Bootstrap, marked.js, DOMPurify, …)
 
 ```bash
 python scripts/fetch_assets.py
@@ -77,7 +71,7 @@ python scripts/fetch_assets.py
 
 This downloads pinned, integrity-checked copies into `app/static/vendor/`. Re-run when you want to update versions (edit `scripts/fetch_assets.py` to bump).
 
-### 6. Run
+### 5. Run
 
 ```bash
 python run.py
@@ -88,15 +82,7 @@ On first boot, OpenKeepr will print the initial admin password to the console **
 
 ## Production deployment (Debian VPS)
 
-See [`deploy/README.md`](deploy/README.md) for a step-by-step guide using:
-
-- gunicorn (WSGI)
-- systemd (process supervision)
-- nginx (TLS termination + reverse proxy)
-- Let's Encrypt (certificates)
-- fail2ban (brute-force protection)
-
-A bootstrap script is provided at [`scripts/install_vps.sh`](scripts/install_vps.sh).
+See [`deploy/README.md`](deploy/README.md) for a step-by-step guide.
 
 ## Configuration
 
