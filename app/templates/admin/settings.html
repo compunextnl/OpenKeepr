@@ -1,0 +1,43 @@
+{% extends "admin/_layout.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block admin_content %}
+<h1 class="h4 mb-3">{{ _('Settings') }}</h1>
+
+<form method="post" novalidate>
+  {{ form.hidden_tag() }}
+
+  <section class="card mb-3">
+    <div class="card-body">
+      <h2 class="h6 text-body-secondary text-uppercase">{{ _('Availability') }}</h2>
+      {{ render_field(form.maintenance_mode) }}
+      {{ render_field(form.maintenance_message) }}
+    </div>
+  </section>
+
+  <section class="card mb-3">
+    <div class="card-body">
+      <h2 class="h6 text-body-secondary text-uppercase">{{ _('Notice banner') }}</h2>
+      {{ render_field(form.banner_text) }}
+      {{ render_field(form.banner_level) }}
+    </div>
+  </section>
+
+  <section class="card mb-3">
+    <div class="card-body">
+      <h2 class="h6 text-body-secondary text-uppercase">{{ _('Feature toggles') }}</h2>
+      {{ render_field(form.public_login_enabled) }}
+      <div class="form-text mt-n2 mb-3">
+        {{ _('When off, the public /auth/login page returns 404. Admins can still sign in via your ADMIN_LOGIN_PATH:') }}
+        <code>{{ config.ADMIN_LOGIN_PATH }}</code>
+      </div>
+      {{ render_field(form.public_registration_enabled) }}
+      {{ render_field(form.api_enabled) }}
+      <div class="form-text mt-n2">
+        {{ _('When off, /api/v1 and /docs/api return 404 and disappear from the menu.') }}
+      </div>
+    </div>
+  </section>
+
+  <button class="btn btn-primary">{{ _('Save settings') }}</button>
+</form>
+{% endblock %}

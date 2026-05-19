@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Backup codes') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="alert alert-warning">
+      <i class="bi bi-exclamation-triangle"></i> {{ _('Save these codes somewhere safe. Each can be used once if you lose access to your authenticator.') }}
+    </div>
+    <div class="row row-cols-2 row-cols-md-5 g-2 mb-3">
+      {% for c in codes %}
+      <div class="col"><code class="d-block bg-body-tertiary border rounded text-center py-2">{{ c }}</code></div>
+      {% endfor %}
+    </div>
+    <a href="{{ url_for('auth.account') }}" class="btn btn-primary">{{ _('Done') }}</a>
+  </div>
+</div>
+{% endblock %}

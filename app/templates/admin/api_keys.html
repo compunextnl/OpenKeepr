@@ -1,0 +1,23 @@
+{% extends "admin/_layout.html" %}
+{% block admin_content %}
+<h1 class="h4 mb-3">{{ _('API keys (system-wide)') }}</h1>
+<p class="text-body-secondary small">{{ _('Read-only view across all users. Users manage their own keys at /auth/account.') }}</p>
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead><tr><th>{{ _('User') }}</th><th>{{ _('Label') }}</th><th>{{ _('Prefix') }}</th><th>{{ _('Scopes') }}</th><th>{{ _('Created') }}</th><th>{{ _('Last used') }}</th><th>{{ _('State') }}</th></tr></thead>
+    <tbody>
+      {% for k in items %}
+      <tr>
+        <td>{{ k.user.email }}</td>
+        <td>{{ k.label }}</td>
+        <td><code>{{ k.prefix }}…</code></td>
+        <td><small>{{ k.scopes }}</small></td>
+        <td class="small text-body-secondary">{{ k.created_at.strftime('%Y-%m-%d') }}</td>
+        <td class="small text-body-secondary">{{ k.last_used_at.strftime('%Y-%m-%d') if k.last_used_at else '—' }}</td>
+        <td>{% if k.revoked %}<span class="badge text-bg-secondary">revoked</span>{% else %}<span class="badge text-bg-success">active</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

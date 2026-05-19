@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('About') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h3">{{ _('About %(name)s', name=app_name) }}</h1>
+    <p>{{ _('%(name)s is an open-source, self-hostable tool for sharing secrets one-time and securely. Messages are encrypted in your browser before they leave your device — the server cannot read them, and neither can the operator.', name=app_name) }}</p>
+
+    <h2 class="h5 mt-4">{{ _('How it works') }}</h2>
+    <ol>
+      <li>{{ _('Your browser generates a random 256-bit key and encrypts the message with AES-256-GCM.') }}</li>
+      <li>{{ _('The ciphertext is uploaded; the key stays in the URL fragment (the part after #), which is never sent to the server.') }}</li>
+      <li>{{ _('Recipients decrypt the message in their browser. Once the configured limits are reached, the ciphertext is deleted.') }}</li>
+    </ol>
+
+    <h2 class="h5 mt-4">{{ _('What we never see') }}</h2>
+    <ul>
+      <li>{{ _('Your message content') }}</li>
+      <li>{{ _('The decryption key') }}</li>
+      <li>{{ _('Plaintext recipient e-mail addresses (we only store keyed hashes)') }}</li>
+    </ul>
+
+    {% if github_url %}
+    <p class="mt-4"><a href="{{ github_url }}" class="text-decoration-none" rel="noopener" target="_blank"><i class="bi bi-github"></i> {{ _('View source on GitHub') }}</a></p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Release notes') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-10">
+    <h1 class="h3 mb-3">{{ _('Release notes') }}</h1>
+    <article class="markdown-body">{{ body|safe }}</article>
+  </div>
+</div>
+{% endblock %}

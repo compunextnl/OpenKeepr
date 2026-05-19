@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block title %}{{ app_name }} — {{ _('Two-factor authentication') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h5 mb-3"><i class="bi bi-shield-lock"></i> {{ _('Two-factor authentication') }}</h1>
+        <p class="text-body-secondary small">{{ _('Open your authenticator app and enter the 6-digit code (or a backup code).') }}</p>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          {{ render_field(form.token, autofocus=True) }}
+          <button type="submit" class="btn btn-primary w-100">{{ _('Verify') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

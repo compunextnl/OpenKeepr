@@ -1,0 +1,31 @@
+{% extends "admin/_layout.html" %}
+{% block admin_content %}
+<h1 class="h4 mb-3">{{ _('Audit log') }}</h1>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-sm-6 col-md-4"><input class="form-control form-control-sm" type="text" name="type" value="{{ event_type }}" placeholder="event.type"></div>
+  <div class="col-auto"><button class="btn btn-sm btn-outline-secondary">{{ _('Filter') }}</button></div>
+</form>
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead><tr><th>{{ _('When') }}</th><th>{{ _('Event') }}</th><th>{{ _('Actor') }}</th><th>{{ _('Subject') }}</th><th>{{ _('Detail') }}</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td class="small text-body-secondary">{{ r.at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td><code>{{ r.event_type }}</code></td>
+        <td>{{ r.actor_user_id or '—' }}</td>
+        <td class="text-truncate" style="max-width: 12rem;">{{ r.subject or '' }}</td>
+        <td><code class="small">{{ r.detail or '' }}</code></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="text-body-secondary small">{{ _('Showing page') }} {{ page }} · {{ total }} {{ _('entries') }}</p>
+<nav>
+  <ul class="pagination pagination-sm">
+    {% if page > 1 %}<li class="page-item"><a class="page-link" href="?page={{ page-1 }}&type={{ event_type }}">‹</a></li>{% endif %}
+    {% if rows|length == per_page %}<li class="page-item"><a class="page-link" href="?page={{ page+1 }}&type={{ event_type }}">›</a></li>{% endif %}
+  </ul>
+</nav>
+{% endblock %}

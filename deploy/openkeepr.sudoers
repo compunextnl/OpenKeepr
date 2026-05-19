@@ -1,0 +1,22 @@
+# Lets the openkeepr user manage just its own service, without a full sudo
+# password prompt. Install at /etc/sudoers.d/openkeepr (chmod 0440).
+#
+#   sudo install -m 0440 deploy/openkeepr.sudoers /etc/sudoers.d/openkeepr
+#   sudo visudo -c       # verify syntax
+#
+# After that, the openkeepr user can run:
+#   systemctl start openkeepr
+#   systemctl stop openkeepr
+#   systemctl restart openkeepr
+#   systemctl status openkeepr
+#   journalctl -u openkeepr [-f]
+
+openkeepr ALL=(root) NOPASSWD: \
+    /bin/systemctl start openkeepr, \
+    /bin/systemctl stop openkeepr, \
+    /bin/systemctl restart openkeepr, \
+    /bin/systemctl reload openkeepr, \
+    /bin/systemctl status openkeepr, \
+    /bin/systemctl is-active openkeepr, \
+    /bin/systemctl is-enabled openkeepr, \
+    /usr/bin/journalctl -u openkeepr *

@@ -1,0 +1,28 @@
+{% extends "admin/_layout.html" %}
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">{{ _('Feedback') }}</h1>
+  <div class="btn-group btn-group-sm">
+    {% for s in ['new','in_progress','resolved','spam','all'] %}
+    <a class="btn btn-outline-secondary {% if status==s %}active{% endif %}" href="?status={{ s }}">{{ s }}</a>
+    {% endfor %}
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>{{ _('When') }}</th><th>{{ _('Type') }}</th><th>{{ _('Message') }}</th><th>{{ _('Status') }}</th></tr></thead>
+    <tbody>
+      {% for i in items %}
+      <tr style="cursor:pointer" onclick="window.location='{{ url_for('admin.feedback_detail', item_id=i.id) }}'">
+        <td class="small text-body-secondary">{{ i.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td><span class="badge text-bg-secondary">{{ i.type }}</span></td>
+        <td class="text-truncate" style="max-width: 30rem;">{{ i.message[:160] }}</td>
+        <td><span class="badge text-bg-{{ 'warning' if i.status=='new' else ('info' if i.status=='in_progress' else ('success' if i.status=='resolved' else 'dark')) }}">{{ i.status }}</span></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="text-center text-body-secondary py-4">{{ _('No feedback yet.') }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

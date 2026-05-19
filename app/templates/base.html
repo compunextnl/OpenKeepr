@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="{{ current_locale }}" data-bs-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0b1020" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="robots" content="noindex,nofollow">
+  <title>{% block title %}{{ app_name }} — secure messages{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Theme bootstrap (no FOUC) -->
+<script>
+  (function () {
+    var pref = localStorage.getItem('theme') || 'auto';
+    var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = pref === 'auto' ? (sysDark ? 'dark' : 'light') : pref;
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+
+<nav class="navbar navbar-expand-md border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('main.index') }}">
+      <img src="{{ url_for('static', filename='img/logo.svg') }}" width="28" height="28" alt="">
+      <span class="fw-semibold">{{ app_name }}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+            aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">{{ _('Create') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">{{ _('About') }}</a></li>
+        {% if feature_api %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.api_docs') }}">{{ _('API') }}</a></li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav align-items-md-center gap-md-2">
+        {% set _cur = current_locale if current_locale in language_meta else config.DEFAULT_LANGUAGE %}
+        <li class="nav-item dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1"
+                  data-bs-toggle="dropdown" aria-expanded="false"
+                  title="{{ _('Language') }}: {{ language_meta[_cur].name }}">
+            <span class="lang-flag" aria-hidden="true">{{ language_meta[_cur].flag }}</span>
+            <span class="d-none d-md-inline">{{ language_meta[_cur].name }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            {% for lang in available_languages %}
+            {% set meta = language_meta.get(lang, {'flag': '🏳', 'name': lang.upper()}) %}
+            <li>
+              <form action="{{ url_for('main.set_language', lang=lang) }}" method="post" class="m-0">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="dropdown-item d-flex align-items-center gap-2 {% if lang == _cur %}active{% endif %}" type="submit">
+                  <span class="lang-flag" aria-hidden="true">{{ meta.flag }}</span>
+                  <span>{{ meta.name }}</span>
+                  {% if lang == _cur %}<i class="bi bi-check2 ms-auto"></i>{% endif %}
+                </button>
+              </form>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-sm btn-outline-secondary" id="theme-toggle" title="{{ _('Toggle theme') }}">
+            <i class="bi bi-circle-half"></i>
+          </button>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> {{ current_user.email.split('@')[0] }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{{ url_for('auth.account') }}">{{ _('Account') }}</a></li>
+            {% if current_user.is_admin %}
+            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-shield-lock"></i> {{ _('Admin') }}</a></li>
+            {% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form action="{{ url_for('auth.logout') }}" method="post" class="m-0">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="dropdown-item" type="submit">{{ _('Sign out') }}</button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        {% else %}
+        {% if feature_login %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Sign in') }}</a></li>
+        {% endif %}
+        {% if feature_registration %}
+        <li class="nav-item"><a class="btn btn-sm btn-primary" href="{{ url_for('auth.register') }}">{{ _('Sign up') }}</a></li>
+        {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if settings and settings.banner_text %}
+<div class="alert alert-{{ settings.banner_level or 'info' }} text-center mb-0 rounded-0" role="alert">
+  {{ settings.banner_text }}
+</div>
+{% endif %}
+
+<main class="container py-4 flex-grow-1">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat if cat != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="border-top mt-auto py-4 small text-body-secondary">
+  <div class="container d-flex flex-wrap justify-content-between gap-3">
+    <div class="d-flex flex-wrap align-items-center gap-3">
+      <span>&copy; {{ current_year }} {{ app_name }}</span>
+      <a href="{{ url_for('main.release_notes') }}" class="text-decoration-none">v{{ app_version }}</a>
+      {% if github_url %}
+      <a href="{{ github_url }}" class="text-decoration-none" rel="noopener" target="_blank">
+        <i class="bi bi-github"></i> GitHub
+      </a>
+      {% endif %}
+      {% if buymeacoffee_url %}
+      <a href="{{ buymeacoffee_url }}" class="text-decoration-none" rel="noopener" target="_blank" title="{{ _('Support development') }}">
+        <i class="bi bi-cup-hot-fill text-warning"></i> {{ _('Buy me a coffee') }}
+      </a>
+      {% endif %}
+    </div>
+    <div class="d-flex flex-wrap gap-3">
+      <a href="{{ url_for('legal.privacy') }}" class="text-decoration-none">{{ _('Privacy') }}</a>
+      <a href="{{ url_for('legal.cookies') }}" class="text-decoration-none">{{ _('Cookies') }}</a>
+      <a href="{{ url_for('legal.security_policy') }}" class="text-decoration-none">{{ _('Security') }}</a>
+      {% if feature_feedback %}
+      <a href="{{ url_for('feedback.submit') }}" class="text-decoration-none">{{ _('Send feedback') }}</a>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+{% if feature_cookie_banner %}
+<div id="cookie-banner" class="position-fixed bottom-0 start-0 end-0 m-3 p-3 bg-body border rounded shadow-sm d-none" role="region" aria-label="Cookie notice">
+  <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+    <div>{{ _("We use only essential cookies (session, CSRF, language). No tracking.") }} <a href="{{ url_for('legal.cookies') }}">{{ _('Learn more') }}</a></div>
+    <button id="cookie-accept" class="btn btn-sm btn-primary">{{ _('OK') }}</button>
+  </div>
+</div>
+{% endif %}
+
+<script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

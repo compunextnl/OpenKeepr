@@ -1,0 +1,59 @@
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- Virtual environments ---------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# --- Secrets & environment --------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Database & instance ----------------------------------------------------
+instance/
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+
+# --- Compiled translation catalogs -----------------------------------------
+# .mo files are auto-compiled on app start; we keep .po in VCS
+app/translations/**/*.mo
+
+# --- Editor / OS ------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- Logs -------------------------------------------------------------------
+*.log
+logs/
+
+# --- Build artifacts --------------------------------------------------------
+node_modules/
+.cache/

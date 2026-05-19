@@ -1,0 +1,174 @@
+/* ---------------------------------------------------------------------------
+   OpenKeepr — application styles
+   Layered on top of Bootstrap 5. Inspired by 1Password / Bitwarden / NordPass:
+   calm palette, generous spacing, soft shadows, mono fonts for secrets.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --okp-brand: #2D5BFF;        /* trustworthy blue */
+  --okp-brand-rgb: 45, 91, 255;
+  --okp-radius: 0.6rem;
+}
+
+[data-bs-theme="light"] {
+  --bs-body-bg: #f7f8fc;
+  --bs-tertiary-bg: #eef0f7;
+  --bs-border-color: #dde1ec;
+  --okp-card-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 4px 10px rgba(15, 23, 42, .04);
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0b1020;
+  --bs-body-color: #d7dbe7;
+  --bs-tertiary-bg: #11172b;
+  --bs-secondary-bg: #161d36;
+  --bs-border-color: #1e2747;
+  --okp-card-shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 8px 20px rgba(0, 0, 0, .25);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01";
+}
+
+.font-monospace, code, pre {
+  font-family: "JetBrains Mono", "SFMono-Regular", "Menlo", "Consolas", monospace;
+}
+
+/* --- Navbar / cards --- */
+.navbar {
+  background: var(--bs-body-bg);
+  backdrop-filter: saturate(180%) blur(8px);
+  /* Lift the navbar above cards so dropdowns aren't clipped by their
+     stacking contexts (box-shadow/backdrop-filter create new contexts). */
+  position: relative;
+  z-index: 1030;
+}
+
+/* Make sure menus float above everything in the main content area. */
+.dropdown-menu { z-index: 1031; }
+
+.card {
+  border-radius: var(--okp-radius);
+  box-shadow: var(--okp-card-shadow);
+  border-color: var(--bs-border-color);
+}
+
+.card-header, .card-footer {
+  background-color: transparent;
+  border-color: var(--bs-border-color);
+}
+
+/* --- Buttons --- */
+.btn-primary {
+  --bs-btn-bg: var(--okp-brand);
+  --bs-btn-border-color: var(--okp-brand);
+  --bs-btn-hover-bg: #2347d9;
+  --bs-btn-hover-border-color: #2347d9;
+  --bs-btn-active-bg: #1d3dbf;
+  --bs-btn-active-border-color: #1d3dbf;
+  box-shadow: 0 1px 2px rgba(var(--okp-brand-rgb), .25);
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 .25rem rgba(var(--okp-brand-rgb), .25);
+}
+
+/* --- Forms --- */
+.form-control:focus, .form-select:focus {
+  border-color: rgba(var(--okp-brand-rgb), .65);
+  box-shadow: 0 0 0 .2rem rgba(var(--okp-brand-rgb), .15);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 10rem;
+}
+
+/* --- Tabs (pill style) --- */
+.nav-pills .nav-link {
+  --bs-nav-pills-link-active-bg: var(--okp-brand);
+}
+
+/* --- Markdown rendering (release notes, API docs, decrypted MD) --- */
+.markdown-body h1, .markdown-body h2 { margin-top: 1.75rem; }
+.markdown-body h2 { font-size: 1.35rem; }
+.markdown-body h3 { font-size: 1.15rem; }
+.markdown-body pre {
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--okp-radius);
+  padding: .75rem 1rem;
+  overflow: auto;
+}
+.markdown-body code {
+  background: var(--bs-tertiary-bg);
+  border-radius: .25rem;
+  padding: .125rem .35rem;
+  font-size: .9em;
+}
+.markdown-body pre code { background: transparent; padding: 0; }
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.markdown-body th, .markdown-body td {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: .5rem .75rem;
+  text-align: left;
+}
+
+/* --- Composer preview & decrypted content viewer ---
+   Use a dedicated surface (not Bootstrap's tertiary, which collapses to a
+   muddy grey in dark mode). Crisp white in light mode; deep ink-blue in
+   dark mode — both maximise text contrast for the actual message. */
+.okp-surface, #markdown-preview, #content {
+  background: #ffffff;
+  color: #0b1020;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--okp-radius);
+}
+[data-bs-theme="dark"] .okp-surface,
+[data-bs-theme="dark"] #markdown-preview,
+[data-bs-theme="dark"] #content {
+  background: #050914;          /* darker than body — clear visual layer */
+  color: #f1f3fa;               /* near-white, AAA against #050914 */
+  border-color: #2a3461;
+}
+
+#content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+  font-size: .95rem;
+}
+#content.is-markdown {
+  white-space: normal;
+  font-family: inherit;
+}
+
+/* --- Flag glyphs in the language switcher --- */
+.lang-flag {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+               "Twemoji Mozilla", emoji, sans-serif;
+  font-size: 1.05em;
+  line-height: 1;
+  font-style: normal;
+}
+
+/* --- Subtle animation for status badges --- */
+.badge { font-weight: 500; padding: .35em .55em; }
+
+/* --- Make checkboxes/switches a bit more comfortable on touch --- */
+@media (pointer: coarse) {
+  .form-check-input { width: 1.25rem; height: 1.25rem; }
+}
+
+/* --- Mobile spacing tweaks --- */
+@media (max-width: 575.98px) {
+  .card-body { padding: 1rem; }
+  .display-6 { font-size: 1.5rem; }
+}

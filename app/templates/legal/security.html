@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Security') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h3">{{ _('Security policy') }}</h1>
+    <p>{{ _('We take security seriously. If you find a vulnerability, please report it privately to the address listed in our') }} <a href="{{ url_for('legal.security_txt') }}">/.well-known/security.txt</a>.</p>
+
+    <h2 class="h5 mt-4">{{ _('Encryption model') }}</h2>
+    <p>{{ _('Messages are encrypted in your browser with AES-256-GCM. The 256-bit key is generated client-side and lives only in the URL fragment, which browsers never transmit to servers. The operator therefore has no ability to read message content, even with full database access.') }}</p>
+
+    <h2 class="h5 mt-4">{{ _('Account security') }}</h2>
+    <ul>
+      <li>{{ _('Passwords hashed with argon2id') }}</li>
+      <li>{{ _('Optional TOTP-based two-factor authentication with backup codes') }}</li>
+      <li>{{ _('Mandatory 2FA for administrative accounts (enforced on first login)') }}</li>
+      <li>{{ _('CSRF protection, secure session cookies, strict Content-Security-Policy') }}</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block title %}{{ app_name }} — {{ _('Create account') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-7 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">{{ _('Create account') }}</h1>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          {{ render_field(form.email, autofocus=True) }}
+          {{ render_field(form.password) }}
+          {{ render_field(form.confirm) }}
+          <button type="submit" class="btn btn-primary w-100">{{ _('Create account') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

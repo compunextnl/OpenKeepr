@@ -1,0 +1,47 @@
+[Unit]
+Description=OpenKeepr — secure message sharing
+Documentation=https://github.com/OWNER/openkeepr
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+User=openkeepr
+Group=openkeepr
+WorkingDirectory=/home/openkeepr/app
+Environment="PATH=/home/openkeepr/app/.venv/bin"
+EnvironmentFile=/home/openkeepr/app/.env
+
+# Make sure the runtime socket directory exists & is owned by the service user
+RuntimeDirectory=openkeepr
+RuntimeDirectoryMode=0750
+
+ExecStart=/home/openkeepr/app/.venv/bin/gunicorn -c /home/openkeepr/app/deploy/gunicorn.conf.py wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+
+# --- Hardening ---
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+SystemCallArchitectures=native
+# Only the SQLite DB and the translations directory need to be writable by the
+# service. ProtectHome=read-only blocks /home so we explicitly re-open these.
+ReadWritePaths=/home/openkeepr/app/instance /home/openkeepr/app/app/translations
+
+[Install]
+WantedBy=multi-user.target

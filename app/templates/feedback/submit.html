@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block title %}{{ app_name }} — {{ _('Send feedback') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h4 mb-3">{{ _('Send feedback') }}</h1>
+    <p class="text-body-secondary">{{ _('Have a bug to report or an idea to suggest? Tell us.') }}</p>
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {{ render_field(form.type) }}
+      {{ render_field(form.message, autofocus=True) }}
+      {{ render_field(form.contact) }}
+      <div style="position:absolute; left:-9999px;" aria-hidden="true">
+        <label>{{ _('Leave this blank') }}</label>{{ form.website }}
+      </div>
+      <button class="btn btn-primary">{{ _('Send feedback') }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

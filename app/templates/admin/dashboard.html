@@ -1,0 +1,38 @@
+{% extends "admin/_layout.html" %}
+{% block title %}{{ app_name }} — {{ _('Admin') }}{% endblock %}
+{% block admin_content %}
+<h1 class="h4 mb-3">{{ _('Overview') }}</h1>
+<div class="row g-3">
+  {% for label, value in [
+    (_('Users'), stats.users),
+    (_('Messages (total)'), stats.messages_total),
+    (_('Messages (24h)'), stats.messages_24h),
+    (_('Active API keys'), stats.active_keys),
+    (_('New feedback'), stats.feedback_new),
+  ] %}
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card h-100"><div class="card-body">
+      <div class="text-body-secondary small text-uppercase">{{ label }}</div>
+      <div class="h3 mb-0">{{ value or 0 }}</div>
+    </div></div>
+  </div>
+  {% endfor %}
+</div>
+
+<h2 class="h5 mt-4 mb-2">{{ _('Recent events') }}</h2>
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead><tr><th>{{ _('When') }}</th><th>{{ _('Event') }}</th><th>{{ _('Subject') }}</th><th>{{ _('Actor') }}</th></tr></thead>
+    <tbody>
+      {% for e in recent_events %}
+      <tr>
+        <td class="text-body-secondary small">{{ e.at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td><code>{{ e.event_type }}</code></td>
+        <td class="text-truncate" style="max-width: 12rem;">{{ e.subject or '' }}</td>
+        <td>{{ e.actor_user_id or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

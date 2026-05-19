@@ -1,0 +1,1133 @@
+# English translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-19 12:21+0200\n"
+"PO-Revision-Date: 2026-05-19 11:13+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: app/blueprints/admin/forms.py:10
+msgid "Maintenance mode"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:11
+msgid "Maintenance message"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:12
+msgid "Banner text"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:14
+msgid "Banner level"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:18
+msgid "Enable public login page"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:19
+msgid "Allow new user registrations"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:20
+msgid "Expose REST API and /docs/api"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:21 app/templates/admin/settings.html:41
+msgid "Save settings"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:25
+msgid "Send test e-mail to"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:26 app/templates/admin/email_test.html:17
+msgid "Send test e-mail"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:31 app/templates/admin/feedback_list.html:13
+msgid "Status"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:34
+msgid "Notes"
+msgstr ""
+
+#: app/blueprints/admin/forms.py:35 app/templates/admin/feedback_detail.html:22
+msgid "Update"
+msgstr ""
+
+#: app/blueprints/admin/routes.py:67
+msgid "Settings saved."
+msgstr ""
+
+#: app/blueprints/admin/routes.py:120
+msgid "Feedback not found."
+msgstr ""
+
+#: app/blueprints/admin/routes.py:127
+msgid "Feedback updated."
+msgstr ""
+
+#: app/blueprints/admin/routes.py:189
+#, python-format
+msgid "Test e-mail sent via %(p)s."
+msgstr ""
+
+#: app/blueprints/admin/routes.py:195
+#, python-format
+msgid "Could not send: %(e)s"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:17 app/blueprints/auth/forms.py:32
+msgid "Email"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:18 app/blueprints/auth/forms.py:34
+#: app/templates/auth/account.html:34
+msgid "Password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:19
+msgid "Remember me"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:20 app/templates/auth/login.html:3
+#: app/templates/auth/login.html:9 app/templates/auth/login.html:15
+#: app/templates/base.html:100
+msgid "Sign in"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:25 app/blueprints/auth/forms.py:58
+#: app/templates/messages/view.html:49
+msgid "6-digit code"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:28 app/templates/auth/two_factor.html:14
+msgid "Verify"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:35
+msgid "Use at least 12 characters."
+msgstr ""
+
+#: app/blueprints/auth/forms.py:38
+msgid "Confirm password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:39 app/blueprints/auth/forms.py:52
+msgid "Passwords must match."
+msgstr ""
+
+#: app/blueprints/auth/forms.py:41 app/templates/auth/register.html:3
+#: app/templates/auth/register.html:9 app/templates/auth/register.html:15
+msgid "Create account"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:45
+msgid "Current password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:47
+msgid "New password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:51
+msgid "Confirm new password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:54 app/templates/auth/change_password.html:15
+msgid "Update password"
+msgstr ""
+
+#: app/blueprints/auth/forms.py:59 app/templates/auth/setup_2fa.html:22
+msgid "Enable two-factor authentication"
+msgstr ""
+
+#: app/blueprints/auth/routes.py:87
+msgid "Invalid e-mail or password."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:151
+msgid "Invalid two-factor code."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:185
+msgid "If that e-mail is available, your account was created. You can log in."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:191
+msgid "Account created. Please sign in."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:213
+msgid "Current password is incorrect."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:218
+msgid "Password updated."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:261
+msgid "That code didn't match. Try again."
+msgstr ""
+
+#: app/blueprints/auth/routes.py:279
+msgid "Two-factor authentication disabled."
+msgstr ""
+
+#: app/blueprints/feedback/forms.py:13
+#: app/templates/admin/feedback_detail.html:8
+#: app/templates/admin/feedback_list.html:13
+msgid "Type"
+msgstr ""
+
+#: app/blueprints/feedback/forms.py:18
+msgid "Your feedback"
+msgstr ""
+
+#: app/blueprints/feedback/forms.py:22
+msgid "Reply address (optional)"
+msgstr ""
+
+#: app/blueprints/feedback/forms.py:27 app/templates/base.html:153
+#: app/templates/feedback/submit.html:3 app/templates/feedback/submit.html:7
+#: app/templates/feedback/submit.html:17
+msgid "Send feedback"
+msgstr ""
+
+#: app/blueprints/feedback/routes.py:22 app/blueprints/feedback/routes.py:37
+msgid "Thanks! Your feedback has been received."
+msgstr ""
+
+#: app/templates/base.html:43
+msgid "Create"
+msgstr ""
+
+#: app/templates/base.html:44 app/templates/main/about.html:2
+msgid "About"
+msgstr ""
+
+#: app/templates/base.html:46
+msgid "API"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:12 app/templates/base.html:54
+msgid "Language"
+msgstr ""
+
+#: app/templates/base.html:75
+msgid "Toggle theme"
+msgstr ""
+
+#: app/templates/auth/account.html:2 app/templates/base.html:85
+msgid "Account"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:2 app/templates/base.html:87
+msgid "Admin"
+msgstr ""
+
+#: app/templates/base.html:93
+msgid "Sign out"
+msgstr ""
+
+#: app/templates/base.html:103
+msgid "Sign up"
+msgstr ""
+
+#: app/templates/base.html:143
+msgid "Support development"
+msgstr ""
+
+#: app/templates/base.html:144
+msgid "Buy me a coffee"
+msgstr ""
+
+#: app/templates/base.html:149 app/templates/legal/privacy.html:2
+msgid "Privacy"
+msgstr ""
+
+#: app/templates/base.html:150 app/templates/legal/cookies.html:2
+msgid "Cookies"
+msgstr ""
+
+#: app/templates/base.html:151 app/templates/legal/security.html:2
+msgid "Security"
+msgstr ""
+
+#: app/templates/base.html:162
+msgid "We use only essential cookies (session, CSRF, language). No tracking."
+msgstr ""
+
+#: app/templates/base.html:162
+msgid "Learn more"
+msgstr ""
+
+#: app/templates/base.html:163
+msgid "OK"
+msgstr ""
+
+#: app/templates/admin/_layout.html:6 app/templates/admin/dashboard.html:4
+msgid "Overview"
+msgstr ""
+
+#: app/templates/admin/_layout.html:7 app/templates/admin/audit.html:3
+msgid "Audit log"
+msgstr ""
+
+#: app/templates/admin/_layout.html:8
+#: app/templates/admin/feedback_detail.html:5
+#: app/templates/admin/feedback_list.html:4
+msgid "Feedback"
+msgstr ""
+
+#: app/templates/admin/_layout.html:9 app/templates/admin/dashboard.html:7
+#: app/templates/admin/users.html:3
+msgid "Users"
+msgstr ""
+
+#: app/templates/admin/_layout.html:10
+msgid "API keys"
+msgstr ""
+
+#: app/templates/admin/_layout.html:11
+msgid "E-mail test"
+msgstr ""
+
+#: app/templates/admin/_layout.html:12 app/templates/admin/settings.html:4
+msgid "Settings"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:3
+msgid "API keys (system-wide)"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:4
+msgid ""
+"Read-only view across all users. Users manage their own keys at "
+"/auth/account."
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7 app/templates/auth/account.html:11
+msgid "User"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "Label"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "Prefix"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "Scopes"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "Created"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "Last used"
+msgstr ""
+
+#: app/templates/admin/api_keys.html:7
+msgid "State"
+msgstr ""
+
+#: app/templates/admin/audit.html:6
+msgid "Filter"
+msgstr ""
+
+#: app/templates/admin/audit.html:10 app/templates/admin/dashboard.html:25
+#: app/templates/admin/feedback_detail.html:7
+#: app/templates/admin/feedback_list.html:13
+msgid "When"
+msgstr ""
+
+#: app/templates/admin/audit.html:10 app/templates/admin/dashboard.html:25
+msgid "Event"
+msgstr ""
+
+#: app/templates/admin/audit.html:10 app/templates/admin/dashboard.html:25
+msgid "Actor"
+msgstr ""
+
+#: app/templates/admin/audit.html:10 app/templates/admin/dashboard.html:25
+msgid "Subject"
+msgstr ""
+
+#: app/templates/admin/audit.html:10
+msgid "Detail"
+msgstr ""
+
+#: app/templates/admin/audit.html:24
+msgid "Showing page"
+msgstr ""
+
+#: app/templates/admin/audit.html:24
+msgid "entries"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:8
+msgid "Messages (total)"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:9
+msgid "Messages (24h)"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:10
+msgid "Active API keys"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:11
+msgid "New feedback"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:22
+msgid "Recent events"
+msgstr ""
+
+#: app/templates/admin/email_test.html:4
+msgid "SMTP / e-mail test"
+msgstr ""
+
+#: app/templates/admin/email_test.html:6
+msgid ""
+"Validates the outbound mail configuration from your .env. This bypasses "
+"the MAIL_ENABLED flag so you can verify credentials before turning mail "
+"on for real."
+msgstr ""
+
+#: app/templates/admin/email_test.html:13
+msgid "Send a test message"
+msgstr ""
+
+#: app/templates/admin/email_test.html:21
+msgid "Provider"
+msgstr ""
+
+#: app/templates/admin/email_test.html:23
+msgid ""
+"Message was accepted by the provider. Check the inbox (and spam) of the "
+"destination address."
+msgstr ""
+
+#: app/templates/admin/email_test.html:25
+msgid "Failed"
+msgstr ""
+
+#: app/templates/admin/email_test.html:36
+msgid "Active configuration"
+msgstr ""
+
+#: app/templates/admin/email_test.html:45
+#: app/templates/admin/email_test.html:50
+msgid "set"
+msgstr ""
+
+#: app/templates/admin/email_test.html:45
+#: app/templates/admin/email_test.html:50
+msgid "not set"
+msgstr ""
+
+#: app/templates/admin/email_test.html:49
+msgid "API token"
+msgstr ""
+
+#: app/templates/admin/email_test.html:54
+msgid "Edit values in"
+msgstr ""
+
+#: app/templates/admin/email_test.html:54
+msgid "and restart the app to apply."
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:4
+msgid "Back"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:9
+msgid "Page"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:10
+msgid "User agent"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:11
+msgid "App version"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:13
+msgid "Reply address"
+msgstr ""
+
+#: app/templates/admin/feedback_detail.html:15
+#: app/templates/admin/feedback_list.html:13 app/templates/main/index.html:22
+msgid "Message"
+msgstr ""
+
+#: app/templates/admin/feedback_list.html:23
+msgid "No feedback yet."
+msgstr ""
+
+#: app/templates/admin/settings.html:11
+msgid "Availability"
+msgstr ""
+
+#: app/templates/admin/settings.html:19
+msgid "Notice banner"
+msgstr ""
+
+#: app/templates/admin/settings.html:27
+msgid "Feature toggles"
+msgstr ""
+
+#: app/templates/admin/settings.html:30
+msgid ""
+"When off, the public /auth/login page returns 404. Admins can still sign "
+"in via your ADMIN_LOGIN_PATH:"
+msgstr ""
+
+#: app/templates/admin/settings.html:36
+msgid "When off, /api/v1 and /docs/api return 404 and disappear from the menu."
+msgstr ""
+
+#: app/templates/admin/users.html:6 app/templates/auth/account.html:10
+msgid "E-mail"
+msgstr ""
+
+#: app/templates/admin/users.html:6 app/templates/auth/account.html:11
+msgid "Role"
+msgstr ""
+
+#: app/templates/admin/users.html:6
+msgid "2FA"
+msgstr ""
+
+#: app/templates/admin/users.html:6
+msgid "Active"
+msgstr ""
+
+#: app/templates/admin/users.html:6
+msgid "Last login"
+msgstr ""
+
+#: app/templates/admin/users.html:20
+msgid "Lock"
+msgstr ""
+
+#: app/templates/admin/users.html:20 app/templates/messages/view.html:54
+msgid "Unlock"
+msgstr ""
+
+#: app/templates/auth/2fa_backup_codes.html:2
+msgid "Backup codes"
+msgstr ""
+
+#: app/templates/auth/2fa_backup_codes.html:7
+msgid ""
+"Save these codes somewhere safe. Each can be used once if you lose access"
+" to your authenticator."
+msgstr ""
+
+#: app/templates/auth/2fa_backup_codes.html:14
+#: app/templates/main/index.html:115
+msgid "Done"
+msgstr ""
+
+#: app/templates/auth/2fa_enabled.html:2
+msgid "2FA already enabled"
+msgstr ""
+
+#: app/templates/auth/2fa_enabled.html:6
+msgid "Two-factor authentication is already active on your account."
+msgstr ""
+
+#: app/templates/auth/2fa_enabled.html:7
+msgid "Back to account"
+msgstr ""
+
+#: app/templates/auth/account.html:6
+msgid "Account settings"
+msgstr ""
+
+#: app/templates/auth/account.html:9
+msgid "Profile"
+msgstr ""
+
+#: app/templates/auth/account.html:11
+msgid "Administrator"
+msgstr ""
+
+#: app/templates/auth/account.html:18 app/templates/auth/two_factor.html:3
+#: app/templates/auth/two_factor.html:9
+msgid "Two-factor authentication"
+msgstr ""
+
+#: app/templates/auth/account.html:19
+msgid "Enabled"
+msgstr ""
+
+#: app/templates/auth/account.html:19
+msgid "Not enabled"
+msgstr ""
+
+#: app/templates/auth/account.html:24
+msgid "Disable"
+msgstr ""
+
+#: app/templates/auth/account.html:27 app/templates/auth/setup_2fa.html:3
+msgid "Set up 2FA"
+msgstr ""
+
+#: app/templates/auth/account.html:35 app/templates/auth/change_password.html:3
+#: app/templates/auth/change_password.html:9
+msgid "Change password"
+msgstr ""
+
+#: app/templates/auth/login.html:19
+msgid "New here?"
+msgstr ""
+
+#: app/templates/auth/login.html:19
+msgid "Create an account"
+msgstr ""
+
+#: app/templates/auth/setup_2fa.html:7
+msgid "Set up two-factor authentication"
+msgstr ""
+
+#: app/templates/auth/setup_2fa.html:9
+msgid ""
+"Install an authenticator app (1Password, Bitwarden, Aegis, Google "
+"Authenticator, …)."
+msgstr ""
+
+#: app/templates/auth/setup_2fa.html:10
+msgid "Scan the QR code below, or enter the secret manually."
+msgstr ""
+
+#: app/templates/auth/setup_2fa.html:11
+msgid "Enter the 6-digit code your app shows to confirm."
+msgstr ""
+
+#: app/templates/auth/two_factor.html:10
+msgid "Open your authenticator app and enter the 6-digit code (or a backup code)."
+msgstr ""
+
+#: app/templates/errors/404.html:6
+msgid "Page not found."
+msgstr ""
+
+#: app/templates/errors/404.html:7
+msgid "Back to home"
+msgstr ""
+
+#: app/templates/errors/429.html:6
+msgid "Slow down — too many requests."
+msgstr ""
+
+#: app/templates/errors/429.html:7
+msgid "Please try again in a minute."
+msgstr ""
+
+#: app/templates/errors/500.html:6
+msgid "Something went wrong on our end."
+msgstr ""
+
+#: app/templates/errors/maintenance.html:6
+#, python-format
+msgid "%(name)s is in maintenance mode"
+msgstr ""
+
+#: app/templates/errors/maintenance.html:7
+msgid "We’ll be back shortly. Please try again in a few minutes."
+msgstr ""
+
+#: app/templates/feedback/submit.html:8
+msgid "Have a bug to report or an idea to suggest? Tell us."
+msgstr ""
+
+#: app/templates/feedback/submit.html:15
+msgid "Leave this blank"
+msgstr ""
+
+#: app/templates/legal/cookies.html:6
+msgid "Cookie policy"
+msgstr ""
+
+#: app/templates/legal/cookies.html:7
+#, python-format
+msgid ""
+"%(name)s uses only essential cookies — required for the application to "
+"function. No tracking or advertising cookies are used."
+msgstr ""
+
+#: app/templates/legal/cookies.html:11
+msgid "Cookie"
+msgstr ""
+
+#: app/templates/legal/cookies.html:11
+msgid "Purpose"
+msgstr ""
+
+#: app/templates/legal/cookies.html:11
+msgid "Lifetime"
+msgstr ""
+
+#: app/templates/legal/cookies.html:14
+msgid "Keeps you signed in and protects forms"
+msgstr ""
+
+#: app/templates/legal/cookies.html:14
+msgid "Session / 8h"
+msgstr ""
+
+#: app/templates/legal/cookies.html:15
+msgid "Remembers your preferred language"
+msgstr ""
+
+#: app/templates/legal/cookies.html:15
+msgid "year"
+msgstr ""
+
+#: app/templates/legal/cookies.html:16
+msgid "localStorage"
+msgstr ""
+
+#: app/templates/legal/cookies.html:16
+msgid "Remembers light / dark preference"
+msgstr ""
+
+#: app/templates/legal/cookies.html:16
+msgid "Until cleared"
+msgstr ""
+
+#: app/templates/legal/cookies.html:20
+msgid ""
+"Because we use only essential cookies, a cookie banner is not legally "
+"required under GDPR/ePrivacy."
+msgstr ""
+
+#: app/templates/legal/privacy.html:6
+msgid "Privacy policy"
+msgstr ""
+
+#: app/templates/legal/privacy.html:7
+msgid "Last updated"
+msgstr ""
+
+#: app/templates/legal/privacy.html:9
+msgid "What we collect"
+msgstr ""
+
+#: app/templates/legal/privacy.html:11
+msgid "Encrypted ciphertext you upload. We cannot decrypt it."
+msgstr ""
+
+#: app/templates/legal/privacy.html:12
+msgid ""
+"Keyed HMAC hashes of recipient e-mail addresses, when provided. Original "
+"addresses are not stored."
+msgstr ""
+
+#: app/templates/legal/privacy.html:13
+msgid "Pseudonymous audit entries (event type, hashed IP) for abuse mitigation."
+msgstr ""
+
+#: app/templates/legal/privacy.html:14
+msgid ""
+"Account data (e-mail, hashed password, optional 2FA secret) — only if you"
+" create an account."
+msgstr ""
+
+#: app/templates/legal/privacy.html:17
+msgid "What we do not collect"
+msgstr ""
+
+#: app/templates/legal/privacy.html:19
+msgid "Plaintext messages or decryption keys."
+msgstr ""
+
+#: app/templates/legal/privacy.html:20
+msgid "Tracking cookies, analytics, or third-party assets."
+msgstr ""
+
+#: app/templates/legal/privacy.html:23
+msgid "Retention"
+msgstr ""
+
+#: app/templates/legal/privacy.html:24
+msgid ""
+"Messages are deleted at most 30 days after creation, or earlier when the "
+"configured expiry or open limit is reached. Audit log entries are kept "
+"for 180 days."
+msgstr ""
+
+#: app/templates/legal/privacy.html:26
+msgid "Contact"
+msgstr ""
+
+#: app/templates/legal/privacy.html:27
+msgid "Questions: see the contact details in our"
+msgstr ""
+
+#: app/templates/legal/privacy.html:27
+msgid "security policy"
+msgstr ""
+
+#: app/templates/legal/security.html:6
+msgid "Security policy"
+msgstr ""
+
+#: app/templates/legal/security.html:7
+msgid ""
+"We take security seriously. If you find a vulnerability, please report it"
+" privately to the address listed in our"
+msgstr ""
+
+#: app/templates/legal/security.html:9
+msgid "Encryption model"
+msgstr ""
+
+#: app/templates/legal/security.html:10
+msgid ""
+"Messages are encrypted in your browser with AES-256-GCM. The 256-bit key "
+"is generated client-side and lives only in the URL fragment, which "
+"browsers never transmit to servers. The operator therefore has no ability"
+" to read message content, even with full database access."
+msgstr ""
+
+#: app/templates/legal/security.html:12
+msgid "Account security"
+msgstr ""
+
+#: app/templates/legal/security.html:14
+msgid "Passwords hashed with argon2id"
+msgstr ""
+
+#: app/templates/legal/security.html:15
+msgid "Optional TOTP-based two-factor authentication with backup codes"
+msgstr ""
+
+#: app/templates/legal/security.html:16
+msgid "Mandatory 2FA for administrative accounts (enforced on first login)"
+msgstr ""
+
+#: app/templates/legal/security.html:17
+msgid "CSRF protection, secure session cookies, strict Content-Security-Policy"
+msgstr ""
+
+#: app/templates/main/about.html:6
+#, python-format
+msgid "About %(name)s"
+msgstr ""
+
+#: app/templates/main/about.html:7
+#, python-format
+msgid ""
+"%(name)s is an open-source, self-hostable tool for sharing secrets one-"
+"time and securely. Messages are encrypted in your browser before they "
+"leave your device — the server cannot read them, and neither can the "
+"operator."
+msgstr ""
+
+#: app/templates/main/about.html:9
+msgid "How it works"
+msgstr ""
+
+#: app/templates/main/about.html:11
+msgid ""
+"Your browser generates a random 256-bit key and encrypts the message with"
+" AES-256-GCM."
+msgstr ""
+
+#: app/templates/main/about.html:12
+msgid ""
+"The ciphertext is uploaded; the key stays in the URL fragment (the part "
+"after #), which is never sent to the server."
+msgstr ""
+
+#: app/templates/main/about.html:13
+msgid ""
+"Recipients decrypt the message in their browser. Once the configured "
+"limits are reached, the ciphertext is deleted."
+msgstr ""
+
+#: app/templates/main/about.html:16
+msgid "What we never see"
+msgstr ""
+
+#: app/templates/main/about.html:18
+msgid "Your message content"
+msgstr ""
+
+#: app/templates/main/about.html:19
+msgid "The decryption key"
+msgstr ""
+
+#: app/templates/main/about.html:20
+msgid "Plaintext recipient e-mail addresses (we only store keyed hashes)"
+msgstr ""
+
+#: app/templates/main/about.html:24
+msgid "View source on GitHub"
+msgstr ""
+
+#: app/templates/main/index.html:2
+msgid "Share secrets safely"
+msgstr ""
+
+#: app/templates/main/index.html:8
+msgid "Share a secret. Once. Safely."
+msgstr ""
+
+#: app/templates/main/index.html:10
+msgid ""
+"End-to-end encrypted in your browser. Nobody — not even us — can read the"
+" message without your link and verification code."
+msgstr ""
+
+#: app/templates/main/index.html:17
+msgid "Editor"
+msgstr ""
+
+#: app/templates/main/index.html:18
+msgid "Preview"
+msgstr ""
+
+#: app/templates/main/index.html:24
+msgid "Your secret message…"
+msgstr ""
+
+#: app/templates/main/index.html:28
+msgid "Render as Markdown when opened"
+msgstr ""
+
+#: app/templates/main/index.html:40
+msgid "Expires after"
+msgstr ""
+
+#: app/templates/main/index.html:42
+msgid "hour"
+msgstr ""
+
+#: app/templates/main/index.html:43 app/templates/main/index.html:44
+msgid "hours"
+msgstr ""
+
+#: app/templates/main/index.html:45 app/templates/main/index.html:46
+#: app/templates/main/index.html:47
+msgid "days"
+msgstr ""
+
+#: app/templates/main/index.html:47
+msgid "max"
+msgstr ""
+
+#: app/templates/main/index.html:51
+msgid "Max opens"
+msgstr ""
+
+#: app/templates/main/index.html:53
+msgid "view (burn after reading)"
+msgstr ""
+
+#: app/templates/main/index.html:54 app/templates/main/index.html:55
+msgid "views"
+msgstr ""
+
+#: app/templates/main/index.html:56
+msgid "Unlimited (until expiry)"
+msgstr ""
+
+#: app/templates/main/index.html:60
+msgid "Allowed recipients (e-mail, optional)"
+msgstr ""
+
+#: app/templates/main/index.html:64
+msgid ""
+"Leave empty to generate a 6-digit verification code instead. Otherwise a "
+"code will be sent to the recipient(s) (more secure!)"
+msgstr ""
+
+#: app/templates/main/index.html:69
+msgid "Encrypted in your browser before sending."
+msgstr ""
+
+#: app/templates/main/index.html:70
+msgid "Create secure message"
+msgstr ""
+
+#: app/templates/main/index.html:79
+msgid "Your secure message is ready"
+msgstr ""
+
+#: app/templates/main/index.html:84
+msgid "Link"
+msgstr ""
+
+#: app/templates/main/index.html:91
+msgid "Expires"
+msgstr ""
+
+#: app/templates/main/index.html:95
+msgid "Verification code"
+msgstr ""
+
+#: app/templates/main/index.html:100
+msgid "Share this code via a separate channel from the link."
+msgstr ""
+
+#: app/templates/main/index.html:108
+msgid ""
+"We only show this once. After closing this dialog, the link cannot be "
+"recovered from our database."
+msgstr ""
+
+#: app/templates/main/index.html:113
+msgid "Copy all to clipboard"
+msgstr ""
+
+#: app/templates/main/release_notes.html:2
+#: app/templates/main/release_notes.html:6
+msgid "Release notes"
+msgstr ""
+
+#: app/templates/messages/not_found.html:2
+msgid "Message not available"
+msgstr ""
+
+#: app/templates/messages/not_found.html:7
+msgid "This message is no longer available."
+msgstr ""
+
+#: app/templates/messages/not_found.html:8
+msgid ""
+"It may have expired, reached its open limit, or been burned by the "
+"recipient."
+msgstr ""
+
+#: app/templates/messages/not_found.html:9
+msgid "Create a new message"
+msgstr ""
+
+#: app/templates/messages/view.html:2
+msgid "View message"
+msgstr ""
+
+#: app/templates/messages/view.html:16
+msgid "Secure message"
+msgstr ""
+
+#: app/templates/messages/view.html:26
+msgid ""
+"This link is missing the decryption key. Make sure you copied the full "
+"URL, including the part after the #."
+msgstr ""
+
+#: app/templates/messages/view.html:32
+msgid ""
+"This message is restricted to specific recipients. Enter your e-mail "
+"address to receive a verification code."
+msgstr ""
+
+#: app/templates/messages/view.html:35
+msgid "Your e-mail"
+msgstr ""
+
+#: app/templates/messages/view.html:39
+msgid "Send code"
+msgstr ""
+
+#: app/templates/messages/view.html:61
+msgid "Click below to decrypt this message in your browser."
+msgstr ""
+
+#: app/templates/messages/view.html:62
+msgid "Reveal message"
+msgstr ""
+
+#: app/templates/messages/view.html:68
+msgid "Decrypted message"
+msgstr ""
+
+#: app/templates/messages/view.html:70
+msgid "Copy"
+msgstr ""
+
+#: app/templates/messages/view.html:71
+msgid "Burn now"
+msgstr ""
+
+#: app/templates/messages/view.html:77
+msgid "Destroy this message when I leave the page"
+msgstr ""
+
+#~ msgid "OpenKeepr is in maintenance mode"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "OpenKeepr uses only essential cookies —"
+#~ " required for the application to "
+#~ "function. No tracking or advertising "
+#~ "cookies are used."
+#~ msgstr ""
+
+#~ msgid "About OpenKeepr"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "OpenKeepr is an open-source, self-"
+#~ "hostable tool for sharing secrets "
+#~ "one-time and securely. Messages are "
+#~ "encrypted in your browser before they"
+#~ " leave your device — the server "
+#~ "cannot read them, and neither can "
+#~ "the operator."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Leave empty to generate a 6-digit "
+#~ "security code instead. Otherwise a code"
+#~ " will be sent to the recipient(s) "
+#~ "(more secure!)"
+#~ msgstr ""
+
+#~ msgid "Security code"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "End-to-end encrypted in your "
+#~ "browser. Nobody — not even us —"
+#~ " can read the message without the "
+#~ "link."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Because we use only essential cookies,"
+#~ " a cookie banner is not legally "
+#~ "required under GDPR/ePrivacy. If your "
+#~ "deployment adds non-essential cookies, "
+#~ "set FEATURE_COOKIE_BANNER=true in .env to "
+#~ "display the consent banner."
+#~ msgstr ""
+

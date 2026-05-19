@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('2FA already enabled') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="alert alert-success"><i class="bi bi-check-circle"></i> {{ _('Two-factor authentication is already active on your account.') }}</div>
+    <a href="{{ url_for('auth.account') }}" class="btn btn-primary">{{ _('Back to account') }}</a>
+  </div>
+</div>
+{% endblock %}

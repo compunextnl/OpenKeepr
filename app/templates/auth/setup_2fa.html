@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block title %}{{ app_name }} — {{ _('Set up 2FA') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h4 mb-3">{{ _('Set up two-factor authentication') }}</h1>
+    <ol>
+      <li>{{ _('Install an authenticator app (1Password, Bitwarden, Aegis, Google Authenticator, …).') }}</li>
+      <li>{{ _('Scan the QR code below, or enter the secret manually.') }}</li>
+      <li>{{ _('Enter the 6-digit code your app shows to confirm.') }}</li>
+    </ol>
+    <div class="row g-3 align-items-center">
+      <div class="col-md-5 text-center">
+        <img src="{{ qr_data_url }}" alt="QR" class="img-fluid border rounded p-2 bg-white">
+      </div>
+      <div class="col-md-7">
+        <p class="font-monospace small bg-body-tertiary rounded p-2 mb-3">{{ secret }}</p>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          {{ render_field(form.token, autofocus=True) }}
+          <button class="btn btn-primary">{{ _('Enable two-factor authentication') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

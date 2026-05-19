@@ -1,0 +1,24 @@
+{% extends "admin/_layout.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block admin_content %}
+<a href="{{ url_for('admin.feedback_list') }}" class="small text-decoration-none">← {{ _('Back') }}</a>
+<h1 class="h4 my-3">{{ _('Feedback') }} #{{ item.id }}</h1>
+<dl class="row small">
+  <dt class="col-sm-3">{{ _('When') }}</dt><dd class="col-sm-9">{{ item.created_at }}</dd>
+  <dt class="col-sm-3">{{ _('Type') }}</dt><dd class="col-sm-9">{{ item.type }}</dd>
+  <dt class="col-sm-3">{{ _('Page') }}</dt><dd class="col-sm-9"><code>{{ item.page or '—' }}</code></dd>
+  <dt class="col-sm-3">{{ _('User agent') }}</dt><dd class="col-sm-9 text-truncate">{{ item.user_agent or '—' }}</dd>
+  <dt class="col-sm-3">{{ _('App version') }}</dt><dd class="col-sm-9">{{ item.app_version or '—' }}</dd>
+  <dt class="col-sm-3">{{ _('Language') }}</dt><dd class="col-sm-9">{{ item.language or '—' }}</dd>
+  <dt class="col-sm-3">{{ _('Reply address') }}</dt><dd class="col-sm-9">{{ item.contact or '—' }}</dd>
+</dl>
+<h2 class="h6 mt-3">{{ _('Message') }}</h2>
+<pre class="bg-body-tertiary p-3 rounded small" style="white-space: pre-wrap">{{ item.message }}</pre>
+
+<form method="post" class="mt-3" novalidate>
+  {{ form.hidden_tag() }}
+  {{ render_field(form.status) }}
+  {{ render_field(form.admin_notes) }}
+  <button class="btn btn-primary">{{ _('Update') }}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center text-center py-5">
+  <div class="col-12 col-md-6">
+    <h1 class="display-1 fw-light">404</h1>
+    <p class="lead">{{ _('Page not found.') }}</p>
+    <a class="btn btn-primary" href="{{ url_for('main.index') }}">{{ _('Back to home') }}</a>
+  </div>
+</div>
+{% endblock %}

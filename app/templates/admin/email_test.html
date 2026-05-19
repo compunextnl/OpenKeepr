@@ -1,0 +1,60 @@
+{% extends "admin/_layout.html" %}
+{% from "_components/form_field.html" import render_field %}
+{% block admin_content %}
+<h1 class="h4 mb-3">{{ _('SMTP / e-mail test') }}</h1>
+<p class="text-body-secondary">
+  {{ _('Validates the outbound mail configuration from your .env. This bypasses the MAIL_ENABLED flag so you can verify credentials before turning mail on for real.') }}
+</p>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary text-uppercase">{{ _('Send a test message') }}</h2>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          {{ render_field(form.to_email, autofocus=True) }}
+          <button class="btn btn-primary"><i class="bi bi-send"></i> {{ _('Send test e-mail') }}</button>
+        </form>
+        {% if outcome %}
+          <div class="alert alert-{{ 'success' if outcome.sent else 'danger' }} mt-3 mb-0 small">
+            <strong>{{ _('Provider') }}:</strong> {{ outcome.provider }}<br>
+            {% if outcome.sent %}
+              {{ _('Message was accepted by the provider. Check the inbox (and spam) of the destination address.') }}
+            {% else %}
+              {{ _('Failed') }}: <code>{{ outcome.error }}</code>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary text-uppercase">{{ _('Active configuration') }}</h2>
+        <dl class="row small mb-0">
+          <dt class="col-6">MAIL_ENABLED</dt>      <dd class="col-6">{{ '✓' if cfg.MAIL_ENABLED else '✗' }}</dd>
+          <dt class="col-6">MAIL_BACKEND</dt>      <dd class="col-6"><code>{{ cfg.MAIL_BACKEND }}</code></dd>
+          <dt class="col-6">MAIL_FROM</dt>         <dd class="col-6">{{ cfg.MAIL_FROM }}</dd>
+          {% if cfg.MAIL_BACKEND == 'smtp' %}
+          <dt class="col-6">SMTP_HOST</dt>         <dd class="col-6">{{ cfg.SMTP_HOST or '—' }}</dd>
+          <dt class="col-6">SMTP_PORT</dt>         <dd class="col-6">{{ cfg.SMTP_PORT or '—' }}</dd>
+          <dt class="col-6">SMTP_USERNAME</dt>     <dd class="col-6">{{ cfg.SMTP_USERNAME or '—' }}</dd>
+          <dt class="col-6">SMTP_PASSWORD</dt>     <dd class="col-6">{{ '✓ ' + _('set') if cfg.SMTP_PASSWORD_SET else '— ' + _('not set') }}</dd>
+          <dt class="col-6">SMTP_USE_TLS</dt>      <dd class="col-6">{{ '✓' if cfg.SMTP_USE_TLS else '✗' }}</dd>
+          <dt class="col-6">SMTP_USE_SSL</dt>      <dd class="col-6">{{ '✓' if cfg.SMTP_USE_SSL else '✗' }}</dd>
+          {% else %}
+          <dt class="col-6">{{ _('API token') }}</dt>
+          <dd class="col-6">{{ '✓ ' + _('set') if (cfg.POSTMARK_TOKEN_SET or cfg.SENDGRID_KEY_SET or cfg.MAILGUN_KEY_SET) else '— ' + _('not set') }}</dd>
+          {% endif %}
+        </dl>
+        <p class="small text-body-secondary mt-3 mb-0">
+          {{ _('Edit values in') }} <code>.env</code> {{ _('and restart the app to apply.') }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

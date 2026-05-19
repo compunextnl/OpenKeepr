@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Cookies') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h3">{{ _('Cookie policy') }}</h1>
+    <p>{{ _('%(name)s uses only essential cookies — required for the application to function. No tracking or advertising cookies are used.', name=app_name) }}</p>
+
+    <table class="table small">
+      <thead>
+        <tr><th>{{ _('Cookie') }}</th><th>{{ _('Purpose') }}</th><th>{{ _('Lifetime') }}</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>session</code></td><td>{{ _('Keeps you signed in and protects forms') }}</td><td>{{ _('Session / 8h') }}</td></tr>
+        <tr><td><code>lang</code></td><td>{{ _('Remembers your preferred language') }}</td><td>1 {{ _('year') }}</td></tr>
+        <tr><td><code>theme</code> ({{ _('localStorage') }})</td><td>{{ _('Remembers light / dark preference') }}</td><td>{{ _('Until cleared') }}</td></tr>
+      </tbody>
+    </table>
+
+    <p class="text-body-secondary small">{{ _('Because we use only essential cookies, a cookie banner is not legally required under GDPR/ePrivacy.') }}</p>
+  </div>
+</div>
+{% endblock %}

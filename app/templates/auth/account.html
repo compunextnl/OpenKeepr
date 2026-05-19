@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Account') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="h4 mb-3">{{ _('Account settings') }}</h1>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary">{{ _('Profile') }}</h2>
+        <p class="mb-1"><strong>{{ _('E-mail') }}:</strong> {{ user.email }}</p>
+        <p class="mb-1"><strong>{{ _('Role') }}:</strong> {{ _('Administrator') if user.is_admin else _('User') }}</p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h2 class="h6 text-body-secondary mb-1">{{ _('Two-factor authentication') }}</h2>
+          <p class="mb-0">{% if user.totp_enabled %}<span class="badge text-bg-success">{{ _('Enabled') }}</span>{% else %}<span class="badge text-bg-warning">{{ _('Not enabled') }}</span>{% endif %}</p>
+        </div>
+        {% if user.totp_enabled %}
+          <form method="post" action="{{ url_for('auth.disable_2fa') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-outline-danger btn-sm">{{ _('Disable') }}</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.setup_2fa') }}" class="btn btn-primary btn-sm">{{ _('Set up 2FA') }}</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <h2 class="h6 text-body-secondary mb-0">{{ _('Password') }}</h2>
+        <a href="{{ url_for('auth.change_password') }}" class="btn btn-outline-secondary btn-sm">{{ _('Change password') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

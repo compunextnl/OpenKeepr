@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('View message') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-10">
+    <div class="card shadow-sm" data-public-id="{{ public_id }}"
+         data-requires-email="{{ 'true' if requires_email else 'false' }}"
+         data-requires-code="{{ 'true' if requires_code else 'false' }}"
+         data-is-markdown="{{ 'true' if is_markdown else 'false' }}"
+         data-expires-at="{{ expires_at }}"
+         data-max-opens="{{ max_opens or '' }}"
+         data-opens="{{ opens }}">
+
+      <div class="card-header d-flex justify-content-between flex-wrap gap-2">
+        <span><i class="bi bi-shield-lock"></i> {{ _('Secure message') }}</span>
+        <span class="text-body-secondary small" id="meta-line"></span>
+      </div>
+
+      <div class="card-body">
+
+        <!-- Step 1: missing fragment key -->
+        <div id="missing-key" class="d-none">
+          <div class="alert alert-danger">
+            <i class="bi bi-x-circle"></i>
+            {{ _('This link is missing the decryption key. Make sure you copied the full URL, including the part after the #.') }}
+          </div>
+        </div>
+
+        <!-- Step 2: ask for e-mail (if recipients are set) -->
+        <form id="email-form" class="d-none">
+          <p class="text-body-secondary">{{ _('This message is restricted to specific recipients. Enter your e-mail address to receive a verification code.') }}</p>
+          <div class="row g-2 align-items-end">
+            <div class="col">
+              <label for="email-input" class="form-label">{{ _('Your e-mail') }}</label>
+              <input id="email-input" type="email" class="form-control" required>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i> {{ _('Send code') }}</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Step 3: ask for 6-digit code -->
+        <form id="code-form" class="d-none">
+          <p id="code-instructions" class="text-body-secondary"></p>
+          <div class="row g-2 align-items-end">
+            <div class="col-sm-6">
+              <label for="code-input" class="form-label">{{ _('6-digit code') }}</label>
+              <input id="code-input" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6"
+                     class="form-control font-monospace" autocomplete="one-time-code" required>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-primary" type="submit"><i class="bi bi-unlock"></i> {{ _('Unlock') }}</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Step 4: anonymous link, no auth -->
+        <form id="direct-form" class="d-none">
+          <p class="text-body-secondary">{{ _('Click below to decrypt this message in your browser.') }}</p>
+          <button class="btn btn-primary" type="submit"><i class="bi bi-unlock"></i> {{ _('Reveal message') }}</button>
+        </form>
+
+        <!-- Step 5: decrypted content -->
+        <div id="revealed" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong>{{ _('Decrypted message') }}</strong>
+            <div class="btn-group">
+              <button id="copy-btn" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard"></i> {{ _('Copy') }}</button>
+              <button id="burn-btn" class="btn btn-sm btn-outline-danger"><i class="bi bi-fire"></i> {{ _('Burn now') }}</button>
+            </div>
+          </div>
+          <div id="content" class="p-3"></div>
+          <div class="form-check form-switch mt-3">
+            <input class="form-check-input" type="checkbox" id="auto-burn" checked>
+            <label class="form-check-label" for="auto-burn">{{ _('Destroy this message when I leave the page') }}</label>
+          </div>
+        </div>
+
+        <!-- Errors -->
+        <div id="error" class="alert alert-danger d-none mt-3" role="alert"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/marked/marked.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/dompurify/purify.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/crypto.js') }}"></script>
+<script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+{% endblock %}

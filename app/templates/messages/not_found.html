@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — {{ _('Message not available') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6 text-center">
+    <i class="bi bi-fire display-1 text-danger"></i>
+    <h1 class="h3 mt-3">{{ _('This message is no longer available.') }}</h1>
+    <p class="text-body-secondary">{{ _('It may have expired, reached its open limit, or been burned by the recipient.') }}</p>
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-2">{{ _('Create a new message') }}</a>
+  </div>
+</div>
+{% endblock %}
