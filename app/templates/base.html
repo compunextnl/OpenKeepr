@@ -19,7 +19,7 @@
 <body class="d-flex flex-column min-vh-100">
 
 <!-- Theme bootstrap (no FOUC) -->
-<script>
+<script nonce="{{ csp_nonce }}">
   (function () {
     var pref = localStorage.getItem('theme') || 'auto';
     var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -28,7 +28,11 @@
   })();
 </script>
 
-<nav class="navbar navbar-expand-md border-bottom">
+<!-- Glassmorphism background layers -->
+<div class="aurora-bg" aria-hidden="true"></div>
+<div class="noise-bg" aria-hidden="true"></div>
+
+<nav class="navbar navbar-expand-md">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('main.index') }}">
       <img src="{{ url_for('static', filename='img/logo.svg') }}" width="28" height="28" alt="">
@@ -40,7 +44,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">{{ _('Create') }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">{{ _('Start') }}</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">{{ _('About') }}</a></li>
         {% if feature_api %}
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.api_docs') }}">{{ _('API') }}</a></li>
@@ -145,30 +149,32 @@
   {% block content %}{% endblock %}
 </main>
 
-<footer class="border-top mt-auto py-4 small text-body-secondary">
-  <div class="container d-flex flex-wrap justify-content-between gap-3">
-    <div class="d-flex flex-wrap align-items-center gap-3">
-      <span>&copy; {{ current_year }} {{ app_name }}</span>
-      <a href="{{ url_for('main.release_notes') }}" class="text-decoration-none">v{{ app_version }}</a>
-      {% if github_url %}
-      <a href="{{ github_url }}" class="text-decoration-none" rel="noopener" target="_blank">
-        <i class="bi bi-github"></i> GitHub
-      </a>
-      {% endif %}
-      {% if buymeacoffee_url %}
-      {# "Buy Me a Coffee" is the registered product name — kept verbatim in every language. #}
-      <a href="{{ buymeacoffee_url }}" class="text-decoration-none" rel="noopener" target="_blank" title="Buy Me a Coffee">
-        <i class="bi bi-cup-hot-fill text-warning"></i> Buy Me a Coffee
-      </a>
-      {% endif %}
-    </div>
-    <div class="d-flex flex-wrap gap-3">
-      <a href="{{ url_for('legal.privacy') }}" class="text-decoration-none">{{ _('Privacy') }}</a>
-      <a href="{{ url_for('legal.cookies') }}" class="text-decoration-none">{{ _('Cookies') }}</a>
-      <a href="{{ url_for('legal.security_policy') }}" class="text-decoration-none">{{ _('Security') }}</a>
-      {% if feature_feedback %}
-      <a href="{{ url_for('feedback.submit') }}" class="text-decoration-none">{{ _('Send feedback') }}</a>
-      {% endif %}
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <span>&copy; {{ current_year }} {{ app_name }}</span>
+        <a href="{{ url_for('main.release_notes') }}">v{{ app_version }}</a>
+        {% if github_url %}
+        <a href="{{ github_url }}" rel="noopener" target="_blank">
+          <i class="bi bi-github"></i> GitHub
+        </a>
+        {% endif %}
+        {% if buymeacoffee_url %}
+        {# "Buy Me a Coffee" is the registered product name — kept verbatim in every language. #}
+        <a href="{{ buymeacoffee_url }}" rel="noopener" target="_blank" title="Buy Me a Coffee">
+          <i class="bi bi-cup-hot-fill text-warning"></i> Buy Me a Coffee
+        </a>
+        {% endif %}
+      </div>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="{{ url_for('legal.privacy') }}">{{ _('Privacy') }}</a>
+        <a href="{{ url_for('legal.cookies') }}">{{ _('Cookies') }}</a>
+        <a href="{{ url_for('legal.security_policy') }}">{{ _('Security') }}</a>
+        {% if feature_feedback %}
+        <a href="{{ url_for('feedback.submit') }}">{{ _('Send feedback') }}</a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </footer>
@@ -182,6 +188,41 @@
 </div>
 {% endif %}
 
+<!-- Client-side i18n bundle: every string the JS layer renders to the user
+     must be listed here so it can be translated server-side via _(). -->
+<script nonce="{{ csp_nonce }}">
+window.__OKP_I18N = {
+  "Theme: auto":                 {{ _('Theme: auto')|tojson }},
+  "Theme: light":                {{ _('Theme: light')|tojson }},
+  "Theme: dark":                 {{ _('Theme: dark')|tojson }},
+  "Type not allowed":            {{ _('Type not allowed')|tojson }},
+  "Exceeds total limit":         {{ _('Exceeds total limit')|tojson }},
+  "Invalid:":                    {{ _('Invalid:')|tojson }},
+  "Please enter a message.":     {{ _('Please enter a message.')|tojson }},
+  "Please fix the invalid e-mail addresses:": {{ _('Please fix the invalid e-mail addresses:')|tojson }},
+  "Server rejected these e-mail addresses:":  {{ _('Server rejected these e-mail addresses:')|tojson }},
+  "Failed to create message:":   {{ _('Failed to create message:')|tojson }},
+  "%(n)s attachment(s) will be skipped due to validation errors. Continue?": {{ _('%(n)s attachment(s) will be skipped due to validation errors. Continue?')|tojson }},
+  "Link:":                       {{ _('Link:')|tojson }},
+  "Expires:":                    {{ _('Expires:')|tojson }},
+  "Verification code:":          {{ _('Verification code:')|tojson }},
+  "File name or MIME type is too long.": {{ _('File name or MIME type is too long.')|tojson }},
+  "Unrecognised attachment format.":     {{ _('Unrecognised attachment format.')|tojson }},
+  "Markdown":                    {{ _('Markdown')|tojson }},
+  "plain text":                  {{ _('plain text')|tojson }},
+  "Enter the 6-digit verification code the sender shared with you.": {{ _('Enter the 6-digit verification code the sender shared with you.')|tojson }},
+  "A 6-digit code has been sent if your e-mail is allowed.":         {{ _('A 6-digit code has been sent if your e-mail is allowed.')|tojson }},
+  "Could not request a code.":   {{ _('Could not request a code.')|tojson }},
+  "Decrypt & download":          {{ _('Decrypt & download')|tojson }},
+  "Saved":                       {{ _('Saved')|tojson }},
+  "Failed":                      {{ _('Failed')|tojson }},
+  "Preparing…":                  {{ _('Preparing…')|tojson }},
+  "Copied":                      {{ _('Copied')|tojson }},
+  "Copy":                        {{ _('Copy')|tojson }},
+  "Invalid e-mail or verification code.": {{ _('Invalid e-mail or verification code.')|tojson }},
+  "Could not retrieve the message.":      {{ _('Could not retrieve the message.')|tojson }}
+};
+</script>
 <script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% block scripts %}{% endblock %}

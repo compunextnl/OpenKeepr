@@ -2,12 +2,26 @@
 (function () {
   'use strict';
 
-  // --- Theme toggle (auto → light → dark → auto) ---
-  // Cycle order is chosen so each click is *visibly* different even when
-  // starting from 'auto' (where the rendered theme already matches one of
-  // light/dark).
+  // --- Theme toggle ---
+  // Initial visit: theme follows OS ('auto'). Once the user clicks, we
+  // commit to an explicit light/dark choice. Clicking always flips to the
+  // *opposite* of what's currently rendered — that guarantees every click
+  // produces a visible change. (The old 3-state cycle could land on 'auto'
+  // which silently resolved to the same theme as the current dark/light
+  // pref, making the first click look like a no-op.)
+  // Tiny i18n helper — looks up the key in window.__OKP_I18N (injected by
+  // base.html via Jinja's _()), falls back to the English source string.
+  function t(key) {
+    var dict = window.__OKP_I18N;
+    return (dict && Object.prototype.hasOwnProperty.call(dict, key)) ? dict[key] : key;
+  }
+
   var ICONS = { auto: 'bi-circle-half', light: 'bi-sun', dark: 'bi-moon-stars' };
-  var LABELS = { auto: 'Theme: auto', light: 'Theme: light', dark: 'Theme: dark' };
+  function labelFor(pref) {
+    if (pref === 'light') return t('Theme: light');
+    if (pref === 'dark')  return t('Theme: dark');
+    return t('Theme: auto');
+  }
 
   function renderedTheme() {
     return document.documentElement.getAttribute('data-bs-theme') || 'light';
@@ -26,8 +40,9 @@
     if (!btn) return;
     var icon = btn.querySelector('i');
     if (icon) icon.className = 'bi ' + (ICONS[pref] || ICONS.auto);
-    btn.setAttribute('title', LABELS[pref] || LABELS.auto);
-    btn.setAttribute('aria-label', LABELS[pref] || LABELS.auto);
+    var label = labelFor(pref);
+    btn.setAttribute('title', label);
+    btn.setAttribute('aria-label', label);
   }
 
   var toggle = document.getElementById('theme-toggle');
@@ -36,17 +51,8 @@
     updateToggleUI(localStorage.getItem('theme') || 'auto');
 
     toggle.addEventListener('click', function () {
-      var current = localStorage.getItem('theme') || 'auto';
-      var next;
-      if (current === 'auto') {
-        // First explicit toggle: flip away from what's currently rendered
-        next = renderedTheme() === 'dark' ? 'light' : 'dark';
-      } else if (current === 'light') {
-        next = 'dark';
-      } else {
-        next = 'auto';
-      }
-      applyTheme(next);
+      // Always flip to the opposite of what's currently rendered.
+      applyTheme(renderedTheme() === 'dark' ? 'light' : 'dark');
     });
   }
 
@@ -89,6 +95,7 @@
     return m ? m.getAttribute('content') : '';
   }
   window.OpenKeepr = window.OpenKeepr || {};
+  window.OpenKeepr.t = t;
   window.OpenKeepr.csrfToken = csrfToken;
   window.OpenKeepr.fetchJSON = async function (url, options) {
     options = options || {};

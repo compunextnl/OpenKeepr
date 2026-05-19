@@ -153,27 +153,40 @@ def _register_context_processors(app: Flask) -> None:
 
 
 def _register_security_headers(app: Flask) -> None:
-    from flask import make_response
+    import secrets as _secrets
+    from flask import g, make_response, request
 
-    csp = (
+    def _build_csp(nonce: str) -> str:
         # Default deny + explicit allowances. We only serve our own static
         # assets — no CDNs. 'unsafe-inline' on style is needed for Bootstrap
-        # utilities; we keep script-src strict. No inline previews of
-        # attachments, so frame-src / object-src inherit the strict default.
-        "default-src 'self'; "
-        "script-src 'self'; "
-        "style-src 'self' 'unsafe-inline'; "
-        "img-src 'self' data:; "
-        "font-src 'self'; "
-        "connect-src 'self'; "
-        "frame-ancestors 'none'; "
-        "base-uri 'self'; "
-        "form-action 'self'"
-    )
+        # utilities; for scripts we use a per-request nonce so the small
+        # bootstrap snippets in our templates (theme persistence, the
+        # window.__OKP_I18N bundle, composer config) can run while
+        # third-party / injected scripts remain blocked.
+        return (
+            "default-src 'self'; "
+            f"script-src 'self' 'nonce-{nonce}'; "
+            "style-src 'self' 'unsafe-inline'; "
+            "img-src 'self' data:; "
+            "font-src 'self'; "
+            "connect-src 'self'; "
+            "frame-ancestors 'none'; "
+            "base-uri 'self'; "
+            "form-action 'self'"
+        )
+
+    @app.before_request
+    def _generate_csp_nonce() -> None:  # type: ignore[no-untyped-def]
+        g.csp_nonce = _secrets.token_urlsafe(16)
+
+    @app.context_processor
+    def _inject_csp_nonce() -> dict:  # type: ignore[no-untyped-def]
+        return {"csp_nonce": getattr(g, "csp_nonce", "")}
 
     @app.after_request
     def add_security_headers(response):  # type: ignore[no-untyped-def]
-        response.headers.setdefault("Content-Security-Policy", csp)
+        nonce = getattr(g, "csp_nonce", "") or ""
+        response.headers.setdefault("Content-Security-Policy", _build_csp(nonce))
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
         response.headers.setdefault("X-Frame-Options", "DENY")
         response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -236,6 +249,21 @@ def _init_translations(app: Flask) -> None:
         sync_translations(app)
     except Exception as exc:  # pragma: no cover — never block startup on i18n
         app.logger.warning("Translation sync failed: %s", exc)
+
+
+def _init_vendor_assets(app: Flask) -> None:
+    """Make sure all vendored front-end assets exist locally.
+
+    On first run after a checkout (or after bumping versions in
+    scripts/fetch_assets.py), this downloads any missing files so the app is
+    immediately usable offline. Failures never block startup.
+    """
+    from app.services.vendor_assets import ensure_vendor_assets
+
+    try:
+        ensure_vendor_assets(app)
+    except Exception as exc:  # pragma: no cover
+        app.logger.warning("Vendor-asset bootstrap failed: %s", exc)
 
 
 def _start_scheduler(app: Flask) -> None:
@@ -327,6 +355,7 @@ def create_app(*, config_overrides: dict | None = None) -> Flask:
 
     # First-time setup
     _init_translations(app)
+    _init_vendor_assets(app)
     _ensure_schema(app)
     _bootstrap_admin(app)
     _start_scheduler(app)

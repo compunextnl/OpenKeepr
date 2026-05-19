@@ -4,7 +4,13 @@
 
 OpenKeepr lets you create a one-time, self-destructing message (a password, an API key, a recovery phrase) and share it via a single short link. The content is encrypted **in your browser** before it ever leaves your device; the server cannot read it, and neither can the operator.
 
-> **Status:** v1.2.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
+<p align="center">
+  <a href="https://www.buymeacoffee.com/OpenKeepr" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="174">
+  </a>
+</p>
+
+> **Status:** v1.3.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
 
 ## Features
 
@@ -127,6 +133,14 @@ See [`SECURITY.md`](SECURITY.md) for our threat model and reporting policy. Nota
 
 - Bug reports / feature requests: open an issue on GitHub, or use the in-app "Send feedback" form.
 - Security issues: see `SECURITY.md` — do **not** open a public issue.
+
+## Support the project
+
+If OpenKeepr saves you from sending one more password over chat, consider buying me a coffee — it keeps the lights on and the secrets encrypted.
+
+<a href="https://www.buymeacoffee.com/OpenKeepr" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="174">
+</a>
 
 ## License
 

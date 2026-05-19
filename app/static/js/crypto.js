@@ -104,7 +104,10 @@
     var nameBytes = enc.encode(file.name || 'file');
     var typeBytes = enc.encode(file.type || 'application/octet-stream');
     if (nameBytes.length > 0xffff || typeBytes.length > 0xffff) {
-      throw new Error('File name or MIME type is too long.');
+      var msg = (window.OpenKeepr && window.OpenKeepr.t)
+        ? window.OpenKeepr.t('File name or MIME type is too long.')
+        : 'File name or MIME type is too long.';
+      throw new Error(msg);
     }
     var nameLen = new Uint8Array([(nameBytes.length >> 8) & 0xff, nameBytes.length & 0xff]);
     var typeLen = new Uint8Array([(typeBytes.length >> 8) & 0xff, typeBytes.length & 0xff]);
@@ -114,7 +117,10 @@
   function parseAttachmentWrapper(buf) {
     var u = new Uint8Array(buf);
     if (u.length < 4 || u[0] !== 0x4f || u[1] !== 0x4b || u[2] !== 0x50 || u[3] !== 0x41) {
-      throw new Error('Unrecognised attachment format.');
+      var msg = (window.OpenKeepr && window.OpenKeepr.t)
+        ? window.OpenKeepr.t('Unrecognised attachment format.')
+        : 'Unrecognised attachment format.';
+      throw new Error(msg);
     }
     var off = 4;
     var nameLen = (u[off] << 8) | u[off + 1]; off += 2;

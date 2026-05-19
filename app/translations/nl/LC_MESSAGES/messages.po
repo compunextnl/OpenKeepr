@@ -111,12 +111,12 @@ msgstr "Onthoud mij"
 
 #: app/blueprints/auth/forms.py:20 app/templates/auth/login.html:3
 #: app/templates/auth/login.html:9 app/templates/auth/login.html:15
-#: app/templates/base.html:116
+#: app/templates/base.html:120
 msgid "Sign in"
 msgstr "Inloggen"
 
 #: app/blueprints/auth/forms.py:25 app/blueprints/auth/forms.py:58
-#: app/templates/messages/view.html:49
+#: app/templates/messages/view.html:52
 msgid "6-digit code"
 msgstr "6-cijferige code"
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Reply address (optional)"
 msgstr ""
 
-#: app/blueprints/feedback/forms.py:27 app/templates/base.html:170
+#: app/blueprints/feedback/forms.py:27 app/templates/base.html:175
 #: app/templates/feedback/submit.html:3 app/templates/feedback/submit.html:7
 #: app/templates/feedback/submit.html:17
 msgid "Send feedback"
@@ -218,90 +218,210 @@ msgstr "Feedback sturen"
 msgid "Thanks! Your feedback has been received."
 msgstr ""
 
-#: app/templates/base.html:43
-msgid "Create"
-msgstr "Aanmaken"
+#: app/templates/base.html:47
+msgid "Start"
+msgstr "Start"
 
-#: app/templates/base.html:44 app/templates/main/about.html:2
+#: app/templates/base.html:48 app/templates/main/about.html:2
 msgid "About"
 msgstr "Over"
 
-#: app/templates/base.html:46
+#: app/templates/base.html:50
 msgid "API"
 msgstr "API"
 
-#: app/templates/admin/feedback_detail.html:12 app/templates/base.html:54
+#: app/templates/admin/feedback_detail.html:12 app/templates/base.html:58
 msgid "Language"
 msgstr "Taal"
 
-#: app/templates/base.html:75
+#: app/templates/base.html:79
 msgid "Toggle theme"
 msgstr "Thema wisselen"
 
-#: app/templates/base.html:85
+#: app/templates/base.html:89
 msgid "Two-factor authentication is not enabled"
-msgstr ""
+msgstr "Tweestapsverificatie is niet ingeschakeld"
 
-#: app/templates/auth/account.html:2 app/templates/base.html:89
+#: app/templates/auth/account.html:2 app/templates/base.html:93
 msgid "Account"
 msgstr "Account"
 
 #: app/templates/auth/account.html:18 app/templates/auth/two_factor.html:3
-#: app/templates/auth/two_factor.html:9 app/templates/base.html:92
+#: app/templates/auth/two_factor.html:9 app/templates/base.html:96
 msgid "Two-factor authentication"
-msgstr ""
+msgstr "Tweestapsverificatie"
 
-#: app/templates/base.html:94
+#: app/templates/base.html:98
 #, fuzzy
 msgid "On"
 msgstr "Klaar"
 
-#: app/templates/base.html:96
+#: app/templates/base.html:100
 msgid "Off"
-msgstr ""
+msgstr "Uit"
 
 #: app/templates/auth/account.html:35 app/templates/auth/change_password.html:3
-#: app/templates/auth/change_password.html:9 app/templates/base.html:100
+#: app/templates/auth/change_password.html:9 app/templates/base.html:104
 msgid "Change password"
-msgstr ""
+msgstr "Wachtwoord wijzigen"
 
-#: app/templates/admin/dashboard.html:2 app/templates/base.html:103
+#: app/templates/admin/dashboard.html:2 app/templates/base.html:107
 msgid "Admin"
 msgstr "Beheer"
 
-#: app/templates/base.html:109
+#: app/templates/base.html:113
 msgid "Sign out"
 msgstr "Uitloggen"
 
-#: app/templates/base.html:119
+#: app/templates/base.html:123
 msgid "Sign up"
 msgstr "Registreren"
 
-#: app/templates/base.html:166 app/templates/legal/privacy.html:2
+#: app/templates/base.html:171 app/templates/legal/privacy.html:2
 msgid "Privacy"
 msgstr "Privacy"
 
-#: app/templates/base.html:167 app/templates/legal/cookies.html:2
+#: app/templates/base.html:172 app/templates/legal/cookies.html:2
 msgid "Cookies"
 msgstr "Cookies"
 
-#: app/templates/base.html:168 app/templates/legal/security.html:2
+#: app/templates/base.html:173 app/templates/legal/security.html:2
 msgid "Security"
 msgstr "Beveiliging"
 
-#: app/templates/base.html:179
+#: app/templates/base.html:185
 msgid "We use only essential cookies (session, CSRF, language). No tracking."
 msgstr ""
 "We gebruiken alleen essentiële cookies (sessie, CSRF, taal). Geen "
 "tracking."
 
-#: app/templates/base.html:179
+#: app/templates/base.html:185
 msgid "Learn more"
 msgstr "Meer informatie"
 
-#: app/templates/base.html:180
+#: app/templates/base.html:186
 msgid "OK"
 msgstr "OK"
+
+#: app/templates/base.html:195
+msgid "Theme: auto"
+msgstr "Thema: automatisch"
+
+#: app/templates/base.html:196
+msgid "Theme: light"
+msgstr "Thema: licht"
+
+#: app/templates/base.html:197
+msgid "Theme: dark"
+msgstr "Thema: donker"
+
+#: app/templates/base.html:198
+msgid "Type not allowed"
+msgstr "Bestandstype niet toegestaan"
+
+#: app/templates/base.html:199
+msgid "Exceeds total limit"
+msgstr "Overschrijdt totaallimiet"
+
+#: app/templates/base.html:200
+msgid "Invalid:"
+msgstr "Ongeldig:"
+
+#: app/templates/base.html:201
+msgid "Please enter a message."
+msgstr "Voer een bericht in."
+
+#: app/templates/base.html:202
+msgid "Please fix the invalid e-mail addresses:"
+msgstr "Corrigeer de ongeldige e-mailadressen:"
+
+#: app/templates/base.html:203
+msgid "Server rejected these e-mail addresses:"
+msgstr "De server heeft deze e-mailadressen afgewezen:"
+
+#: app/templates/base.html:204
+msgid "Failed to create message:"
+msgstr "Aanmaken van bericht mislukt:"
+
+#: app/templates/base.html:205
+#, python-format
+msgid "%(n)s attachment(s) will be skipped due to validation errors. Continue?"
+msgstr "%(n)s bijlage(n) worden overgeslagen wegens validatiefouten. Doorgaan?"
+
+#: app/templates/base.html:206
+msgid "Link:"
+msgstr "Link:"
+
+#: app/templates/base.html:207
+msgid "Expires:"
+msgstr "Verloopt:"
+
+#: app/templates/base.html:208
+msgid "Verification code:"
+msgstr "Verificatiecode:"
+
+#: app/templates/base.html:209
+msgid "File name or MIME type is too long."
+msgstr "Bestandsnaam of MIME-type is te lang."
+
+#: app/templates/base.html:210
+msgid "Unrecognised attachment format."
+msgstr "Onbekend bijlageformaat."
+
+#: app/templates/base.html:211
+msgid "Markdown"
+msgstr ""
+
+#: app/templates/base.html:212
+msgid "plain text"
+msgstr "platte tekst"
+
+#: app/templates/base.html:213
+msgid "Enter the 6-digit verification code the sender shared with you."
+msgstr ""
+"Voer de 6-cijferige verificatiecode in die de afzender met je heeft "
+"gedeeld."
+
+#: app/templates/base.html:214
+msgid "A 6-digit code has been sent if your e-mail is allowed."
+msgstr "Als je e-mailadres is toegestaan, is er een 6-cijferige code verzonden."
+
+#: app/templates/base.html:215
+msgid "Could not request a code."
+msgstr "Kan geen code opvragen."
+
+#: app/templates/base.html:216
+msgid "Decrypt & download"
+msgstr "Ontsleutelen & downloaden"
+
+#: app/templates/base.html:217
+msgid "Saved"
+msgstr "Opgeslagen"
+
+#: app/templates/admin/email_test.html:25 app/templates/base.html:218
+msgid "Failed"
+msgstr "Mislukt"
+
+#: app/templates/base.html:219
+msgid "Preparing…"
+msgstr "Voorbereiden…"
+
+#: app/templates/base.html:220
+msgid "Copied"
+msgstr "Gekopieerd"
+
+#: app/templates/base.html:221 app/templates/main/index.html:156
+#: app/templates/main/index.html:171 app/templates/messages/view.html:74
+msgid "Copy"
+msgstr "Kopiëren"
+
+#: app/templates/base.html:222
+msgid "Invalid e-mail or verification code."
+msgstr "Ongeldig e-mailadres of verificatiecode."
+
+#: app/templates/base.html:223
+msgid "Could not retrieve the message."
+msgstr "Kan het bericht niet ophalen."
 
 #: app/templates/admin/_layout.html:6 app/templates/admin/dashboard.html:18
 msgid "Overview"
@@ -438,14 +558,14 @@ msgstr ""
 msgid "Database"
 msgstr "Database"
 
-#: app/templates/admin/dashboard.html:55 app/templates/messages/view.html:78
+#: app/templates/admin/dashboard.html:55 app/templates/main/index.html:86
+#: app/templates/messages/view.html:82
 msgid "Attachments"
 msgstr "Bijlagen"
 
 #: app/templates/admin/dashboard.html:57
-#, fuzzy
 msgid "files"
-msgstr "keer"
+msgstr "bestanden"
 
 #: app/templates/admin/dashboard.html:62
 msgid "Total on disk"
@@ -498,10 +618,6 @@ msgid ""
 "destination address."
 msgstr ""
 
-#: app/templates/admin/email_test.html:25
-msgid "Failed"
-msgstr ""
-
 #: app/templates/admin/email_test.html:36
 msgid "Active configuration"
 msgstr ""
@@ -549,7 +665,7 @@ msgid "Reply address"
 msgstr ""
 
 #: app/templates/admin/feedback_detail.html:15
-#: app/templates/admin/feedback_list.html:13 app/templates/main/index.html:22
+#: app/templates/admin/feedback_list.html:13 app/templates/main/index.html:34
 msgid "Message"
 msgstr "Bericht"
 
@@ -603,7 +719,7 @@ msgstr ""
 msgid "Lock"
 msgstr ""
 
-#: app/templates/admin/users.html:20 app/templates/messages/view.html:54
+#: app/templates/admin/users.html:20 app/templates/messages/view.html:58
 msgid "Unlock"
 msgstr "Ontgrendelen"
 
@@ -618,7 +734,6 @@ msgid ""
 msgstr ""
 
 #: app/templates/auth/2fa_backup_codes.html:14
-#: app/templates/main/index.html:165
 msgid "Done"
 msgstr "Klaar"
 
@@ -733,65 +848,79 @@ msgstr ""
 msgid "Cookie policy"
 msgstr ""
 
-#: app/templates/legal/cookies.html:7
+#: app/templates/legal/cookies.html:7 app/templates/legal/privacy.html:7
+#: app/templates/legal/security.html:7
+msgid "Last updated"
+msgstr ""
+
+#: app/templates/legal/cookies.html:8
 #, python-format
 msgid ""
 "%(name)s uses only essential cookies — required for the application to "
 "function. No tracking or advertising cookies are used."
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Cookie"
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Purpose"
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Lifetime"
 msgstr ""
 
-#: app/templates/legal/cookies.html:14
-msgid "Keeps you signed in and protects forms"
-msgstr ""
+#: app/templates/legal/cookies.html:15
+msgid "Keeps you signed in and protects forms (CSRF)"
+msgstr "Houdt je ingelogd en beschermt formulieren (CSRF)"
 
-#: app/templates/legal/cookies.html:14
+#: app/templates/legal/cookies.html:15
 msgid "Session / 8h"
 msgstr ""
 
-#: app/templates/legal/cookies.html:15
+#: app/templates/legal/cookies.html:16
 msgid "Remembers your preferred language"
 msgstr ""
 
-#: app/templates/legal/cookies.html:15
+#: app/templates/legal/cookies.html:16
 msgid "year"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17 app/templates/legal/cookies.html:19
 msgid "localStorage"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17
 msgid "Remembers light / dark preference"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17 app/templates/legal/cookies.html:19
 msgid "Until cleared"
 msgstr ""
 
-#: app/templates/legal/cookies.html:20
+#: app/templates/legal/cookies.html:19
+msgid "Remembers that you dismissed the cookie notice"
+msgstr "Onthoudt dat je de cookie-melding hebt weggeklikt"
+
+#: app/templates/legal/cookies.html:24
 msgid ""
 "Because we use only essential cookies, a cookie banner is not legally "
 "required under GDPR/ePrivacy."
 msgstr ""
 
+#: app/templates/legal/cookies.html:25
+msgid ""
+"All CSS, JavaScript and fonts are served from this server. No third-party"
+" tracking, analytics or CDN requests happen at runtime."
+msgstr ""
+"Alle CSS, JavaScript en lettertypen worden vanaf deze server geserveerd. "
+"Er vinden tijdens gebruik geen verzoeken naar tracking, analytics of "
+"CDN's plaats."
+
 #: app/templates/legal/privacy.html:6
 msgid "Privacy policy"
-msgstr ""
-
-#: app/templates/legal/privacy.html:7
-msgid "Last updated"
 msgstr ""
 
 #: app/templates/legal/privacy.html:9
@@ -866,17 +995,17 @@ msgstr ""
 msgid "Security policy"
 msgstr ""
 
-#: app/templates/legal/security.html:7
+#: app/templates/legal/security.html:8
 msgid ""
 "We take security seriously. If you find a vulnerability, please report it"
 " privately to the address listed in our"
 msgstr ""
 
-#: app/templates/legal/security.html:9
+#: app/templates/legal/security.html:10
 msgid "Encryption model"
 msgstr ""
 
-#: app/templates/legal/security.html:10
+#: app/templates/legal/security.html:11
 msgid ""
 "Messages are encrypted in your browser with AES-256-GCM. The 256-bit key "
 "is generated client-side and lives only in the URL fragment, which "
@@ -885,24 +1014,78 @@ msgid ""
 msgstr ""
 
 #: app/templates/legal/security.html:12
+msgid ""
+"Attachments are encrypted with the same key as the message body, using a "
+"fresh AES-GCM nonce per file. The server only ever sees opaque ciphertext"
+" blobs — the original filename, MIME-type and contents are part of the "
+"encrypted payload and are invisible to the operator."
+msgstr ""
+"Bijlagen worden versleuteld met dezelfde sleutel als het bericht, met een"
+" verse AES-GCM nonce per bestand. De server ziet alleen ondoorzichtige "
+"ciphertext — de oorspronkelijke bestandsnaam, MIME-type en inhoud zitten "
+"in de versleutelde payload en zijn onzichtbaar voor de beheerder."
+
+#: app/templates/legal/security.html:14
 msgid "Account security"
 msgstr ""
 
-#: app/templates/legal/security.html:14
+#: app/templates/legal/security.html:16
 msgid "Passwords hashed with argon2id"
 msgstr ""
 
-#: app/templates/legal/security.html:15
+#: app/templates/legal/security.html:17
 msgid "Optional TOTP-based two-factor authentication with backup codes"
 msgstr ""
 
-#: app/templates/legal/security.html:16
+#: app/templates/legal/security.html:18
 msgid "Mandatory 2FA for administrative accounts (enforced on first login)"
 msgstr ""
 
-#: app/templates/legal/security.html:17
-msgid "CSRF protection, secure session cookies, strict Content-Security-Policy"
+#: app/templates/legal/security.html:19
+msgid "Recipient e-mail addresses are stored only as keyed HMAC-SHA256 hashes"
 msgstr ""
+"E-mailadressen van ontvangers worden alleen opgeslagen als keyed HMAC-"
+"SHA256-hashes"
+
+#: app/templates/legal/security.html:20
+msgid ""
+"Server-side metadata (TOTP secrets, backup codes) is encrypted at rest "
+"with a dedicated key"
+msgstr ""
+"Server-side metadata (TOTP-secrets, backup-codes) wordt versleuteld "
+"opgeslagen met een aparte sleutel"
+
+#: app/templates/legal/security.html:23
+msgid "Transport and browser hardening"
+msgstr "Transport- en browserbeveiliging"
+
+#: app/templates/legal/security.html:25
+msgid ""
+"Strict Content-Security-Policy with per-request nonces — third-party or "
+"injected scripts cannot execute"
+msgstr ""
+"Strikte Content-Security-Policy met nonces per request — externe of "
+"geïnjecteerde scripts kunnen niet draaien"
+
+#: app/templates/legal/security.html:26
+msgid "CSRF protection on every state-changing request"
+msgstr "CSRF-bescherming op elke statuswijzigende request"
+
+#: app/templates/legal/security.html:27
+msgid "HTTP-only / SameSite session cookies"
+msgstr "HTTP-only / SameSite session cookies"
+
+#: app/templates/legal/security.html:28
+msgid ""
+"All CSS, JavaScript and fonts are vendored and served from this server — "
+"no CDN, no third-party requests at runtime"
+msgstr ""
+"Alle CSS, JavaScript en lettertypen zijn vendored en worden vanaf deze "
+"server geserveerd — geen CDN, geen externe verzoeken tijdens gebruik"
+
+#: app/templates/legal/security.html:29
+msgid "HSTS is set when the application is configured for HTTPS"
+msgstr "HSTS wordt ingesteld wanneer de applicatie voor HTTPS is geconfigureerd"
 
 #: app/templates/main/about.html:6
 #, python-format
@@ -917,6 +1100,10 @@ msgid ""
 "leave your device — the server cannot read them, and neither can the "
 "operator."
 msgstr ""
+"%(name)s is een open-source, zelf te hosten tool om gevoelige informatie "
+"eenmalig en veilig te delen. Berichten worden in je browser versleuteld "
+"voordat ze je apparaat verlaten — de server kan ze niet lezen, de "
+"beheerder ook niet."
 
 #: app/templates/main/about.html:9
 msgid "How it works"
@@ -961,110 +1148,118 @@ msgid "View source on GitHub"
 msgstr ""
 
 #: app/templates/main/index.html:2
-msgid "Share secrets safely"
-msgstr "Geheimen veilig delen"
+msgid "Secure message sharing"
+msgstr "Veilig berichten delen"
 
-#: app/templates/main/index.html:8
-msgid "Share a secret. Once. Safely."
-msgstr "Deel een geheim. Eén keer. Veilig."
+#: app/templates/main/index.html:6 app/templates/messages/view.html:8
+msgid "End-to-end encrypted · Zero-knowledge"
+msgstr "End-to-end versleuteld · Zero-knowledge"
 
-#: app/templates/main/index.html:10
-#, fuzzy
+#: app/templates/main/index.html:7
+msgid "Share securely."
+msgstr "Veilig delen."
+
+#: app/templates/main/index.html:7
+msgid "Send sensitive information, encrypted."
+msgstr "Verstuur gevoelige informatie versleuteld."
+
+#: app/templates/main/index.html:9
 msgid ""
-"End-to-end encrypted in your browser. Nobody — not even us — can read the"
-" message without your link and verification code."
+"End-to-end encrypted in your browser. Only readable with the unique link "
+"and verification code."
 msgstr ""
-"End-to-end versleuteld in je browser. Niemand — ook wij niet — kan het "
-"bericht lezen zonder de link."
+"End-to-end versleuteld in je browser. Alleen leesbaar met de unieke link "
+"en verificatiecode."
 
-#: app/templates/main/index.html:17
+#: app/templates/main/index.html:19
 msgid "Editor"
 msgstr "Editor"
 
-#: app/templates/main/index.html:18
+#: app/templates/main/index.html:20
 msgid "Preview"
 msgstr "Voorbeeld"
 
-#: app/templates/main/index.html:24
-msgid "Your secret message…"
-msgstr "Je geheime bericht…"
+#: app/templates/main/index.html:25
+msgid "characters"
+msgstr "karakters"
 
-#: app/templates/main/index.html:28
-msgid "Render as Markdown when opened"
-msgstr "Renderen als Markdown bij openen"
+#: app/templates/main/index.html:37
+msgid "Type or paste here — a password, a recovery phrase, or anything sensitive."
+msgstr ""
+"Typ of plak hier — een wachtwoord, recovery phrase of andere gevoelige "
+"informatie."
 
-#: app/templates/main/index.html:40
+#: app/templates/main/index.html:42
+msgid "Markdown is supported — formatting is auto-detected."
+msgstr "Markdown wordt ondersteund — opmaak wordt automatisch herkend."
+
+#: app/templates/main/index.html:52
 msgid "Expires after"
 msgstr "Verloopt na"
 
-#: app/templates/main/index.html:42
+#: app/templates/main/index.html:54
 msgid "hour"
 msgstr "uur"
 
-#: app/templates/main/index.html:43 app/templates/main/index.html:44
+#: app/templates/main/index.html:55 app/templates/main/index.html:56
 msgid "hours"
 msgstr "uur"
 
-#: app/templates/main/index.html:45 app/templates/main/index.html:46
-#: app/templates/main/index.html:47
+#: app/templates/main/index.html:57 app/templates/main/index.html:58
+#: app/templates/main/index.html:59
 msgid "days"
 msgstr "dagen"
 
-#: app/templates/main/index.html:47
+#: app/templates/main/index.html:59
 msgid "max"
 msgstr "max"
 
-#: app/templates/main/index.html:51
+#: app/templates/main/index.html:63
 msgid "Max opens"
 msgstr "Max aantal keer openen"
 
-#: app/templates/main/index.html:53
+#: app/templates/main/index.html:65
 msgid "view (burn after reading)"
 msgstr "keer (verbranden na lezen)"
 
-#: app/templates/main/index.html:54 app/templates/main/index.html:55
+#: app/templates/main/index.html:66 app/templates/main/index.html:67
 msgid "views"
 msgstr "keer"
 
-#: app/templates/main/index.html:56
+#: app/templates/main/index.html:68
 msgid "Unlimited (until expiry)"
 msgstr "Onbeperkt (tot verloop)"
 
-#: app/templates/main/index.html:60
+#: app/templates/main/index.html:72
 msgid "Allowed recipients (e-mail, optional)"
 msgstr "Toegestane ontvangers (e-mail, optioneel)"
 
-#: app/templates/main/index.html:65
+#: app/templates/main/index.html:77
 msgid ""
-"Leave empty to generate a 6-digit verification code instead. Otherwise a "
-"code will be sent to the recipient(s) (more secure!)"
+"Leave empty to generate a random verification code. Enter an e-mail "
+"address to have the code sent to the recipient by e-mail."
 msgstr ""
-"Laat leeg om in plaats daarvan een 6-cijferige verificatiecode te "
-"genereren. Anders wordt een code naar de ontvanger(s) gestuurd "
-"(veiliger!)"
+"Laat leeg om een willekeurige verificatiecode te genereren. Vul een "
+"e-mailadres in om de ontvanger de code per e-mail te laten ontvangen."
 
-#: app/templates/main/index.html:76
-msgid "Attachments (optional)"
-msgstr "Bijlagen (optioneel)"
-
-#: app/templates/main/index.html:83
+#: app/templates/main/index.html:93
 #, python-format
 msgid "Up to %(n)d files · max %(s)s MB each · %(t)s MB total"
-msgstr ""
+msgstr "Maximaal %(n)d bestanden · max %(s)s MB per bestand · %(t)s MB totaal"
 
-#: app/templates/main/index.html:91
+#: app/templates/main/index.html:101
 msgid "Drop files here or click to choose"
 msgstr "Sleep bestanden hierheen of klik om te kiezen"
 
-#: app/templates/main/index.html:100
+#: app/templates/main/index.html:110
 msgid "Allowed file types:"
 msgstr "Toegestane bestandstypen:"
 
-#: app/templates/main/index.html:105
+#: app/templates/main/index.html:115
 msgid "Any file type is allowed by this instance."
 msgstr "Op deze installatie zijn alle bestandstypen toegestaan."
 
-#: app/templates/main/index.html:111
+#: app/templates/main/index.html:121
 msgid ""
 "We cannot scan attachments for malware — only share files from senders "
 "you trust."
@@ -1072,44 +1267,53 @@ msgstr ""
 "We kunnen bijlagen niet scannen op malware — deel alleen bestanden van "
 "afzenders die je vertrouwt."
 
-#: app/templates/main/index.html:119
-#, fuzzy
-msgid "Message and any attachments are encrypted in your browser before sending."
-msgstr "Versleuteld in je browser voordat het verzonden wordt."
+#: app/templates/main/index.html:130
+msgid "Encrypted in your browser before sending"
+msgstr "Versleuteld in je browser voordat het verzonden wordt"
 
-#: app/templates/main/index.html:120
+#: app/templates/main/index.html:133
 msgid "Create secure message"
 msgstr "Maak veilig bericht"
 
-#: app/templates/main/index.html:129
+#: app/templates/main/index.html:146
 msgid "Your secure message is ready"
 msgstr "Je veilige bericht is klaar"
 
-#: app/templates/main/index.html:134
+#: app/templates/main/index.html:150
+msgid "We only show this once — copy it now and share it with your recipient."
+msgstr ""
+"We tonen dit slechts één keer — kopieer het nu en deel het met je "
+"ontvanger."
+
+#: app/templates/main/index.html:153
 msgid "Link"
 msgstr "Link"
 
-#: app/templates/main/index.html:141
+#: app/templates/main/index.html:161
 msgid "Expires"
 msgstr "Verloopt"
 
-#: app/templates/main/index.html:145
+#: app/templates/main/index.html:168
 msgid "Verification code"
 msgstr "Verificatiecode"
 
-#: app/templates/main/index.html:150
-msgid "Share this code via a separate channel from the link."
-msgstr "Deel deze code via een ander kanaal dan de link."
-
-#: app/templates/main/index.html:158
+#: app/templates/main/index.html:181
 msgid ""
-"We only show this once. After closing this dialog, the link cannot be "
-"recovered from our database."
+"Share the link via one channel and the verification code via another — "
+"chat, SMS or in person. That's the safest split."
 msgstr ""
-"We tonen dit maar één keer. Na het sluiten van dit venster kan de link "
-"niet meer worden opgehaald uit onze database."
+"Deel de link via één kanaal en de verificatiecode via een ander — chat, "
+"SMS of in persoon. Dat is de veiligste verdeling."
 
-#: app/templates/main/index.html:163
+#: app/templates/main/index.html:186
+msgid ""
+"The verification code will be sent to the recipient by e-mail. Share only"
+" the link with them."
+msgstr ""
+"De verificatiecode wordt per e-mail naar de ontvanger gestuurd. Deel "
+"alleen de link met ze."
+
+#: app/templates/main/index.html:191
 msgid "Copy all to clipboard"
 msgstr "Kopieer alles naar klembord"
 
@@ -1140,57 +1344,57 @@ msgstr "Maak een nieuw bericht"
 
 #: app/templates/messages/view.html:2
 msgid "View message"
-msgstr ""
+msgstr "Bericht bekijken"
 
-#: app/templates/messages/view.html:16
+#: app/templates/messages/view.html:19
 msgid "Secure message"
 msgstr "Veilig bericht"
 
-#: app/templates/messages/view.html:26
+#: app/templates/messages/view.html:29
 msgid ""
 "This link is missing the decryption key. Make sure you copied the full "
 "URL, including the part after the #."
 msgstr ""
+"De ontsleutelingssleutel ontbreekt in deze link. Controleer of je de "
+"volledige URL hebt gekopieerd, inclusief het deel achter de #."
 
-#: app/templates/messages/view.html:32
+#: app/templates/messages/view.html:35
 msgid ""
 "This message is restricted to specific recipients. Enter your e-mail "
 "address to receive a verification code."
 msgstr ""
+"Dit bericht is alleen toegankelijk voor specifieke ontvangers. Vul je "
+"e-mailadres in om een verificatiecode te ontvangen."
 
-#: app/templates/messages/view.html:35
+#: app/templates/messages/view.html:38
 msgid "Your e-mail"
 msgstr "Je e-mailadres"
 
-#: app/templates/messages/view.html:39
+#: app/templates/messages/view.html:42
 msgid "Send code"
 msgstr "Stuur code"
 
-#: app/templates/messages/view.html:61
+#: app/templates/messages/view.html:65
 msgid "Click below to decrypt this message in your browser."
 msgstr "Klik hieronder om dit bericht in je browser te ontsleutelen."
 
-#: app/templates/messages/view.html:62
+#: app/templates/messages/view.html:66
 msgid "Reveal message"
 msgstr "Toon bericht"
 
-#: app/templates/messages/view.html:68
+#: app/templates/messages/view.html:72
 msgid "Decrypted message"
 msgstr "Ontsleuteld bericht"
 
-#: app/templates/messages/view.html:70
-msgid "Copy"
-msgstr "Kopiëren"
-
-#: app/templates/messages/view.html:71
+#: app/templates/messages/view.html:75
 msgid "Burn now"
 msgstr "Direct verbranden"
 
-#: app/templates/messages/view.html:80
+#: app/templates/messages/view.html:84
 msgid "Download all (zip)"
 msgstr "Alles downloaden (zip)"
 
-#: app/templates/messages/view.html:86
+#: app/templates/messages/view.html:90
 msgid ""
 "We cannot scan attachments for malware. Only download files from senders "
 "you trust."
@@ -1198,7 +1402,7 @@ msgstr ""
 "We kunnen bijlagen niet scannen op malware. Download alleen bestanden van"
 " afzenders die je vertrouwt."
 
-#: app/templates/messages/view.html:92
+#: app/templates/messages/view.html:96
 msgid "Destroy this message when I leave the page"
 msgstr "Verwijder dit bericht zodra ik de pagina verlaat"
 
@@ -1279,4 +1483,87 @@ msgstr "Verwijder dit bericht zodra ik de pagina verlaat"
 #~ " Only open files from senders you "
 #~ "trust."
 #~ msgstr ""
+
+#~ msgid "Zero-knowledge encryption"
+#~ msgstr "Zero-knowledge encryptie"
+
+#~ msgid "Your secret message…"
+#~ msgstr "Je geheime bericht…"
+
+#~ msgid "Attachments (optional)"
+#~ msgstr "Bijlagen (optioneel)"
+
+#~ msgid "Share this code via a separate channel from the link."
+#~ msgstr "Deel deze code via een ander kanaal dan de link."
+
+#~ msgid ""
+#~ "We only show this once. After "
+#~ "closing this dialog, the link cannot "
+#~ "be recovered from our database."
+#~ msgstr ""
+#~ "We tonen dit maar één keer. Na "
+#~ "het sluiten van dit venster kan de"
+#~ " link niet meer worden opgehaald uit"
+#~ " onze database."
+
+#~ msgid ""
+#~ "Type or paste your secret here…\n"
+#~ "Anything from a password to a "
+#~ "recovery phrase. We can't see it —"
+#~ " and after a few opens or 30"
+#~ " days, neither can anyone else."
+#~ msgstr ""
+
+#~ msgid "Once. Safely."
+#~ msgstr "Deel een geheim. Eén keer. Veilig."
+
+#~ msgid ""
+#~ "Messages and attachments are encrypted "
+#~ "in your browser before they ever "
+#~ "leave your device. Nobody — not "
+#~ "even us — can read them without"
+#~ " your link and verification code."
+#~ msgstr ""
+#~ "End-to-end versleuteld in je "
+#~ "browser. Niemand — ook wij niet —"
+#~ " kan het bericht lezen zonder de "
+#~ "link."
+
+#~ msgid "Render as Markdown when opened"
+#~ msgstr "Renderen als Markdown bij openen"
+
+#~ msgid "Markdown"
+#~ msgstr "Markdown"
+
+#~ msgid "%(kb)s KB max"
+#~ msgstr "%(kb)s KB max"
+
+#~ msgid ""
+#~ "Type or paste your secret here… "
+#~ "Anything from a password to a "
+#~ "recovery phrase. We can't see it —"
+#~ " and after a few opens or 30"
+#~ " days, neither can anyone else."
+#~ msgstr ""
+#~ "Typ of plak je geheim hier… Van"
+#~ " een wachtwoord tot een recovery "
+#~ "phrase. Wij kunnen het niet zien —"
+#~ " en na een paar keer openen of"
+#~ " 30 dagen kan niemand anders dat "
+#~ "ook."
+
+#~ msgid "Create"
+#~ msgstr "Aanmaken"
+
+#~ msgid "End-to-end encrypted"
+#~ msgstr "End-to-end versleuteld"
+
+#~ msgid "Keeps you signed in and protects forms"
+#~ msgstr ""
+
+#~ msgid "CSRF protection, secure session cookies, strict Content-Security-Policy"
+#~ msgstr ""
+
+#~ msgid "Share secrets safely"
+#~ msgstr "Geheimen veilig delen"
 

@@ -111,12 +111,12 @@ msgstr "Se souvenir de moi"
 
 #: app/blueprints/auth/forms.py:20 app/templates/auth/login.html:3
 #: app/templates/auth/login.html:9 app/templates/auth/login.html:15
-#: app/templates/base.html:116
+#: app/templates/base.html:120
 msgid "Sign in"
 msgstr "Se connecter"
 
 #: app/blueprints/auth/forms.py:25 app/blueprints/auth/forms.py:58
-#: app/templates/messages/view.html:49
+#: app/templates/messages/view.html:52
 msgid "6-digit code"
 msgstr "Code à 6 chiffres"
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Reply address (optional)"
 msgstr ""
 
-#: app/blueprints/feedback/forms.py:27 app/templates/base.html:170
+#: app/blueprints/feedback/forms.py:27 app/templates/base.html:175
 #: app/templates/feedback/submit.html:3 app/templates/feedback/submit.html:7
 #: app/templates/feedback/submit.html:17
 msgid "Send feedback"
@@ -218,90 +218,212 @@ msgstr "Envoyer un retour"
 msgid "Thanks! Your feedback has been received."
 msgstr ""
 
-#: app/templates/base.html:43
-msgid "Create"
-msgstr "Créer"
+#: app/templates/base.html:47
+msgid "Start"
+msgstr "Démarrer"
 
-#: app/templates/base.html:44 app/templates/main/about.html:2
+#: app/templates/base.html:48 app/templates/main/about.html:2
 msgid "About"
 msgstr "À propos"
 
-#: app/templates/base.html:46
+#: app/templates/base.html:50
 msgid "API"
 msgstr "API"
 
-#: app/templates/admin/feedback_detail.html:12 app/templates/base.html:54
+#: app/templates/admin/feedback_detail.html:12 app/templates/base.html:58
 msgid "Language"
 msgstr "Langue"
 
-#: app/templates/base.html:75
+#: app/templates/base.html:79
 msgid "Toggle theme"
 msgstr "Changer de thème"
 
-#: app/templates/base.html:85
+#: app/templates/base.html:89
 msgid "Two-factor authentication is not enabled"
-msgstr ""
+msgstr "L'authentification à deux facteurs n'est pas activée"
 
-#: app/templates/auth/account.html:2 app/templates/base.html:89
+#: app/templates/auth/account.html:2 app/templates/base.html:93
 msgid "Account"
 msgstr "Compte"
 
 #: app/templates/auth/account.html:18 app/templates/auth/two_factor.html:3
-#: app/templates/auth/two_factor.html:9 app/templates/base.html:92
+#: app/templates/auth/two_factor.html:9 app/templates/base.html:96
 msgid "Two-factor authentication"
-msgstr ""
+msgstr "Authentification à deux facteurs"
 
-#: app/templates/base.html:94
+#: app/templates/base.html:98
 #, fuzzy
 msgid "On"
 msgstr "Terminé"
 
-#: app/templates/base.html:96
+#: app/templates/base.html:100
 msgid "Off"
-msgstr ""
+msgstr "Désactivé"
 
 #: app/templates/auth/account.html:35 app/templates/auth/change_password.html:3
-#: app/templates/auth/change_password.html:9 app/templates/base.html:100
+#: app/templates/auth/change_password.html:9 app/templates/base.html:104
 msgid "Change password"
-msgstr ""
+msgstr "Changer le mot de passe"
 
-#: app/templates/admin/dashboard.html:2 app/templates/base.html:103
+#: app/templates/admin/dashboard.html:2 app/templates/base.html:107
 msgid "Admin"
 msgstr "Admin"
 
-#: app/templates/base.html:109
+#: app/templates/base.html:113
 msgid "Sign out"
 msgstr "Se déconnecter"
 
-#: app/templates/base.html:119
+#: app/templates/base.html:123
 msgid "Sign up"
 msgstr "S'inscrire"
 
-#: app/templates/base.html:166 app/templates/legal/privacy.html:2
+#: app/templates/base.html:171 app/templates/legal/privacy.html:2
 msgid "Privacy"
 msgstr "Confidentialité"
 
-#: app/templates/base.html:167 app/templates/legal/cookies.html:2
+#: app/templates/base.html:172 app/templates/legal/cookies.html:2
 msgid "Cookies"
 msgstr "Cookies"
 
-#: app/templates/base.html:168 app/templates/legal/security.html:2
+#: app/templates/base.html:173 app/templates/legal/security.html:2
 msgid "Security"
 msgstr "Sécurité"
 
-#: app/templates/base.html:179
+#: app/templates/base.html:185
 msgid "We use only essential cookies (session, CSRF, language). No tracking."
 msgstr ""
 "Nous n'utilisons que des cookies essentiels (session, CSRF, langue). "
 "Aucun suivi."
 
-#: app/templates/base.html:179
+#: app/templates/base.html:185
 msgid "Learn more"
 msgstr "En savoir plus"
 
-#: app/templates/base.html:180
+#: app/templates/base.html:186
 msgid "OK"
 msgstr "OK"
+
+#: app/templates/base.html:195
+msgid "Theme: auto"
+msgstr "Thème : auto"
+
+#: app/templates/base.html:196
+msgid "Theme: light"
+msgstr "Thème : clair"
+
+#: app/templates/base.html:197
+msgid "Theme: dark"
+msgstr "Thème : sombre"
+
+#: app/templates/base.html:198
+msgid "Type not allowed"
+msgstr "Type non autorisé"
+
+#: app/templates/base.html:199
+msgid "Exceeds total limit"
+msgstr "Dépasse la limite totale"
+
+#: app/templates/base.html:200
+msgid "Invalid:"
+msgstr "Invalide :"
+
+#: app/templates/base.html:201
+msgid "Please enter a message."
+msgstr "Veuillez saisir un message."
+
+#: app/templates/base.html:202
+msgid "Please fix the invalid e-mail addresses:"
+msgstr "Corrigez les adresses e-mail invalides :"
+
+#: app/templates/base.html:203
+msgid "Server rejected these e-mail addresses:"
+msgstr "Le serveur a rejeté ces adresses e-mail :"
+
+#: app/templates/base.html:204
+msgid "Failed to create message:"
+msgstr "Échec de la création du message :"
+
+#: app/templates/base.html:205
+#, python-format
+msgid "%(n)s attachment(s) will be skipped due to validation errors. Continue?"
+msgstr ""
+"%(n)s pièce(s) jointe(s) seront ignorée(s) en raison d'erreurs de "
+"validation. Continuer ?"
+
+#: app/templates/base.html:206
+msgid "Link:"
+msgstr "Lien :"
+
+#: app/templates/base.html:207
+msgid "Expires:"
+msgstr "Expire :"
+
+#: app/templates/base.html:208
+msgid "Verification code:"
+msgstr "Code de vérification :"
+
+#: app/templates/base.html:209
+msgid "File name or MIME type is too long."
+msgstr "Le nom de fichier ou le type MIME est trop long."
+
+#: app/templates/base.html:210
+msgid "Unrecognised attachment format."
+msgstr "Format de pièce jointe non reconnu."
+
+#: app/templates/base.html:211
+msgid "Markdown"
+msgstr ""
+
+#: app/templates/base.html:212
+msgid "plain text"
+msgstr "texte brut"
+
+#: app/templates/base.html:213
+msgid "Enter the 6-digit verification code the sender shared with you."
+msgstr ""
+"Saisissez le code de vérification à 6 chiffres que l'expéditeur vous a "
+"communiqué."
+
+#: app/templates/base.html:214
+msgid "A 6-digit code has been sent if your e-mail is allowed."
+msgstr "Si votre adresse e-mail est autorisée, un code à 6 chiffres a été envoyé."
+
+#: app/templates/base.html:215
+msgid "Could not request a code."
+msgstr "Impossible de demander un code."
+
+#: app/templates/base.html:216
+msgid "Decrypt & download"
+msgstr "Déchiffrer et télécharger"
+
+#: app/templates/base.html:217
+msgid "Saved"
+msgstr "Enregistré"
+
+#: app/templates/admin/email_test.html:25 app/templates/base.html:218
+msgid "Failed"
+msgstr "Échec"
+
+#: app/templates/base.html:219
+msgid "Preparing…"
+msgstr "Préparation…"
+
+#: app/templates/base.html:220
+msgid "Copied"
+msgstr "Copié"
+
+#: app/templates/base.html:221 app/templates/main/index.html:156
+#: app/templates/main/index.html:171 app/templates/messages/view.html:74
+msgid "Copy"
+msgstr "Copier"
+
+#: app/templates/base.html:222
+msgid "Invalid e-mail or verification code."
+msgstr "Adresse e-mail ou code de vérification invalide."
+
+#: app/templates/base.html:223
+msgid "Could not retrieve the message."
+msgstr "Impossible de récupérer le message."
 
 #: app/templates/admin/_layout.html:6 app/templates/admin/dashboard.html:18
 msgid "Overview"
@@ -439,14 +561,14 @@ msgstr ""
 msgid "Database"
 msgstr "Base de données"
 
-#: app/templates/admin/dashboard.html:55 app/templates/messages/view.html:78
+#: app/templates/admin/dashboard.html:55 app/templates/main/index.html:86
+#: app/templates/messages/view.html:82
 msgid "Attachments"
 msgstr "Pièces jointes"
 
 #: app/templates/admin/dashboard.html:57
-#, fuzzy
 msgid "files"
-msgstr "vues"
+msgstr "fichiers"
 
 #: app/templates/admin/dashboard.html:62
 msgid "Total on disk"
@@ -499,10 +621,6 @@ msgid ""
 "destination address."
 msgstr ""
 
-#: app/templates/admin/email_test.html:25
-msgid "Failed"
-msgstr ""
-
 #: app/templates/admin/email_test.html:36
 msgid "Active configuration"
 msgstr ""
@@ -550,7 +668,7 @@ msgid "Reply address"
 msgstr ""
 
 #: app/templates/admin/feedback_detail.html:15
-#: app/templates/admin/feedback_list.html:13 app/templates/main/index.html:22
+#: app/templates/admin/feedback_list.html:13 app/templates/main/index.html:34
 msgid "Message"
 msgstr "Message"
 
@@ -604,7 +722,7 @@ msgstr ""
 msgid "Lock"
 msgstr ""
 
-#: app/templates/admin/users.html:20 app/templates/messages/view.html:54
+#: app/templates/admin/users.html:20 app/templates/messages/view.html:58
 msgid "Unlock"
 msgstr "Déverrouiller"
 
@@ -619,7 +737,6 @@ msgid ""
 msgstr ""
 
 #: app/templates/auth/2fa_backup_codes.html:14
-#: app/templates/main/index.html:165
 msgid "Done"
 msgstr "Terminé"
 
@@ -734,65 +851,78 @@ msgstr ""
 msgid "Cookie policy"
 msgstr ""
 
-#: app/templates/legal/cookies.html:7
+#: app/templates/legal/cookies.html:7 app/templates/legal/privacy.html:7
+#: app/templates/legal/security.html:7
+msgid "Last updated"
+msgstr ""
+
+#: app/templates/legal/cookies.html:8
 #, python-format
 msgid ""
 "%(name)s uses only essential cookies — required for the application to "
 "function. No tracking or advertising cookies are used."
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Cookie"
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Purpose"
 msgstr ""
 
-#: app/templates/legal/cookies.html:11
+#: app/templates/legal/cookies.html:12
 msgid "Lifetime"
 msgstr ""
 
-#: app/templates/legal/cookies.html:14
-msgid "Keeps you signed in and protects forms"
-msgstr ""
+#: app/templates/legal/cookies.html:15
+msgid "Keeps you signed in and protects forms (CSRF)"
+msgstr "Vous garde connecté et protège les formulaires (CSRF)"
 
-#: app/templates/legal/cookies.html:14
+#: app/templates/legal/cookies.html:15
 msgid "Session / 8h"
 msgstr ""
 
-#: app/templates/legal/cookies.html:15
+#: app/templates/legal/cookies.html:16
 msgid "Remembers your preferred language"
 msgstr ""
 
-#: app/templates/legal/cookies.html:15
+#: app/templates/legal/cookies.html:16
 msgid "year"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17 app/templates/legal/cookies.html:19
 msgid "localStorage"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17
 msgid "Remembers light / dark preference"
 msgstr ""
 
-#: app/templates/legal/cookies.html:16
+#: app/templates/legal/cookies.html:17 app/templates/legal/cookies.html:19
 msgid "Until cleared"
 msgstr ""
 
-#: app/templates/legal/cookies.html:20
+#: app/templates/legal/cookies.html:19
+msgid "Remembers that you dismissed the cookie notice"
+msgstr "Mémorise que vous avez fermé l'avis cookies"
+
+#: app/templates/legal/cookies.html:24
 msgid ""
 "Because we use only essential cookies, a cookie banner is not legally "
 "required under GDPR/ePrivacy."
 msgstr ""
 
+#: app/templates/legal/cookies.html:25
+msgid ""
+"All CSS, JavaScript and fonts are served from this server. No third-party"
+" tracking, analytics or CDN requests happen at runtime."
+msgstr ""
+"Tout le CSS, JavaScript et les polices sont servis depuis ce serveur. "
+"Aucune requête de suivi, d'analyse ou de CDN n'a lieu à l'exécution."
+
 #: app/templates/legal/privacy.html:6
 msgid "Privacy policy"
-msgstr ""
-
-#: app/templates/legal/privacy.html:7
-msgid "Last updated"
 msgstr ""
 
 #: app/templates/legal/privacy.html:9
@@ -867,17 +997,17 @@ msgstr ""
 msgid "Security policy"
 msgstr ""
 
-#: app/templates/legal/security.html:7
+#: app/templates/legal/security.html:8
 msgid ""
 "We take security seriously. If you find a vulnerability, please report it"
 " privately to the address listed in our"
 msgstr ""
 
-#: app/templates/legal/security.html:9
+#: app/templates/legal/security.html:10
 msgid "Encryption model"
 msgstr ""
 
-#: app/templates/legal/security.html:10
+#: app/templates/legal/security.html:11
 msgid ""
 "Messages are encrypted in your browser with AES-256-GCM. The 256-bit key "
 "is generated client-side and lives only in the URL fragment, which "
@@ -886,24 +1016,79 @@ msgid ""
 msgstr ""
 
 #: app/templates/legal/security.html:12
+msgid ""
+"Attachments are encrypted with the same key as the message body, using a "
+"fresh AES-GCM nonce per file. The server only ever sees opaque ciphertext"
+" blobs — the original filename, MIME-type and contents are part of the "
+"encrypted payload and are invisible to the operator."
+msgstr ""
+"Les pièces jointes sont chiffrées avec la même clé que le corps du "
+"message, avec un nonce AES-GCM frais par fichier. Le serveur ne voit que "
+"des blocs chiffrés opaques — le nom de fichier, le type MIME et le "
+"contenu d'origine font partie de la charge utile chiffrée et sont "
+"invisibles pour l'opérateur."
+
+#: app/templates/legal/security.html:14
 msgid "Account security"
 msgstr ""
 
-#: app/templates/legal/security.html:14
+#: app/templates/legal/security.html:16
 msgid "Passwords hashed with argon2id"
 msgstr ""
 
-#: app/templates/legal/security.html:15
+#: app/templates/legal/security.html:17
 msgid "Optional TOTP-based two-factor authentication with backup codes"
 msgstr ""
 
-#: app/templates/legal/security.html:16
+#: app/templates/legal/security.html:18
 msgid "Mandatory 2FA for administrative accounts (enforced on first login)"
 msgstr ""
 
-#: app/templates/legal/security.html:17
-msgid "CSRF protection, secure session cookies, strict Content-Security-Policy"
+#: app/templates/legal/security.html:19
+msgid "Recipient e-mail addresses are stored only as keyed HMAC-SHA256 hashes"
 msgstr ""
+"Les adresses e-mail des destinataires ne sont stockées que sous forme de "
+"hachages HMAC-SHA256 à clé"
+
+#: app/templates/legal/security.html:20
+msgid ""
+"Server-side metadata (TOTP secrets, backup codes) is encrypted at rest "
+"with a dedicated key"
+msgstr ""
+"Les métadonnées côté serveur (secrets TOTP, codes de secours) sont "
+"chiffrées au repos avec une clé dédiée"
+
+#: app/templates/legal/security.html:23
+msgid "Transport and browser hardening"
+msgstr "Renforcement du transport et du navigateur"
+
+#: app/templates/legal/security.html:25
+msgid ""
+"Strict Content-Security-Policy with per-request nonces — third-party or "
+"injected scripts cannot execute"
+msgstr ""
+"Content-Security-Policy stricte avec nonces par requête — les scripts "
+"tiers ou injectés ne peuvent pas s'exécuter"
+
+#: app/templates/legal/security.html:26
+msgid "CSRF protection on every state-changing request"
+msgstr "Protection CSRF sur chaque requête modifiant l'état"
+
+#: app/templates/legal/security.html:27
+msgid "HTTP-only / SameSite session cookies"
+msgstr "Cookies de session HTTP-only / SameSite"
+
+#: app/templates/legal/security.html:28
+msgid ""
+"All CSS, JavaScript and fonts are vendored and served from this server — "
+"no CDN, no third-party requests at runtime"
+msgstr ""
+"Tous les fichiers CSS, JavaScript et polices sont vendorisés et servis "
+"depuis ce serveur — pas de CDN, pas de requêtes tierces à l'exécution"
+
+#: app/templates/legal/security.html:29
+msgid "HSTS is set when the application is configured for HTTPS"
+msgstr "HSTS est défini lorsque l'application est configurée pour HTTPS"
 
 #: app/templates/main/about.html:6
 #, python-format
@@ -918,6 +1103,10 @@ msgid ""
 "leave your device — the server cannot read them, and neither can the "
 "operator."
 msgstr ""
+"%(name)s est un outil open-source et auto-hébergeable pour partager des "
+"informations sensibles une seule fois et en toute sécurité. Les messages "
+"sont chiffrés dans votre navigateur avant de quitter votre appareil — le "
+"serveur ne peut pas les lire, et l'opérateur non plus."
 
 #: app/templates/main/about.html:9
 msgid "How it works"
@@ -962,109 +1151,120 @@ msgid "View source on GitHub"
 msgstr ""
 
 #: app/templates/main/index.html:2
-msgid "Share secrets safely"
-msgstr "Partagez vos secrets en toute sécurité"
+msgid "Secure message sharing"
+msgstr "Partage de messages sécurisé"
 
-#: app/templates/main/index.html:8
-msgid "Share a secret. Once. Safely."
-msgstr "Partagez un secret. Une fois. En toute sécurité."
+#: app/templates/main/index.html:6 app/templates/messages/view.html:8
+msgid "End-to-end encrypted · Zero-knowledge"
+msgstr "Chiffrement de bout en bout · Zero-knowledge"
 
-#: app/templates/main/index.html:10
-#, fuzzy
+#: app/templates/main/index.html:7
+msgid "Share securely."
+msgstr "Partage sécurisé."
+
+#: app/templates/main/index.html:7
+msgid "Send sensitive information, encrypted."
+msgstr "Envoyez des informations sensibles, chiffrées."
+
+#: app/templates/main/index.html:9
 msgid ""
-"End-to-end encrypted in your browser. Nobody — not even us — can read the"
-" message without your link and verification code."
+"End-to-end encrypted in your browser. Only readable with the unique link "
+"and verification code."
 msgstr ""
-"Chiffré de bout en bout dans votre navigateur. Personne — pas même nous —"
-" ne peut lire le message sans le lien."
+"Chiffré de bout en bout dans votre navigateur. Lisible uniquement avec le"
+" lien unique et le code de vérification."
 
-#: app/templates/main/index.html:17
+#: app/templates/main/index.html:19
 msgid "Editor"
 msgstr "Éditeur"
 
-#: app/templates/main/index.html:18
+#: app/templates/main/index.html:20
 msgid "Preview"
 msgstr "Aperçu"
 
-#: app/templates/main/index.html:24
-msgid "Your secret message…"
-msgstr "Votre message secret…"
+#: app/templates/main/index.html:25
+msgid "characters"
+msgstr "caractères"
 
-#: app/templates/main/index.html:28
-msgid "Render as Markdown when opened"
-msgstr "Afficher en Markdown à l'ouverture"
+#: app/templates/main/index.html:37
+msgid "Type or paste here — a password, a recovery phrase, or anything sensitive."
+msgstr ""
+"Tapez ou collez ici — un mot de passe, une phrase de récupération ou "
+"toute information sensible."
 
-#: app/templates/main/index.html:40
+#: app/templates/main/index.html:42
+msgid "Markdown is supported — formatting is auto-detected."
+msgstr ""
+"Le Markdown est pris en charge — la mise en forme est détectée "
+"automatiquement."
+
+#: app/templates/main/index.html:52
 msgid "Expires after"
 msgstr "Expire après"
 
-#: app/templates/main/index.html:42
+#: app/templates/main/index.html:54
 msgid "hour"
 msgstr "heure"
 
-#: app/templates/main/index.html:43 app/templates/main/index.html:44
+#: app/templates/main/index.html:55 app/templates/main/index.html:56
 msgid "hours"
 msgstr "heures"
 
-#: app/templates/main/index.html:45 app/templates/main/index.html:46
-#: app/templates/main/index.html:47
+#: app/templates/main/index.html:57 app/templates/main/index.html:58
+#: app/templates/main/index.html:59
 msgid "days"
 msgstr "jours"
 
-#: app/templates/main/index.html:47
+#: app/templates/main/index.html:59
 msgid "max"
 msgstr "max"
 
-#: app/templates/main/index.html:51
+#: app/templates/main/index.html:63
 msgid "Max opens"
 msgstr "Ouvertures max"
 
-#: app/templates/main/index.html:53
+#: app/templates/main/index.html:65
 msgid "view (burn after reading)"
 msgstr "vue (détruire après lecture)"
 
-#: app/templates/main/index.html:54 app/templates/main/index.html:55
+#: app/templates/main/index.html:66 app/templates/main/index.html:67
 msgid "views"
 msgstr "vues"
 
-#: app/templates/main/index.html:56
+#: app/templates/main/index.html:68
 msgid "Unlimited (until expiry)"
 msgstr "Illimité (jusqu'à expiration)"
 
-#: app/templates/main/index.html:60
+#: app/templates/main/index.html:72
 msgid "Allowed recipients (e-mail, optional)"
 msgstr "Destinataires autorisés (e-mail, optionnel)"
 
-#: app/templates/main/index.html:65
+#: app/templates/main/index.html:77
 msgid ""
-"Leave empty to generate a 6-digit verification code instead. Otherwise a "
-"code will be sent to the recipient(s) (more secure!)"
+"Leave empty to generate a random verification code. Enter an e-mail "
+"address to have the code sent to the recipient by e-mail."
 msgstr ""
-"Laissez vide pour générer un code de vérification à 6 chiffres. Sinon, un"
-" code sera envoyé au(x) destinataire(s) (plus sûr !)"
+"Laissez vide pour générer un code de vérification aléatoire. Saisissez "
+"une adresse e-mail pour que le destinataire reçoive le code par e-mail."
 
-#: app/templates/main/index.html:76
-msgid "Attachments (optional)"
-msgstr "Pièces jointes (optionnel)"
-
-#: app/templates/main/index.html:83
+#: app/templates/main/index.html:93
 #, python-format
 msgid "Up to %(n)d files · max %(s)s MB each · %(t)s MB total"
-msgstr ""
+msgstr "Jusqu'à %(n)d fichiers · max %(s)s Mo par fichier · %(t)s Mo au total"
 
-#: app/templates/main/index.html:91
+#: app/templates/main/index.html:101
 msgid "Drop files here or click to choose"
 msgstr "Déposez des fichiers ici ou cliquez pour choisir"
 
-#: app/templates/main/index.html:100
+#: app/templates/main/index.html:110
 msgid "Allowed file types:"
 msgstr "Types de fichiers autorisés :"
 
-#: app/templates/main/index.html:105
+#: app/templates/main/index.html:115
 msgid "Any file type is allowed by this instance."
 msgstr "Cette instance autorise tous les types de fichiers."
 
-#: app/templates/main/index.html:111
+#: app/templates/main/index.html:121
 msgid ""
 "We cannot scan attachments for malware — only share files from senders "
 "you trust."
@@ -1072,44 +1272,53 @@ msgstr ""
 "Nous ne pouvons pas analyser les pièces jointes — ne partagez que des "
 "fichiers provenant d'expéditeurs de confiance."
 
-#: app/templates/main/index.html:119
-#, fuzzy
-msgid "Message and any attachments are encrypted in your browser before sending."
-msgstr "Chiffré dans votre navigateur avant l'envoi."
+#: app/templates/main/index.html:130
+msgid "Encrypted in your browser before sending"
+msgstr "Chiffré dans votre navigateur avant l'envoi"
 
-#: app/templates/main/index.html:120
+#: app/templates/main/index.html:133
 msgid "Create secure message"
 msgstr "Créer un message sécurisé"
 
-#: app/templates/main/index.html:129
+#: app/templates/main/index.html:146
 msgid "Your secure message is ready"
 msgstr "Votre message sécurisé est prêt"
 
-#: app/templates/main/index.html:134
+#: app/templates/main/index.html:150
+msgid "We only show this once — copy it now and share it with your recipient."
+msgstr ""
+"Nous ne l'affichons qu'une fois — copiez-le maintenant et partagez-le "
+"avec votre destinataire."
+
+#: app/templates/main/index.html:153
 msgid "Link"
 msgstr "Lien"
 
-#: app/templates/main/index.html:141
+#: app/templates/main/index.html:161
 msgid "Expires"
 msgstr "Expire"
 
-#: app/templates/main/index.html:145
+#: app/templates/main/index.html:168
 msgid "Verification code"
 msgstr "Code de vérification"
 
-#: app/templates/main/index.html:150
-msgid "Share this code via a separate channel from the link."
-msgstr "Partagez ce code par un canal différent du lien."
-
-#: app/templates/main/index.html:158
+#: app/templates/main/index.html:181
 msgid ""
-"We only show this once. After closing this dialog, the link cannot be "
-"recovered from our database."
+"Share the link via one channel and the verification code via another — "
+"chat, SMS or in person. That's the safest split."
 msgstr ""
-"Nous l'affichons une seule fois. Après la fermeture, le lien ne peut plus"
-" être récupéré de notre base de données."
+"Partagez le lien par un canal et le code de vérification par un autre — "
+"chat, SMS ou en personne. C'est la répartition la plus sûre."
 
-#: app/templates/main/index.html:163
+#: app/templates/main/index.html:186
+msgid ""
+"The verification code will be sent to the recipient by e-mail. Share only"
+" the link with them."
+msgstr ""
+"Le code de vérification sera envoyé au destinataire par e-mail. Ne "
+"partagez que le lien avec lui."
+
+#: app/templates/main/index.html:191
 msgid "Copy all to clipboard"
 msgstr "Tout copier"
 
@@ -1140,57 +1349,57 @@ msgstr "Créer un nouveau message"
 
 #: app/templates/messages/view.html:2
 msgid "View message"
-msgstr ""
+msgstr "Voir le message"
 
-#: app/templates/messages/view.html:16
+#: app/templates/messages/view.html:19
 msgid "Secure message"
 msgstr "Message sécurisé"
 
-#: app/templates/messages/view.html:26
+#: app/templates/messages/view.html:29
 msgid ""
 "This link is missing the decryption key. Make sure you copied the full "
 "URL, including the part after the #."
 msgstr ""
+"La clé de déchiffrement manque dans ce lien. Assurez-vous d'avoir copié "
+"l'URL complète, y compris la partie après le #."
 
-#: app/templates/messages/view.html:32
+#: app/templates/messages/view.html:35
 msgid ""
 "This message is restricted to specific recipients. Enter your e-mail "
 "address to receive a verification code."
 msgstr ""
+"Ce message est réservé à des destinataires spécifiques. Saisissez votre "
+"adresse e-mail pour recevoir un code de vérification."
 
-#: app/templates/messages/view.html:35
+#: app/templates/messages/view.html:38
 msgid "Your e-mail"
 msgstr "Votre e-mail"
 
-#: app/templates/messages/view.html:39
+#: app/templates/messages/view.html:42
 msgid "Send code"
 msgstr "Envoyer le code"
 
-#: app/templates/messages/view.html:61
+#: app/templates/messages/view.html:65
 msgid "Click below to decrypt this message in your browser."
 msgstr "Cliquez ci-dessous pour déchiffrer ce message dans votre navigateur."
 
-#: app/templates/messages/view.html:62
+#: app/templates/messages/view.html:66
 msgid "Reveal message"
 msgstr "Afficher le message"
 
-#: app/templates/messages/view.html:68
+#: app/templates/messages/view.html:72
 msgid "Decrypted message"
 msgstr "Message déchiffré"
 
-#: app/templates/messages/view.html:70
-msgid "Copy"
-msgstr "Copier"
-
-#: app/templates/messages/view.html:71
+#: app/templates/messages/view.html:75
 msgid "Burn now"
 msgstr "Détruire maintenant"
 
-#: app/templates/messages/view.html:80
+#: app/templates/messages/view.html:84
 msgid "Download all (zip)"
 msgstr "Tout télécharger (zip)"
 
-#: app/templates/messages/view.html:86
+#: app/templates/messages/view.html:90
 msgid ""
 "We cannot scan attachments for malware. Only download files from senders "
 "you trust."
@@ -1198,7 +1407,7 @@ msgstr ""
 "Nous ne pouvons pas analyser les pièces jointes. Ne téléchargez que des "
 "fichiers d'expéditeurs de confiance."
 
-#: app/templates/messages/view.html:92
+#: app/templates/messages/view.html:96
 msgid "Destroy this message when I leave the page"
 msgstr "Détruire ce message quand je quitte la page"
 
@@ -1279,4 +1488,87 @@ msgstr "Détruire ce message quand je quitte la page"
 #~ " Only open files from senders you "
 #~ "trust."
 #~ msgstr ""
+
+#~ msgid "Zero-knowledge encryption"
+#~ msgstr "Chiffrement à divulgation nulle"
+
+#~ msgid "Your secret message…"
+#~ msgstr "Votre message secret…"
+
+#~ msgid "Attachments (optional)"
+#~ msgstr "Pièces jointes (optionnel)"
+
+#~ msgid "Share this code via a separate channel from the link."
+#~ msgstr "Partagez ce code par un canal différent du lien."
+
+#~ msgid ""
+#~ "We only show this once. After "
+#~ "closing this dialog, the link cannot "
+#~ "be recovered from our database."
+#~ msgstr ""
+#~ "Nous l'affichons une seule fois. Après"
+#~ " la fermeture, le lien ne peut "
+#~ "plus être récupéré de notre base "
+#~ "de données."
+
+#~ msgid ""
+#~ "Type or paste your secret here…\n"
+#~ "Anything from a password to a "
+#~ "recovery phrase. We can't see it —"
+#~ " and after a few opens or 30"
+#~ " days, neither can anyone else."
+#~ msgstr ""
+
+#~ msgid "Once. Safely."
+#~ msgstr "Partagez un secret. Une fois. En toute sécurité."
+
+#~ msgid ""
+#~ "Messages and attachments are encrypted "
+#~ "in your browser before they ever "
+#~ "leave your device. Nobody — not "
+#~ "even us — can read them without"
+#~ " your link and verification code."
+#~ msgstr ""
+#~ "Chiffré de bout en bout dans votre"
+#~ " navigateur. Personne — pas même nous"
+#~ " — ne peut lire le message sans"
+#~ " le lien."
+
+#~ msgid "Render as Markdown when opened"
+#~ msgstr "Afficher en Markdown à l'ouverture"
+
+#~ msgid "Markdown"
+#~ msgstr "Markdown"
+
+#~ msgid "%(kb)s KB max"
+#~ msgstr "%(kb)s Ko max"
+
+#~ msgid ""
+#~ "Type or paste your secret here… "
+#~ "Anything from a password to a "
+#~ "recovery phrase. We can't see it —"
+#~ " and after a few opens or 30"
+#~ " days, neither can anyone else."
+#~ msgstr ""
+#~ "Tapez ou collez votre secret ici… "
+#~ "Un mot de passe, une phrase de "
+#~ "récupération… Nous ne pouvons pas le "
+#~ "voir — et après quelques ouvertures "
+#~ "ou 30 jours, personne d'autre non "
+#~ "plus."
+
+#~ msgid "Create"
+#~ msgstr "Créer"
+
+#~ msgid "End-to-end encrypted"
+#~ msgstr "Chiffré de bout en bout"
+
+#~ msgid "Keeps you signed in and protects forms"
+#~ msgstr ""
+
+#~ msgid "CSRF protection, secure session cookies, strict Content-Security-Policy"
+#~ msgstr ""
+
+#~ msgid "Share secrets safely"
+#~ msgstr "Partagez vos secrets en toute sécurité"
 

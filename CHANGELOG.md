@@ -5,6 +5,81 @@ All notable changes to OpenKeepr are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] — 2026-05-19
+
+### Added
+
+- **Glassmorphism redesign** — every page (composer, viewer, admin, auth)
+  has been re-skinned. New aurora-gradient background, frosted-glass cards,
+  a pill-shaped sticky navigation, and an Apple-inspired typography pass.
+  Light and dark palettes are both tuned by hand; high-contrast text is
+  preserved on every surface.
+- **Markdown auto-detection** — the composer no longer needs a "render as
+  Markdown" switch. The preview detects formatting on the fly and the
+  recipient sees the message in the same style the sender wrote.
+- **Live character counter** in the composer (multi-language), with subtle
+  amber and red states as the message approaches the size cap.
+- **"Markdown is supported" hint** beneath the textarea so first-time
+  senders know they can use formatting.
+- **Vendor-asset auto-bootstrap** — on a fresh checkout, the application
+  downloads any missing CSS / JS / font files from `scripts/fetch_assets.py`
+  the first time it starts. No more separate manual step before `python
+  run.py` works.
+- **Per-request CSP nonce** — inline scripts (theme persistence, the
+  client-side i18n bundle, composer configuration) now receive a fresh
+  random nonce and are explicitly allowed by the Content-Security-Policy.
+  Third-party or injected scripts remain blocked.
+- **Client-side translation pipeline** — every string the JavaScript layer
+  renders to the user (theme labels, error messages, attachment-button
+  states, verification prompts) is now translated server-side and exposed
+  through `window.__OKP_I18N`, with fallback to English when a translation
+  is missing.
+
+### Changed
+
+- **Result modal copy** is now context-aware: when the sender added a
+  recipient e-mail, the dialog explains that the verification code will be
+  e-mailed automatically. When no recipient is set, it explains how to
+  share the link and code through separate channels.
+- **Verification code field** uses a centred, letter-spaced mono font in
+  both the result modal and the viewer code-entry form for easier copying.
+- **Footer** has been re-skinned to a frosted pill that matches the
+  navigation.
+- **Dutch translations** no longer use "geheim"; copy across the app
+  refers to "gevoelige informatie" instead.
+- **Composer help text** under the recipient field now reads "Leave empty
+  to generate a random verification code. Enter an e-mail address to have
+  the code sent to the recipient by e-mail." (multi-language).
+- **"Create" navigation entry** is now labelled "Start" — friendlier in
+  every language than the previous literal translations.
+- **Translation seeder** now overwrites entries flagged `fuzzy` by Babel.
+  Babel's automatic similarity-matching of new strings to existing ones
+  used to leak unintended translations (e.g. "characters" → "Aanmaken"
+  in NL); seeder canonical values now win.
+
+### Fixed
+
+- **Dark-mode persistence**: the inline theme-bootstrap script was being
+  silently blocked by the strict Content-Security-Policy, so the saved
+  preference was thrown away on every page refresh. Fixed by introducing
+  a per-request CSP nonce.
+- **Theme toggle now flips on the first click** in every state. The old
+  three-state cycle (auto → dark → auto) could land back on the same
+  visual theme, making the first click look like a no-op when the OS
+  preference happened to match the saved choice.
+- **Attachments chevron** no longer renders pointing up on first paint.
+- **Translations**: many strings that fell back to English in v1.2.0
+  (recipient-email prompt, attachment hints, viewer error messages, "Copy"
+  / "Saved" / "Failed" button states, multi-line size summary) are now
+  shown in the selected language.
+
+### Security
+
+- Strict CSP is preserved end-to-end; nonces are 16-byte random tokens
+  generated per request, never reused, and never logged.
+- The seeder explicitly clears the `fuzzy` flag after replacing a
+  translation so subsequent runs don't keep re-checking the same entry.
+
 ## [1.2.0] — 2026-05-19
 
 ### Added
@@ -157,5 +232,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Strict default Content-Security-Policy, HTTP-only / SameSite cookies, and
   CSRF protection on all state-changing requests.
 
+[1.3.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.3.0
+[1.2.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.2.0
 [1.1.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.1.0
 [1.0.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.0.0

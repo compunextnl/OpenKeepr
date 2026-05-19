@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OpenKeepr — redesign mockup</title>
+<style>
+/* =========================================================================
+   OpenKeepr — redesign mockup
+   Glass / aurora aesthetic. Self-contained, no external assets.
+   Toggle dark/light via the moon button (top-right).
+   ========================================================================= */
+
+:root {
+  /* Palette — light */
+  --bg-1: #f7f6ff;
+  --bg-2: #fdfbf8;
+  --ink-1: #0e1024;
+  --ink-2: #383b54;
+  --ink-3: #5b5f7d;
+  --ink-4: #8a90ac;
+  --line-strong: rgba(14,16,36,.10);
+  --line-soft:   rgba(14,16,36,.06);
+  --hairline:    rgba(14,16,36,.08);
+
+  --glass-bg:        rgba(255,255,255,.55);
+  --glass-bg-strong: rgba(255,255,255,.72);
+  --glass-edge-top:  rgba(255,255,255,.85);
+  --glass-shadow:    0 1px 1px rgba(15,18,40,.04),
+                     0 8px 24px rgba(15,18,40,.06),
+                     0 28px 60px rgba(15,18,40,.07);
+
+  --brand: #5b5bff;
+  --brand-2: #7e5bff;
+  --brand-grad: linear-gradient(135deg, #6a6bff 0%, #9d6bff 60%, #ff7bcd 100%);
+  --btn-grad: linear-gradient(180deg, #5b5bff 0%, #3f3fdc 100%);
+  --btn-shadow: 0 6px 16px rgba(63,63,220,.32), inset 0 1px 0 rgba(255,255,255,.28);
+  --btn-shadow-strong: 0 10px 24px rgba(63,63,220,.38), inset 0 1px 0 rgba(255,255,255,.30);
+  --btn-shadow-hover:  0 12px 28px rgba(63,63,220,.44), inset 0 1px 0 rgba(255,255,255,.30);
+  --accent-warm: #ff9a6b;
+
+  --aurora-1: #c7c9ff;
+  --aurora-2: #ffd2ec;
+  --aurora-3: #b9f0ea;
+  --aurora-4: #fff0c2;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+}
+
+[data-theme="dark"] {
+  --bg-1: #07071a;
+  --bg-2: #0b0a26;
+  --ink-1: #f7f6ff;
+  --ink-2: #c5c8e5;
+  --ink-3: #9aa0c2;
+  --ink-4: #717693;
+  --line-strong: rgba(255,255,255,.14);
+  --line-soft:   rgba(255,255,255,.08);
+  --hairline:    rgba(255,255,255,.10);
+
+  --glass-bg:        rgba(20,20,42,.45);
+  --glass-bg-strong: rgba(20,20,42,.65);
+  --glass-edge-top:  rgba(255,255,255,.12);
+  --glass-shadow:    0 1px 1px rgba(0,0,0,.4),
+                     0 8px 24px rgba(0,0,0,.35),
+                     0 32px 80px rgba(0,0,0,.45);
+
+  --brand: #8a8aff;
+  --brand-grad: linear-gradient(135deg, #7e7fff 0%, #b07dff 60%, #ff8ed3 100%);
+  --btn-grad: linear-gradient(180deg, #6e6eff 0%, #4848e8 100%);
+  --btn-shadow: 0 6px 16px rgba(60,60,200,.45), inset 0 1px 0 rgba(255,255,255,.18);
+  --btn-shadow-strong: 0 10px 24px rgba(60,60,200,.5), inset 0 1px 0 rgba(255,255,255,.22);
+  --btn-shadow-hover:  0 12px 28px rgba(60,60,200,.58), inset 0 1px 0 rgba(255,255,255,.22);
+
+  --aurora-1: #5e54c8;
+  --aurora-2: #7f3d8f;
+  --aurora-3: #2f7d72;
+  --aurora-4: #6b5a2a;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+               "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  color: var(--ink-1);
+  background: var(--bg-1);
+  min-height: 100vh;
+  overflow-x: hidden;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- AURORA BACKGROUND ---------- */
+.aurora {
+  position: fixed; inset: -10vmax; z-index: -1;
+  filter: blur(80px) saturate(140%);
+  opacity: .85;
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+}
+.aurora::before, .aurora::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(40vmax 40vmax at 15% 20%, var(--aurora-1) 0%, transparent 60%),
+    radial-gradient(35vmax 35vmax at 85% 15%, var(--aurora-2) 0%, transparent 60%),
+    radial-gradient(45vmax 45vmax at 75% 85%, var(--aurora-3) 0%, transparent 60%),
+    radial-gradient(30vmax 30vmax at 20% 85%, var(--aurora-4) 0%, transparent 60%);
+}
+.aurora::after { animation: aurora-spin 38s linear infinite; opacity: .55; mix-blend-mode: screen; }
+
+@keyframes aurora-drift {
+  0%   { transform: translate(-2%, -1%) scale(1); }
+  50%  { transform: translate( 2%,  1%) scale(1.05); }
+  100% { transform: translate(-1%,  2%) scale(.98); }
+}
+@keyframes aurora-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Optional grain — subtle, gives the glass a film texture */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: .9;
+  mix-blend-mode: overlay;
+}
+
+/* ---------- GLASS PRIMITIVES ---------- */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+}
+.glass::before {
+  /* hairline top highlight, makes the surface feel beveled like a key cap */
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--glass-edge-top) 0%, transparent 24%);
+  opacity: .55;
+  mix-blend-mode: screen;
+}
+.glass-strong { background: var(--glass-bg-strong); }
+
+/* ---------- NAVBAR ---------- */
+.nav {
+  position: sticky; top: 14px; z-index: 50;
+  margin: 14px auto 0; padding: 10px 18px;
+  max-width: 1100px;
+  display: flex; align-items: center; gap: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 12px 32px rgba(15,18,40,.10);
+}
+.nav .brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600; letter-spacing: -.02em; font-size: 16px;
+  color: var(--ink-1);
+}
+.nav .brand .mark {
+  width: 28px; height: 28px; border-radius: 9px;
+  background: var(--brand-grad);
+  box-shadow: 0 4px 14px rgba(91,91,255,.45);
+  position: relative; flex: 0 0 auto;
+}
+.nav .brand .mark::after {
+  content: ""; position: absolute; inset: 4px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 60%);
+}
+.nav .links { display: flex; gap: 22px; margin-left: 16px; }
+.nav .links a {
+  color: var(--ink-2); text-decoration: none; font-size: 14px; font-weight: 500;
+  padding: 6px 10px; border-radius: 8px;
+  transition: color .15s ease, background .15s ease;
+}
+.nav .links a:hover { color: var(--ink-1); background: var(--line-soft); }
+.nav .links a.active { color: var(--ink-1); background: var(--line-soft); }
+.nav .spacer { flex: 1; }
+.nav .pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px; border-radius: var(--radius-pill);
+  background: var(--line-soft); border: 1px solid var(--line-soft);
+  font-size: 13px; font-weight: 500; color: var(--ink-2);
+  cursor: pointer; transition: background .15s ease, color .15s ease;
+}
+.nav .pill:hover { background: var(--line-strong); color: var(--ink-1); }
+.nav .flag {
+  width: 18px; height: 13px; border-radius: 3px; overflow: hidden; flex: 0 0 auto;
+  box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12);
+}
+.nav .cta {
+  background: var(--btn-grad); color: white;
+  padding: 8px 16px; font-weight: 600;
+  box-shadow: var(--btn-shadow);
+  border: none;
+}
+.nav .cta:hover { filter: brightness(1.05); }
+
+/* ---------- HERO ---------- */
+.hero {
+  max-width: 1100px; margin: 64px auto 24px; padding: 0 22px;
+  text-align: center;
+}
+.hero .eyebrow {
+  display: inline-flex; gap: 8px; align-items: center;
+  padding: 6px 12px; border-radius: var(--radius-pill);
+  background: var(--glass-bg); backdrop-filter: blur(10px);
+  border: 1px solid var(--line-strong);
+  font-size: 12px; font-weight: 600; color: var(--ink-2);
+  letter-spacing: .02em; text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(15,18,40,.06);
+}
+.hero .eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(16,185,129,.18); }
+  50%      { box-shadow: 0 0 0 8px rgba(16,185,129,.0); }
+}
+.hero h1 {
+  font-size: clamp(40px, 7vw, 76px);
+  line-height: 1.02; margin: 22px auto 16px;
+  font-weight: 600; letter-spacing: -0.045em;
+  max-width: 14ch;
+  background: linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.hero h1 .accent {
+  background: var(--brand-grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.hero p.lede {
+  margin: 0 auto 36px; max-width: 60ch;
+  font-size: 18px; line-height: 1.55; color: var(--ink-3);
+  letter-spacing: -.01em;
+}
+
+/* ---------- COMPOSER CARD ---------- */
+.composer {
+  max-width: 880px; margin: 0 auto 48px; padding: 22px;
+}
+.composer .tabs {
+  display: inline-flex; gap: 4px; padding: 4px;
+  border-radius: 12px; background: var(--line-soft);
+  border: 1px solid var(--hairline);
+}
+.composer .tabs button {
+  border: 0; background: transparent;
+  padding: 6px 14px; border-radius: 9px;
+  font-size: 13px; font-weight: 500; color: var(--ink-3);
+  cursor: pointer;
+}
+.composer .tabs button.active {
+  background: var(--glass-bg-strong); color: var(--ink-1);
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset,
+              0 1px 2px rgba(15,18,40,.08);
+}
+.composer .meta-row { display: flex; align-items: center; gap: 14px; }
+.composer .meta-row .right { margin-left: auto; color: var(--ink-4); font-size: 12.5px; font-weight: 500; }
+
+.textarea-wrap {
+  margin-top: 18px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid var(--line-strong);
+  padding: 4px;
+  position: relative;
+}
+[data-theme="dark"] .textarea-wrap { background: rgba(10,10,28,.4); }
+.textarea-wrap textarea {
+  width: 100%; min-height: 220px;
+  border: 0; outline: 0; resize: vertical;
+  background: transparent;
+  font: 15px/1.6 "SF Mono","JetBrains Mono",ui-monospace,monospace;
+  color: var(--ink-1);
+  padding: 16px 18px;
+  border-radius: 12px;
+}
+.textarea-wrap textarea::placeholder { color: var(--ink-4); }
+
+.option-grid {
+  margin-top: 18px;
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 12.5px; font-weight: 600; color: var(--ink-3);
+  letter-spacing: .005em;
+}
+.input, .select {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.6);
+  border: 1px solid var(--line-strong);
+  font: 14px/1.4 inherit; color: var(--ink-1);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+[data-theme="dark"] .input, [data-theme="dark"] .select { background: rgba(15,15,32,.45); }
+.input:focus, .select:focus {
+  border-color: rgba(91,91,255,.55);
+  box-shadow: 0 0 0 4px rgba(91,91,255,.18);
+}
+.help { font-size: 12px; color: var(--ink-4); margin-top: 2px; }
+
+.attachments {
+  margin-top: 22px; padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.4);
+  border: 1px solid var(--line-strong);
+}
+[data-theme="dark"] .attachments { background: rgba(10,10,28,.3); }
+.attachments header {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  user-select: none;
+  font-size: 14px; font-weight: 600; color: var(--ink-1);
+}
+.attachments header .chev { margin-left: auto; transform: rotate(0); transition: transform .2s; color: var(--ink-3); }
+.attachments .badge {
+  background: var(--btn-grad); color: white;
+  padding: 1px 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: .02em;
+}
+
+/* Action bar */
+.action {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 22px; padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+}
+.action .note { color: var(--ink-3); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.action .note .icon { color: #10b981; }
+.button {
+  border: 0; cursor: pointer;
+  padding: 12px 22px; border-radius: 14px;
+  font-weight: 600; font-size: 14.5px; letter-spacing: -.005em;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform .12s ease, box-shadow .15s ease, filter .15s ease;
+}
+.button:active { transform: translateY(1px); }
+.button.primary {
+  background: var(--btn-grad); color: white;
+  box-shadow: var(--btn-shadow);
+  transition: background .15s ease, color .15s ease;
+}
+.button.primary:hover {
+  background: var(--line-strong);
+  color: var(--ink-1);
+  filter: brightness(1.05);
+}
+.button.primary:active { transform: none; }
+.button.ghost {
+  background: var(--line-soft); color: var(--ink-2);
+}
+.button.ghost:hover { background: var(--line-strong); color: var(--ink-1); }
+
+.action .button.primary { margin-left: auto; }
+
+/* ---------- RESULT MODAL (preview) ---------- */
+.result {
+  max-width: 540px; margin: 0 auto 64px; padding: 22px;
+}
+.result h3 {
+  margin: 0 0 4px; font-size: 17px; font-weight: 600;
+}
+.result .sub { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
+
+.kv {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-bottom: 14px;
+}
+.kv label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: var(--ink-4); letter-spacing: .04em; }
+.kv .value {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 14px; border-radius: 12px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--line-strong);
+  font: 13px/1.4 "SF Mono","JetBrains Mono",ui-monospace,monospace;
+  color: var(--ink-1); overflow: hidden;
+}
+[data-theme="dark"] .kv .value { background: rgba(10,10,28,.4); }
+.kv .value .v {
+  flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.kv .copy { background: transparent; border: 0; cursor: pointer; color: var(--ink-3); padding: 4px 6px; border-radius: 8px; }
+.kv .copy:hover { background: var(--line-strong); color: var(--ink-1); }
+.kv .code-cell {
+  letter-spacing: .15em; font-weight: 700; font-size: 16px;
+  text-align: center; padding: 14px; justify-content: center;
+}
+.warn {
+  display: flex; gap: 10px; padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(255, 246, 217, .8);
+  border: 1px solid rgba(217, 169, 24, .35);
+  color: #5c4209; font-size: 12.5px; line-height: 1.4;
+}
+[data-theme="dark"] .warn {
+  background: rgba(60, 48, 17, .5);
+  color: #f6e3a8;
+  border-color: rgba(217,169,24,.25);
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  max-width: 1100px; margin: 48px auto; padding: 16px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px; color: var(--ink-3);
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+}
+.footer a { color: var(--ink-2); text-decoration: none; }
+.footer a:hover { color: var(--ink-1); }
+.footer .spacer { flex: 1; }
+
+/* ---------- MISC ---------- */
+.icon { width: 16px; height: 16px; vertical-align: -3px; }
+.svg-glow { filter: drop-shadow(0 4px 14px rgba(91,91,255,.4)); }
+
+/* Mobile */
+@media (max-width: 720px) {
+  .nav .links { display: none; }
+  .hero { margin-top: 36px; }
+  .composer, .result { padding: 18px; }
+  .action { flex-wrap: wrap; }
+  .action .button.primary { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"></div>
+
+<!-- =================== NAV =================== -->
+<nav class="nav">
+  <div class="brand">
+    <div class="mark"></div>
+    OpenKeepr
+  </div>
+  <div class="links">
+    <a href="#" class="active">Create</a>
+    <a href="#">About</a>
+    <a href="#">API</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="pill" title="Language: Nederlands">
+    <span class="flag">
+      <svg viewBox="0 0 9 6" width="18" height="13" aria-hidden="true">
+        <rect width="9" height="2" fill="#AE1C28"/><rect y="2" width="9" height="2" fill="#fff"/><rect y="4" width="9" height="2" fill="#21468B"/>
+      </svg>
+    </span>
+    Nederlands
+  </button>
+  <button class="pill" id="theme-btn" title="Toggle theme">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="theme-label">Light</span>
+  </button>
+  <button class="pill cta">Sign in</button>
+</nav>
+
+<!-- =================== HERO =================== -->
+<section class="hero">
+  <span class="eyebrow"><span class="dot"></span> End-to-end encrypted · Zero-knowledge</span>
+  <h1>Share a secret.<br><span class="accent">Once. Safely.</span></h1>
+  <p class="lede">
+    Messages and attachments are encrypted in your browser before they ever
+    leave your device. Nobody — not even us — can read them without your
+    link and verification code.
+  </p>
+</section>
+
+<!-- =================== COMPOSER =================== -->
+<section class="composer glass">
+  <div class="meta-row">
+    <div class="tabs">
+      <button class="active">Editor</button>
+      <button>Preview</button>
+    </div>
+    <span class="right">Markdown · 256 KB max</span>
+  </div>
+
+  <div class="textarea-wrap">
+    <textarea placeholder="Type or paste your secret here…
+Anything from a password to a recovery phrase. We can't see it — and after a few opens or 30 days, neither can anyone else."></textarea>
+  </div>
+
+  <div class="option-grid">
+    <div class="field">
+      <label>Expires after</label>
+      <select class="select">
+        <option>1 hour</option>
+        <option>6 hours</option>
+        <option selected>24 hours</option>
+        <option>3 days</option>
+        <option>7 days</option>
+        <option>30 days (max)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Max opens</label>
+      <select class="select">
+        <option>1 view (burn after reading)</option>
+        <option selected>3 views</option>
+        <option>10 views</option>
+        <option>Unlimited (until expiry)</option>
+      </select>
+    </div>
+    <div class="field" style="grid-column: 1 / -1;">
+      <label>Allowed recipients (e-mail, optional)</label>
+      <input class="input" type="text" placeholder="alice@example.com, bob@example.com">
+      <div class="help">Leave empty to generate a 6-digit verification code. Otherwise a code is sent to the recipient (more secure).</div>
+    </div>
+  </div>
+
+  <div class="attachments">
+    <header>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.4a2 2 0 0 1-2.83-2.83l8.49-8.49"/></svg>
+      Attachments
+      <span class="badge">2</span>
+      <span class="chev">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+    </header>
+  </div>
+
+  <div class="action">
+    <div class="note">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+      Encrypted in your browser before sending
+    </div>
+    <button class="button primary">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Create secure message
+    </button>
+  </div>
+</section>
+
+<!-- =================== RESULT (success state preview) =================== -->
+<section class="result glass glass-strong">
+  <h3>Your secure message is ready</h3>
+  <p class="sub">We only show this once — copy it now and share it with your recipient.</p>
+
+  <div class="kv">
+    <label>Link</label>
+    <div class="value">
+      <span class="v">https://openkeepr.com/m/5DJBOaW09Bs8Y4ToZGqQiK#e6a0SNg21lwMtVYaGCe…</span>
+      <button class="copy" title="Copy link">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="kv">
+    <label>Expires</label>
+    <div class="value"><span class="v">Tomorrow, 14:51 (Europe/Amsterdam)</span></div>
+  </div>
+
+  <div class="kv">
+    <label>Verification code</label>
+    <div class="value code-cell">665689</div>
+  </div>
+
+  <div class="warn">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    Share the link via e-mail and the verification code via a separate channel — chat, SMS or in person. That's the safest split.
+  </div>
+
+  <div class="action" style="border:0; padding-top: 18px;">
+    <button class="button ghost">Done</button>
+    <button class="button primary">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Copy all to clipboard
+    </button>
+  </div>
+</section>
+
+<!-- =================== FOOTER =================== -->
+<footer class="footer glass">
+  <span>© 2026 OpenKeepr</span>
+  <a href="#">v1.2.0</a>
+  <a href="#">GitHub</a>
+  <a href="#" style="display:inline-flex; align-items:center; gap:6px;">
+    <svg class="icon" viewBox="0 0 24 24" fill="#ffdd00" stroke="#bf9000" stroke-width="1"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/></svg>
+    Buy Me a Coffee
+  </a>
+  <span class="spacer"></span>
+  <a href="#">Privacy</a>
+  <a href="#">Cookies</a>
+  <a href="#">Security</a>
+  <a href="#">Send feedback</a>
+</footer>
+
+<script>
+  // Local theme toggle just for this mockup
+  const btn = document.getElementById('theme-btn');
+  const label = document.getElementById('theme-label');
+  btn.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    label.textContent = next === 'dark' ? 'Dark' : 'Light';
+  });
+
+  // Honour OS dark mode on first paint
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    label.textContent = 'Dark';
+  }
+</script>
+</body>
+</html>

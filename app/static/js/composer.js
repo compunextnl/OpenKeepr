@@ -5,22 +5,67 @@
   var form = document.getElementById('composer');
   if (!form) return;
 
-  // Live Markdown preview
+  // Local alias for the i18n helper defined in app.js.
+  var t = (window.OpenKeepr && window.OpenKeepr.t) || function (k) { return k; };
+
   var textarea = document.getElementById('msg-text');
-  var isMd = document.getElementById('is-markdown');
+  var isMd = document.getElementById('is-markdown'); // hidden input, set automatically on submit
   var previewBtn = document.getElementById('preview-tab-btn');
   var preview = document.getElementById('markdown-preview');
+
+  // --- Markdown auto-detection ---
+  // Heuristic: any of these patterns triggers Markdown rendering. Each pattern
+  // is restrictive enough to avoid plain prose false positives.
+  var MD_PATTERNS = [
+    /^#{1,6}\s+.+/m,            // # headers
+    /\*\*[^*\n]{1,}\*\*/,       // **bold**
+    /__[^_\n]{1,}__/,           // __bold__
+    /\[[^\]]+\]\([^)\s]+\)/,    // [text](url)
+    /^```/m,                    // ``` fenced code
+    /`[^`\n]+`/,                // `inline code`
+    /^[-*+]\s+\S+/m,            // - bullet list
+    /^\s*\d+\.\s+\S+/m,         // 1. numbered list
+    /^>\s+\S+/m,                // > blockquote
+    /!\[[^\]]*\]\([^)\s]+\)/,   // ![alt](src)
+    /^\|.+\|.+$/m,              // | table | row |
+    /^-{3,}$|^\*{3,}$/m,        // --- or *** hr
+  ];
+  function detectMarkdown(text) {
+    if (!text || text.length < 3) return false;
+    for (var i = 0; i < MD_PATTERNS.length; i++) {
+      if (MD_PATTERNS[i].test(text)) return true;
+    }
+    return false;
+  }
+
+  // --- Live preview (renders as markdown if detected, plain text otherwise) ---
   function renderPreview() {
     if (!preview) return;
     var src = textarea.value || '';
-    if (isMd.checked && window.marked && window.DOMPurify) {
+    if (detectMarkdown(src) && window.marked && window.DOMPurify) {
       preview.innerHTML = DOMPurify.sanitize(marked.parse(src));
+      preview.classList.add('is-markdown');
     } else {
       preview.textContent = src;
+      preview.classList.remove('is-markdown');
     }
   }
   if (previewBtn) previewBtn.addEventListener('click', renderPreview);
-  textarea.addEventListener('input', function () { /* lazy: only when previewed */ });
+
+  // --- Live character counter ---
+  var charCount = document.getElementById('char-count');
+  function formatCount() {
+    if (!charCount) return;
+    var used = textarea.value.length;
+    var total = parseInt(charCount.dataset.total || '0', 10);
+    var label = charCount.dataset.label || 'characters';
+    var pct = total ? (used / total) : 0;
+    charCount.textContent = used.toLocaleString() + ' / ' + total.toLocaleString() + ' ' + label;
+    charCount.classList.toggle('near-limit', pct >= 0.8 && pct < 0.98);
+    charCount.classList.toggle('over-limit', pct >= 0.98);
+  }
+  textarea.addEventListener('input', formatCount);
+  formatCount();
 
   // --- Recipient input validation ---
   var EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
@@ -48,7 +93,7 @@
   recipientsInput.addEventListener('input', function () {
     var list = parseRecipients();
     var bad = list.filter(function (e) { return !EMAIL_RE.test(e); });
-    if (bad.length) showRecipientError('Invalid: ' + bad.join(', '));
+    if (bad.length) showRecipientError(t('Invalid:') + ' ' + bad.join(', '));
     else clearRecipientError();
   });
 
@@ -137,15 +182,15 @@
     var maxTotal = (window.__OKP_CFG && window.__OKP_CFG.maxTotalBytes) || (100 * 1024 * 1024);
     Array.prototype.forEach.call(fileList, function (f) {
       if (picked.length >= maxCount) {
-        picked.push({ file: f, error: 'Max ' + maxCount + ' files' });
+        picked.push({ file: f, error: t('Exceeds total limit') });
         return;
       }
       var entry = { file: f };
-      if (!fileMatchesAllowed(f)) entry.error = 'Type not allowed';
-      else if (f.size > maxFile) entry.error = 'Too large';
+      if (!fileMatchesAllowed(f)) entry.error = t('Type not allowed');
+      else if (f.size > maxFile) entry.error = t('Exceeds total limit');
       else {
         var totalSoFar = picked.reduce(function (s, e) { return s + (e.error ? 0 : e.file.size); }, 0);
-        if (totalSoFar + f.size > maxTotal) entry.error = 'Exceeds total limit';
+        if (totalSoFar + f.size > maxTotal) entry.error = t('Exceeds total limit');
       }
       picked.push(entry);
     });
@@ -215,14 +260,14 @@
     try {
       var plain = textarea.value;
       if (!plain || plain.trim().length === 0) {
-        alert('Please enter a message.');
+        alert(t('Please enter a message.'));
         return;
       }
 
       var recipients = parseRecipients();
       var bad = recipients.filter(function (e) { return !EMAIL_RE.test(e); });
       if (bad.length) {
-        showRecipientError('Please fix the invalid e-mail addresses: ' + bad.join(', '));
+        showRecipientError(t('Please fix the invalid e-mail addresses:') + ' ' + bad.join(', '));
         recipientsInput.focus();
         return;
       }
@@ -232,18 +277,23 @@
       var validAttachments = picked.filter(function (p) { return !p.error; });
       var rejectedCount = picked.length - validAttachments.length;
       if (rejectedCount > 0) {
-        if (!confirm(rejectedCount + ' attachment(s) will be skipped due to validation errors. Continue?')) {
+        var confirmMsg = t('%(n)s attachment(s) will be skipped due to validation errors. Continue?')
+                          .replace('%(n)s', rejectedCount);
+        if (!confirm(confirmMsg)) {
           return;
         }
       }
 
       var enc = await OpenKeepr.crypto.encryptString(plain);
 
+      var autoMd = detectMarkdown(plain);
+      if (isMd) isMd.value = autoMd ? 'true' : 'false';
+
       var payload = {
         ciphertext_b64: enc.ciphertext_b64,
         iv_b64:         enc.iv_b64,
         salt_b64:       enc.salt_b64,
-        is_markdown:    isMd.checked,
+        is_markdown:    autoMd,
         expires_in_hours: parseInt(document.getElementById('expires-in').value, 10),
         max_opens:        parseInt(document.getElementById('max-opens').value, 10) || null,
         recipients:       recipients,
@@ -266,15 +316,22 @@
       var codeWrap = document.getElementById('result-code-wrap');
       var codeInput = document.getElementById('result-code');
       var codeValue = res.security_code || '';
+      var warnCode  = document.getElementById('result-warning-code');
+      var warnEmail = document.getElementById('result-warning-email');
       if (codeValue) {
         codeInput.value = codeValue;
         codeWrap.classList.remove('d-none');
+        if (warnCode)  warnCode.classList.remove('d-none');
+        if (warnEmail) warnEmail.classList.add('d-none');
       } else {
         codeWrap.classList.add('d-none');
+        if (warnCode)  warnCode.classList.add('d-none');
+        // No code visible to the sender → it was e-mailed to the recipient(s).
+        if (warnEmail) warnEmail.classList.toggle('d-none', recipients.length === 0);
       }
 
-      var bundle = 'Link: ' + url + '\nExpires: ' + expiry;
-      if (codeValue) bundle += '\nVerification code: ' + codeValue;
+      var bundle = t('Link:') + ' ' + url + '\n' + t('Expires:') + ' ' + expiry;
+      if (codeValue) bundle += '\n' + t('Verification code:') + ' ' + codeValue;
       var bundleInput = document.getElementById('result-bundle');
       if (bundleInput) bundleInput.value = bundle;
 
@@ -282,15 +339,16 @@
       modal.show();
 
       textarea.value = '';
+      formatCount();
       if (preview) preview.innerHTML = '';
       picked = []; renderAttachList();
     } catch (err) {
       if (err && err.data && err.data.error === 'invalid_recipients') {
         var list = (err.data.invalid || []).join(', ');
-        showRecipientError('Server rejected these e-mail addresses: ' + list);
+        showRecipientError(t('Server rejected these e-mail addresses:') + ' ' + list);
         recipientsInput.focus();
       } else {
-        alert('Failed to create message: ' + (err && (err.message || err.error)));
+        alert(t('Failed to create message:') + ' ' + (err && (err.message || err.error)));
       }
     } finally {
       btn.disabled = false;

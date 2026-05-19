@@ -4,6 +4,15 @@
 
   var card = document.querySelector('[data-public-id]');
   if (!card) return;
+
+  // Local alias for the i18n helper defined in app.js.
+  var t = (window.OpenKeepr && window.OpenKeepr.t) || function (k) { return k; };
+  // Tiny HTML-escaper so we can safely interpolate translated strings into innerHTML.
+  function escapeText(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
   var publicId    = card.dataset.publicId;
   var reqEmail    = card.dataset.requiresEmail === 'true';
   var reqCode     = card.dataset.requiresCode === 'true';
@@ -26,14 +35,14 @@
   var contentEl  = document.getElementById('content');
   var errorEl    = document.getElementById('error');
   var meta       = document.getElementById('meta-line');
-  if (meta) meta.textContent = isMarkdown ? 'Markdown' : 'plain text';
+  if (meta) meta.textContent = isMarkdown ? t('Markdown') : t('plain text');
 
   if (reqEmail) {
     stepEmail.classList.remove('d-none');
   } else if (reqCode) {
     stepCode.classList.remove('d-none');
     if (parsed.code) document.getElementById('code-input').value = parsed.code.replace(/\D/g, '').slice(0, 6);
-    document.getElementById('code-instructions').textContent = 'Enter the 6-digit verification code the sender shared with you.';
+    document.getElementById('code-instructions').textContent = t('Enter the 6-digit verification code the sender shared with you.');
   } else {
     stepDirect.classList.remove('d-none');
   }
@@ -60,10 +69,10 @@
       await OpenKeepr.fetchJSON('/m/' + publicId + '/request-code', { method: 'POST', body: JSON.stringify({ email: email }) });
       stepEmail.classList.add('d-none');
       stepCode.classList.remove('d-none');
-      document.getElementById('code-instructions').textContent = 'A 6-digit code has been sent if your e-mail is allowed.';
+      document.getElementById('code-instructions').textContent = t('A 6-digit code has been sent if your e-mail is allowed.');
       stepCode.dataset.email = email;
     } catch (err) {
-      showError('Could not request a code.');
+      showError(t('Could not request a code.'));
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = origLabel;
@@ -162,7 +171,7 @@
 
       var btn = document.createElement('button');
       btn.type = 'button'; btn.className = 'btn btn-sm btn-outline-primary';
-      btn.innerHTML = '<i class="bi bi-download"></i> Decrypt &amp; download';
+      btn.innerHTML = '<i class="bi bi-download"></i> ' + escapeText(t('Decrypt & download'));
 
       btn.addEventListener('click', async function () {
         btn.disabled = true;
@@ -174,11 +183,11 @@
             (plain.name.replace(/</g, '&lt;')) +
             ' <span class="text-body-secondary">(' + fmtBytes(att.size) + ')</span>';
           triggerDownload(blob, plain.name);
-          btn.innerHTML = '<i class="bi bi-check2"></i> Saved';
+          btn.innerHTML = '<i class="bi bi-check2"></i> ' + escapeText(t('Saved'));
           btn.classList.remove('btn-outline-primary'); btn.classList.add('btn-outline-success');
         } catch (err) {
           btn.disabled = false;
-          btn.innerHTML = '<i class="bi bi-x"></i> Failed';
+          btn.innerHTML = '<i class="bi bi-x"></i> ' + escapeText(t('Failed'));
           btn.classList.add('btn-outline-danger');
         }
       });
@@ -192,7 +201,7 @@
       dlAll.addEventListener('click', async function () {
         dlAll.disabled = true;
         var prev = dlAll.innerHTML;
-        dlAll.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Preparing…';
+        dlAll.innerHTML = '<span class="spinner-border spinner-border-sm"></span> ' + escapeText(t('Preparing…'));
         try {
           var files = {};
           for (var i = 0; i < list.length; i++) {
@@ -206,7 +215,7 @@
           triggerDownload(new Blob([zipped], { type: 'application/zip' }), 'attachments.zip');
           dlAll.innerHTML = prev;
         } catch (err) {
-          dlAll.innerHTML = '<i class="bi bi-x"></i> Failed';
+          dlAll.innerHTML = '<i class="bi bi-x"></i> ' + escapeText(t('Failed'));
         } finally {
           dlAll.disabled = false;
         }
@@ -220,23 +229,27 @@
     var code = document.getElementById('code-input').value.trim();
     var email = stepCode.dataset.email || null;
     try { await reveal(email, code); }
-    catch (err) { showError(err && err.data && err.data.error === 'invalid_credentials' ? 'Invalid e-mail or verification code.' : 'Could not retrieve the message.'); }
+    catch (err) {
+      showError(err && err.data && err.data.error === 'invalid_credentials'
+        ? t('Invalid e-mail or verification code.')
+        : t('Could not retrieve the message.'));
+    }
   });
 
   if (stepDirect) stepDirect.addEventListener('submit', async function (e) {
     e.preventDefault();
     hideError();
     try { await reveal(null, null); }
-    catch (err) { showError('Could not retrieve the message.'); }
+    catch (err) { showError(t('Could not retrieve the message.')); }
   });
 
   // Copy button
   var copyBtn = document.getElementById('copy-btn');
   if (copyBtn) copyBtn.addEventListener('click', function () {
-    var text = contentEl.classList.contains('is-markdown') ? contentEl.innerText : contentEl.textContent;
-    navigator.clipboard.writeText(text).then(function () {
-      copyBtn.innerHTML = '<i class="bi bi-check2"></i> Copied';
-      setTimeout(function () { copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> Copy'; }, 1500);
+    var content = contentEl.classList.contains('is-markdown') ? contentEl.innerText : contentEl.textContent;
+    navigator.clipboard.writeText(content).then(function () {
+      copyBtn.innerHTML = '<i class="bi bi-check2"></i> ' + escapeText(t('Copied'));
+      setTimeout(function () { copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> ' + escapeText(t('Copy')); }, 1500);
     });
   });
 
