@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — {{ _('About') }}{% endblock %}
+{% block title %}{{ _('About') }} {{ app_name }} — {{ _('zero-knowledge encrypted messaging') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('How %(name)s keeps shared secrets safe: AES-256-GCM encryption in your browser, recipient verification and self-destructing messages.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8">

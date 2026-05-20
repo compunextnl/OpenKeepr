@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — {{ _('Security') }}{% endblock %}
+{% block title %}{{ _('Security policy') }} — {{ app_name }} {{ _('encryption and threat model') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('Security policy and threat model for %(name)s — encryption model, account hardening, and how to report vulnerabilities.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8">

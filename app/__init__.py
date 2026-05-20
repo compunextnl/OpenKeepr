@@ -281,12 +281,15 @@ def _start_scheduler(app: Flask) -> None:
 # rendered as an <img>, which works identically across Mac, Linux & Windows
 # browsers (unlike regional-indicator emoji which depend on system fonts).
 LANGUAGE_META: dict[str, dict[str, str]] = {
-    "en": {"flag": "gb", "name": "English"},
-    "nl": {"flag": "nl", "name": "Nederlands"},
-    "fr": {"flag": "fr", "name": "Français"},
-    "de": {"flag": "de", "name": "Deutsch"},
-    "es": {"flag": "es", "name": "Español"},
-    "it": {"flag": "it", "name": "Italiano"},
+    # `og` is the BCP-47-ish locale used by Open Graph / hreflang (underscore-
+    # separated language + region). `hreflang` is the public-facing tag used
+    # in <link rel="alternate" hreflang="…"> (hyphen-separated).
+    "en": {"flag": "gb", "name": "English",   "og": "en_GB", "hreflang": "en"},
+    "nl": {"flag": "nl", "name": "Nederlands","og": "nl_NL", "hreflang": "nl"},
+    "fr": {"flag": "fr", "name": "Français",  "og": "fr_FR", "hreflang": "fr"},
+    "de": {"flag": "de", "name": "Deutsch",   "og": "de_DE", "hreflang": "de"},
+    "es": {"flag": "es", "name": "Español",   "og": "es_ES", "hreflang": "es"},
+    "it": {"flag": "it", "name": "Italiano",  "og": "it_IT", "hreflang": "it"},
 }
 
 

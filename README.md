@@ -10,22 +10,26 @@ OpenKeepr lets you create a one-time, self-destructing message (a password, an A
   </a>
 </p>
 
-> **Status:** v1.3.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
+> **Status:** v1.4.0 — production-ready, but inspect the code and your own deployment before trusting it with real secrets. Security feedback welcome — see [`SECURITY.md`](SECURITY.md).
 
 ## Features
 
 - Zero-knowledge AES-256-GCM encryption (key in URL fragment, never transmitted)
+- Encrypted attachments — filename, MIME-type and contents are inside the ciphertext
 - Optional recipient e-mail allow-list with 6-digit verification codes
-- Auto-expire after N hours/days (hard cap: **30 days**)
-- Auto-expire after N opens
-- Markdown messages with live preview
-- Dark / light / system-auto theme
+- Auto-expire after N hours/days (hard cap: **30 days**) and / or N opens
+- Markdown messages with live preview — auto-detected, no toggle required
+- Dark / light / system-auto theme that persists between visits
 - 6 languages out of the box: English, Dutch, French, German, Spanish, Italian
-- Fully offline assets — no CDN
+- Glassmorphism redesign with frosted-glass UI surfaces and an aurora background
+- Fully offline assets — no CDN; vendored files auto-fetched on first start
 - REST API with scoped API keys, rate limiting and Markdown docs at `/docs/api`
 - Admin dashboard with audit log, feedback inbox, 2FA, maintenance mode
 - User feedback form (with optional GitHub redirect)
 - SQLite by default — single file, easy backups
+- SEO + sharing ready: per-language meta tags, OpenGraph / Twitter Cards,
+  hreflang alternates, sitemap.xml, robots.txt with bad-bot blocks
+- Strict Content-Security-Policy with per-request nonces — no `'unsafe-inline'`
 
 ## Quick start (local development on macOS with pyenv)
 

@@ -13,6 +13,76 @@ upstream openkeepr_app {
     server unix:/run/openkeepr/openkeepr.sock fail_timeout=0;
 }
 
+# ─── Bot policy (hard enforcement; complements /robots.txt) ─────────────────
+#
+# Map every request's User-Agent to one of three buckets:
+#   - "block"   → AI training / aggressive SEO scrapers → HTTP 403
+#   - "crawler" → search-engine bots                    → rate-limited
+#   - ""        → everyone else                         → no extra limit
+#
+# This belongs at the http {} level. If your nginx is split into
+# /etc/nginx/conf.d and /etc/nginx/sites-available, put the `map` and
+# `limit_req_zone` directives in a conf.d/bots.conf and keep this file
+# focused on the server block. They're inlined here for clarity.
+
+map $http_user_agent $okp_bot_action {
+    default                                             "";
+
+    # AI training crawlers — block entirely.
+    ~*GPTBot                                            "block";
+    ~*OAI-SearchBot                                     "block";
+    ~*ChatGPT-User                                      "block";
+    ~*ClaudeBot                                         "block";
+    ~*Claude-Web                                        "block";
+    ~*anthropic-ai                                      "block";
+    ~*Google-Extended                                   "block";
+    ~*FacebookBot                                       "block";
+    ~*Meta-ExternalAgent                                "block";
+    ~*Meta-ExternalFetcher                              "block";
+    ~*Bytespider                                        "block";
+    ~*CCBot                                             "block";
+    ~*PerplexityBot                                     "block";
+    ~*Applebot-Extended                                 "block";
+    ~*Diffbot                                           "block";
+    ~*omgili                                            "block";
+    ~*ImagesiftBot                                      "block";
+    ~*magpie-crawler                                    "block";
+    ~*YouBot                                            "block";
+
+    # Aggressive SEO scrapers — block.
+    ~*AhrefsBot                                         "block";
+    ~*MJ12bot                                           "block";
+    ~*SemrushBot                                        "block";
+    ~*DotBot                                            "block";
+    ~*BLEXBot                                           "block";
+    ~*DataForSeoBot                                     "block";
+    ~*PetalBot                                          "block";
+    ~*AspiegelBot                                       "block";
+    ~*SeekportBot                                       "block";
+    ~*ZoominfoBot                                       "block";
+    ~*BUbiNG                                            "block";
+    ~*proximic                                          "block";
+    ~*TurnitinBot                                       "block";
+    ~*MauiBot                                           "block";
+
+    # Legitimate search engines — allow but rate-limit.
+    # NOTE: Googlebot ignores nginx-side limits if it really wants to crawl;
+    # set the official rate via Google Search Console. The limit here protects
+    # against UA spoofers and slows the others.
+    ~*Googlebot                                         "crawler";
+    ~*Bingbot                                           "crawler";
+    ~*DuckDuckBot                                       "crawler";
+    ~*YandexBot                                         "crawler";
+    ~*Baiduspider                                       "crawler";
+    ~*"Slurp"                                           "crawler";  # Yahoo
+    ~*Applebot                                          "crawler";  # search bot, not Applebot-Extended
+}
+
+# Rate limit zone scoped to crawlers (key is empty for non-crawlers, so the
+# zone effectively never throttles humans). 10 requests/minute is enough for
+# search engines to index a small site and stops bots from melting the box.
+limit_req_zone $okp_bot_action zone=okp_crawlers:1m rate=10r/m;
+
 # Redirect HTTP → HTTPS
 server {
     listen 80;
@@ -48,7 +118,17 @@ server {
     client_header_timeout 10s;
     send_timeout 10s;
 
+    # --- Bot enforcement ---
+    # Bad bots are dropped at the edge with 403 — they never reach gunicorn,
+    # don't consume Flask workers, don't appear in audit logs. Search-engine
+    # crawlers fall into the limit_req zone inside `location /` below.
+    if ($okp_bot_action = "block") {
+        return 403;
+    }
+
     # --- Static files served directly by nginx (cheap & fast) ---
+    # Static assets always allowed — even crawlers need them to render the
+    # page they're indexing. No rate-limit here.
     location /static/ {
         alias /opt/openkeepr/app/static/;
         expires 30d;
@@ -56,8 +136,20 @@ server {
         add_header Cache-Control "public, immutable";
     }
 
+    # robots.txt / sitemap.xml — never rate-limit these; crawlers fetch
+    # robots.txt first on every visit and a 503 here would make them assume
+    # the whole site is unreachable.
+    location = /robots.txt   { proxy_pass http://openkeepr_app; }
+    location = /sitemap.xml  { proxy_pass http://openkeepr_app; }
+    location = /.well-known/security.txt { proxy_pass http://openkeepr_app; }
+
     # --- App proxy ---
     location / {
+        # Throttle well-behaved crawlers; burst lets a quick succession of
+        # 5 page-fetches through before the per-minute limit kicks in.
+        limit_req zone=okp_crawlers burst=5 nodelay;
+        limit_req_status 429;
+
         proxy_pass http://openkeepr_app;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

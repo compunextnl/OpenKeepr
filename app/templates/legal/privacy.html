@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — {{ _('Privacy') }}{% endblock %}
+{% block title %}{{ _('Privacy policy') }} — {{ app_name }} {{ _('zero-knowledge messaging') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('%(name)s privacy policy: we store only ciphertext and hashed metadata, never your messages or keys. How long anything is kept.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8">

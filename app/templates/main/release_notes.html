@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — {{ _('Release notes') }}{% endblock %}
+{% block title %}{{ app_name }} {{ _('release notes — changes, fixes, security updates') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('Release notes for %(name)s — every change, bug fix and security update, version by version. Track new features and improvements.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-10">

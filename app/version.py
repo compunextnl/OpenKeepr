@@ -4,4 +4,4 @@ Bump this when releasing. The footer of the app reads it; the CHANGELOG must
 contain a matching entry.
 """
 
-__version__ = "1.3.0"
+__version__ = "1.4.0"

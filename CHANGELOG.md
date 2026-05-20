@@ -5,6 +5,75 @@ All notable changes to OpenKeepr are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] — 2026-05-19
+
+### Added
+
+- **Shareable previews** — Open Graph, Twitter Card and standard
+  description meta tags on every public page, with a hand-rendered
+  1200×630 PNG OG image (`app/static/img/og-image.png`) that matches the
+  in-app branding. Links shared on Slack, Discord, iMessage, WhatsApp,
+  LinkedIn or X now produce a proper preview card.
+- **Multilingual SEO** — per-page `<meta name="description">` and
+  page-specific browser titles, all tuned to the recommended SEO lengths
+  (titles 50-60 chars, descriptions 110-160 chars). `<link
+  rel="alternate" hreflang="…">` tags advertise each language variant,
+  paired with a `?lang=xx` query override that actually serves the
+  corresponding translation.
+- **robots.txt + sitemap.xml** generated at request time, listing only
+  the public, indexable pages. Message URLs (`/m/…`) and account-only
+  areas remain crawler-blocked, matching the per-page `<meta
+  name="robots">` policy.
+- **Bot policy** — robots.txt and nginx now cooperate to block ~30
+  AI-training crawlers and aggressive SEO scrapers (GPTBot, ClaudeBot,
+  CCBot, Google-Extended, Bytespider, AhrefsBot, SemrushBot, …). Search
+  engines are allowed but rate-limited at the edge.
+- **`scripts/generate_og_image.py`** — Pillow-based renderer for the OG
+  PNG, re-runnable when branding changes.
+
+### Changed
+
+- **Theme toggle** is now a clean two-state flip (light ↔ dark) based on
+  whatever's currently rendered. The previous three-state cycle could
+  land on a value that visually matched the previous state, making the
+  first click look like a no-op.
+- **Result-modal copy is now context-aware**: when no recipient e-mail
+  was given, the dialog explains how to split the link and code across
+  separate channels; when a recipient was given, it explains that the
+  code is delivered by e-mail and that only the link needs sharing.
+- **"Done" button** removed from the result modal — the header X closes
+  the dialog and the prominent "Copy all to clipboard" remains.
+- **Message-view eyebrow** now matches the homepage (pulsing green dot
+  + "End-to-end encrypted · Zero-knowledge") for visual consistency.
+- **Navigation menu** uses "Start" instead of "Create" (translates to
+  natural-feeling labels in every language).
+- **Browser tab title** uses a fresh msgid to avoid the stale "Geheimen
+  veilig delen" Dutch translation that lingered in operator `.po` files.
+- **Translation seeder** is now canonical: it overwrites any translation
+  that differs from the value in `scripts/seed_translations.py`, not just
+  fuzzy or empty entries. Tweaking wording in the seed and restarting the
+  app now propagates the change end-to-end without needing a new msgid.
+
+### Fixed
+
+- **NL phrasing**: "is verzonden" → "wordt verzonden" (the code is sent
+  asynchronously after the modal opens, not before). Equivalent tense
+  shift in all five languages.
+- **NL**: "Aanmaken" / "Geheimen" no longer appear anywhere in the UI.
+- **NL** char-counter unit is now "karakters" — Babel's fuzzy-match had
+  previously borrowed "Aanmaken" from an unrelated msgid.
+- **hreflang** URLs are now valid HTML — the previous version used a
+  Python-only `**dict` expression that Jinja can't parse.
+- **Title and description SEO lengths** — every page now lands inside
+  the recommended 50-60 / 110-160 char ranges.
+
+### Security
+
+- The `SECURITY.md` threat model has been refreshed for the v1.x feature
+  set: attachments, TOTP-secret encryption at rest, CSP nonces, offline
+  vendored assets, rate limiting, and an explicit "what is NOT in the
+  threat model" section.
+
 ## [1.3.0] — 2026-05-19
 
 ### Added
@@ -232,6 +301,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Strict default Content-Security-Policy, HTTP-only / SameSite cookies, and
   CSRF protection on all state-changing requests.
 
+[1.4.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.4.0
 [1.3.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.3.0
 [1.2.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.2.0
 [1.1.0]: https://github.com/OWNER/openkeepr/releases/tag/v1.1.0

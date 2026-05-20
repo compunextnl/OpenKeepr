@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — {{ _('Cookies') }}{% endblock %}
+{% block title %}{{ _('Cookie policy') }} — {{ app_name }} {{ _('uses only essential cookies') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('%(name)s uses essential cookies only — session, language and theme preference. No tracking, analytics or third-party assets.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8">

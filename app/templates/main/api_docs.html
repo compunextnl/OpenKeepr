@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ app_name }} — API{% endblock %}
+{% block title %}{{ app_name }} REST API — {{ _('programmatic encrypted messaging') }}{% endblock %}
+{% block robots %}index,follow{% endblock %}
+{% block meta_description %}{{ _('REST API for %(name)s: programmatic zero-knowledge encrypted messaging with scoped API keys, attachment uploads and rate limiting.', name=app_name) }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-10">
